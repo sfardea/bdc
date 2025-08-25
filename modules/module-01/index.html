@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 1 : Faisons Connaissance</title>
+    <link rel="stylesheet" href="/modules/module-01/styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header avec progression -->
+        <header class="module-header">
+            <div class="header-content">
+                <span class="module-number">Module 1</span>
+                <h1 class="module-title">Faisons Connaissance</h1>
+                <p class="module-description">
+                    Commençons votre parcours de bilan de compétences en apprenant à mieux vous connaître.
+                    Ces informations nous permettront de personnaliser votre expérience.
+                </p>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+                <span class="progress-text" id="progressText">0% complété</span>
+            </div>
+        </header>
+
+        <!-- Navigation des étapes -->
+        <nav class="step-navigation" id="stepNav">
+            <button class="step-indicator active" data-step="1">
+                <span class="step-number">1</span>
+                <span class="step-label">Informations</span>
+            </button>
+            <div class="step-connector"></div>
+            <button class="step-indicator" data-step="2">
+                <span class="step-number">2</span>
+                <span class="step-label">Parcours</span>
+            </button>
+            <div class="step-connector"></div>
+            <button class="step-indicator" data-step="3">
+                <span class="step-number">3</span>
+                <span class="step-label">Confirmation</span>
+            </button>
+        </nav>
+
+        <!-- Formulaire multi-étapes -->
+        <form id="mainForm" class="form-container">
+            
+            <!-- Étape 1: Informations personnelles -->
+            <section class="form-step active" id="step1">
+                <div class="step-header">
+                    <h2>Informations Personnelles</h2>
+                    <p>Commençons par quelques informations de base vous concernant.</p>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="prenom" class="form-label">
+                            Prénom
+                            <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="prenom" 
+                            name="prenom" 
+                            class="form-input" 
+                            placeholder="Votre prénom"
+                            required
+                        >
+                        <span class="error-message" id="prenomError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nom" class="form-label">
+                            Nom
+                            <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="nom" 
+                            name="nom" 
+                            class="form-input" 
+                            placeholder="Votre nom"
+                            required
+                        >
+                        <span class="error-message" id="nomError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="form-label">
+                            Email
+                            <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            class="form-input" 
+                            placeholder="votre.email@exemple.com"
+                            required
+                        >
+                        <span class="error-message" id="emailError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="telephone" class="form-label">
+                            Téléphone
+                        </label>
+                        <input 
+                            type="tel" 
+                            id="telephone" 
+                            name="telephone" 
+                            class="form-input" 
+                            placeholder="06 12 34 56 78"
+                        >
+                        <span class="error-message" id="telephoneError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dateNaissance" class="form-label">
+                            Date de naissance
+                            <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="date" 
+                            id="dateNaissance" 
+                            name="dateNaissance" 
+                            class="form-input" 
+                            required
+                        >
+                        <span class="error-message" id="dateNaissanceError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="region" class="form-label">
+                            Région
+                            <span class="required">*</span>
+                        </label>
+                        <select id="region" name="region" class="form-select" required>
+                            <option value="">Sélectionnez votre région</option>
+                            <option value="auvergne-rhone-alpes">Auvergne-Rhône-Alpes</option>
+                            <option value="bourgogne-franche-comte">Bourgogne-Franche-Comté</option>
+                            <option value="bretagne">Bretagne</option>
+                            <option value="centre-val-de-loire">Centre-Val de Loire</option>
+                            <option value="corse">Corse</option>
+                            <option value="grand-est">Grand Est</option>
+                            <option value="hauts-de-france">Hauts-de-France</option>
+                            <option value="ile-de-france">Île-de-France</option>
+                            <option value="normandie">Normandie</option>
+                            <option value="nouvelle-aquitaine">Nouvelle-Aquitaine</option>
+                            <option value="occitanie">Occitanie</option>
+                            <option value="pays-de-la-loire">Pays de la Loire</option>
+                            <option value="provence-alpes-cote-azur">Provence-Alpes-Côte d'Azur</option>
+                            <option value="outre-mer">Outre-mer</option>
+                        </select>
+                        <span class="error-message" id="regionError"></span>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-primary" onclick="nextStep()">
+                        Continuer
+                        <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M7 15L12 10L7 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Étape 2: Parcours et situation -->
+            <section class="form-step" id="step2">
+                <div class="step-header">
+                    <h2>Votre Parcours</h2>
+                    <p>Parlez-nous de votre situation actuelle et de votre parcours.</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="niveauEtudes" class="form-label">
+                        Niveau d'études
+                        <span class="required">*</span>
+                    </label>
+                    <select id="niveauEtudes" name="niveauEtudes" class="form-select" required>
+                        <option value="">Sélectionnez votre niveau</option>
+                        <option value="sans-diplome">Sans diplôme</option>
+                        <option value="cap-bep">CAP/BEP</option>
+                        <option value="bac">Baccalauréat</option>
+                        <option value="bac+2">Bac+2 (BTS, DUT, DEUG)</option>
+                        <option value="bac+3">Bac+3 (Licence, Bachelor)</option>
+                        <option value="bac+5">Bac+5 (Master, Ingénieur)</option>
+                        <option value="bac+8">Bac+8 (Doctorat)</option>
+                    </select>
+                    <span class="error-message" id="niveauEtudesError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        Situation professionnelle
+                        <span class="required">*</span>
+                    </label>
+                    <div class="radio-grid">
+                        <label class="radio-card">
+                            <input type="radio" name="situationPro" value="salarie-cdi" required>
+                            <div class="radio-card-content">
+                                <span class="radio-card-title">Salarié(e) CDI</span>
+                            </div>
+                        </label>
+                        <label class="radio-card">
+                            <input type="radio" name="situationPro" value="salarie-cdd" required>
+                            <div class="radio-card-content">
+                                <span class="radio-card-title">Salarié(e) CDD</span>
+                            </div>
+                        </label>
+                        <label class="radio-card">
+                            <input type="radio" name="situationPro" value="independant" required>
+                            <div class="radio-card-content">
+                                <span class="radio-card-title">Indépendant(e)</span>
+                            </div>
+                        </label>
+                        <label class="radio-card">
+                            <input type="radio" name="situationPro" value="recherche-emploi" required>
+                            <div class="radio-card-content">
+                                <span class="radio-card-title">En recherche</span>
+                            </div>
+                        </label>
+                        <label class="radio-card">
+                            <input type="radio" name="situationPro" value="etudiant" required>
+                            <div class="radio-card-content">
+                                <span class="radio-card-title">Étudiant(e)</span>
+                            </div>
+                        </label>
+                        <label class="radio-card">
+                            <input type="radio" name="situationPro" value="autre" required>
+                            <div class="radio-card-content">
+                                <span class="radio-card-title">Autre</span>
+                            </div>
+                        </label>
+                    </div>
+                    <span class="error-message" id="situationProError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="experience" class="form-label">
+                        Années d'expérience professionnelle
+                        <span class="required">*</span>
+                    </label>
+                    <select id="experience" name="experience" class="form-select" required>
+                        <option value="">Sélectionnez</option>
+                        <option value="0-2">Moins de 2 ans</option>
+                        <option value="2-5">2 à 5 ans</option>
+                        <option value="5-10">5 à 10 ans</option>
+                        <option value="10-15">10 à 15 ans</option>
+                        <option value="15+">Plus de 15 ans</option>
+                    </select>
+                    <span class="error-message" id="experienceError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="objectifs" class="form-label">
+                        Qu'attendez-vous de ce bilan de compétences ?
+                    </label>
+                    <textarea 
+                        id="objectifs" 
+                        name="objectifs" 
+                        class="form-textarea" 
+                        rows="4"
+                        placeholder="Décrivez vos attentes et objectifs..."
+                    ></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="previousStep()">
+                        <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M13 15L8 10L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Retour
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="nextStep()">
+                        Continuer
+                        <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M7 15L12 10L7 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Étape 3: Récapitulatif et confirmation -->
+            <section class="form-step" id="step3">
+                <div class="step-header">
+                    <h2>Récapitulatif</h2>
+                    <p>Vérifiez vos informations avant de valider.</p>
+                </div>
+
+                <div class="summary-card">
+                    <h3>Informations personnelles</h3>
+                    <div class="summary-grid" id="personalSummary"></div>
+                </div>
+
+                <div class="summary-card">
+                    <h3>Parcours professionnel</h3>
+                    <div class="summary-grid" id="professionalSummary"></div>
+                </div>
+
+                <div class="consent-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="consent" name="consent" required>
+                        <span>J'accepte que mes données soient utilisées dans le cadre de ce bilan de compétences</span>
+                    </label>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="previousStep()">
+                        <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M13 15L8 10L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Retour
+                    </button>
+                    <button type="submit" class="btn btn-success">
+                        <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M5 10L8 13L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Valider et continuer
+                    </button>
+                </div>
+            </section>
+        </form>
+
+        <!-- Message de succès -->
+        <div class="success-container" id="successMessage" style="display: none;">
+            <div class="success-icon">
+                <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                    <circle cx="32" cy="32" r="32" fill="#10B981" fill-opacity="0.1"/>
+                    <path d="M20 32L28 40L44 24" stroke="#10B981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h2>Félicitations !</h2>
+            <p>Vous avez complété avec succès le premier module de votre bilan de compétences.</p>
+            <p>Vos informations ont été enregistrées et nous pouvons maintenant personnaliser votre parcours.</p>
+            <button class="btn btn-primary" onclick="goToNextModule()">
+                Continuer vers le module 2
+                <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M7 15L12 10L7 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script src="../../shared/js/scorm-api.js"></script>
+    <script src="/modules/module-01/module.js"></script>
+</body>
+</html>

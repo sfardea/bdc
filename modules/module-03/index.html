@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 3 : Le bilan de compétences</title>
+    <link rel="stylesheet" href="/shared/css/modern-theme.css">
+    <style>
+        /* Container principal du slideshow */
+        .slideshow-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            min-height: 400px;
+            padding: 0;
+        }
+        
+        /* Styles des slides */
+        .slide {
+            display: none;
+            background: linear-gradient(135deg, #6366f1 0%, #3b82f6 50%, #ffffff 100%);
+            border-radius: var(--radius-2xl);
+            box-shadow: var(--shadow-xl);
+            height: 500px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Backgrounds pour chaque slide */
+        .slide-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.1;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: var(--radius-2xl);
+        }
+        
+        .slide-content-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 2;
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .slide-bg-welcome {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="%236366f1" opacity="0.1"/><circle cx="200" cy="150" r="80" fill="%23ffffff" opacity="0.3"/><path d="M120 150 L200 70 L280 150" stroke="%236366f1" stroke-width="3" fill="none" opacity="0.5"/></svg>');
+        }
+        
+        .slide-bg-why {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="%2310b981" opacity="0.1"/><circle cx="100" cy="100" r="40" fill="%23ffffff" opacity="0.3"/><circle cx="300" cy="200" r="60" fill="%23ffffff" opacity="0.2"/><path d="M50 50 Q200 150 350 250" stroke="%2310b981" stroke-width="2" fill="none" opacity="0.4"/></svg>');
+        }
+        
+        .slide-bg-phase1 {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(217, 119, 6, 0.1)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23f59e0b" opacity="0.1"/><rect x="150" y="100" width="100" height="120" fill="%23ffffff" opacity="0.3" rx="5"/><rect x="160" y="130" width="80" height="3" fill="%23f59e0b" opacity="0.4"/><rect x="160" y="150" width="60" height="3" fill="%23f59e0b" opacity="0.4"/></svg>');
+        }
+        
+        .slide-bg-phase2 {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(109, 40, 217, 0.1)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="%238b5cf6" opacity="0.1"/><circle cx="150" cy="150" r="50" fill="%23ffffff" opacity="0.3"/><circle cx="250" cy="120" r="30" fill="%23ffffff" opacity="0.2"/><path d="M100 200 Q200 100 300 180" stroke="%238b5cf6" stroke-width="2" fill="none" opacity="0.5"/></svg>');
+        }
+        
+        .slide-bg-phase3 {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(185, 28, 28, 0.1)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23ef4444" opacity="0.1"/><circle cx="200" cy="150" r="60" fill="%23ffffff" opacity="0.3"/><polygon points="200,120 210,140 230,140 216,152 220,172 200,160 180,172 184,152 170,140 190,140" fill="%23fcd34d" opacity="0.6"/></svg>');
+        }
+        
+        .slide-bg-ready {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(21, 128, 61, 0.1)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="%2322c55e" opacity="0.1"/><circle cx="80" cy="80" r="3" fill="%23fcd34d" opacity="0.8"/><circle cx="320" cy="60" r="2" fill="%23fcd34d" opacity="0.8"/><circle cx="350" cy="120" r="2" fill="%23fcd34d" opacity="0.8"/><path d="M200 220 Q190 200 200 180 Q210 200 200 220" fill="%2322c55e" opacity="0.3"/></svg>');
+        }
+        
+        .slide.active {
+            display: flex;
+            animation: slideIn 0.6s ease-out;
+        }
+        
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+        }
+        
+        /* Animation des slides */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        /* Illustrations SVG */
+        .slide-illustration {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto var(--space-md);
+            animation: float 3s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+        
+        /* Layout spécifique pour les slides avec contenu structuré */
+        .slide-layout-centered {
+            width: 100%;
+            max-width: 900px;
+            text-align: center;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 300px;
+        }
+        
+        .slide-layout-content-focused {
+            width: 100%;
+            max-width: 900px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            min-height: 300px;
+        }
+        
+        /* Organic shapes backgrounds */
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            right: -20%;
+            width: 60%;
+            height: 120%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: rotate(-15deg);
+        }
+        
+        .slide::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -15%;
+            width: 50%;
+            height: 80%;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            transform: rotate(25deg);
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        /* Animations spécifiques pour certaines slides */
+        .slide-illustration.rotate {
+            animation: rotate 4s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .slide-illustration.pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Titres et textes */
+        .slide-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: clamp(2rem, 5vw, 2.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: white;
+            line-height: 1.2;
+            text-align: center;
+        }
+        
+        .slide-subtitle {
+            font-size: clamp(1rem, 3vw, 1.25rem);
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+            text-align: center;
+        }
+        
+        .slide-content {
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            text-align: center;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Phases container - Modern bullets */
+        .phases-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            text-align: left;
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .phase-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 0.5rem 0;
+        }
+        
+        .phase-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 50%;
+            font-weight: 700;
+            flex-shrink: 0;
+            font-size: 0.9rem;
+        }
+        
+        .phase-content h3 {
+            font-size: clamp(1rem, 2.5vw, 1.1rem);
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.25rem;
+        }
+        
+        .phase-content p {
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.4;
+        }
+        
+        /* Liste des points - Modern bullets */
+        .benefits-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            text-align: left;
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 0.5rem 0;
+        }
+        
+        .benefit-icon {
+            font-size: 1.3rem;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+        
+        .benefit-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
+            line-height: 1.4;
+        }
+        
+        .benefit-title {
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.25rem;
+            font-size: clamp(1rem, 2.5vw, 1.1rem);
+        }
+        
+        /* Navigation */
+        .navigation-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: var(--space-xl) auto;
+            padding: var(--space-lg);
+            max-width: 1200px;
+        }
+        
+        .nav-button {
+            padding: var(--space-sm) var(--space-lg);
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: var(--text-base);
+            cursor: pointer;
+            transition: var(--transition);
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        
+        .nav-button.prev {
+            background: var(--gray-200);
+            color: var(--gray-700);
+        }
+        
+        .nav-button.prev:hover:not(:disabled) {
+            background: var(--gray-300);
+            transform: translateX(-2px);
+        }
+        
+        .nav-button.next {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .nav-button.next:hover:not(:disabled) {
+            transform: translateX(2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .nav-button.finish {
+            background: linear-gradient(135deg, var(--success), var(--secondary-dark));
+            color: var(--white);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .nav-button.finish:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .nav-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        .nav-button.hidden {
+            display: none;
+        }
+        
+        /* Indicateurs de progression */
+        .progress-dots {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 0;
+        }
+        
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--gray-300);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        
+        .dot.active {
+            background: var(--primary);
+            transform: scale(1.2);
+        }
+        
+        /* Case à cocher */
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2rem 0;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius);
+            cursor: pointer;
+            user-select: none;
+            backdrop-filter: blur(10px);
+        }
+        
+        .checkbox-container:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .checkbox-container input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 1rem;
+            cursor: pointer;
+        }
+        
+        .checkbox-label {
+            font-size: 1rem;
+            color: white;
+            font-weight: 500;
+        }
+        
+        /* Message de succès */
+        .success-message {
+            background: linear-gradient(135deg, var(--success), var(--secondary-dark));
+            color: var(--white);
+            padding: var(--space-xl);
+            border-radius: var(--radius-xl);
+            text-align: center;
+            animation: celebrateSuccess 0.8s ease-out;
+        }
+        
+        @keyframes celebrateSuccess {
+            0% { transform: scale(0.8) rotate(-5deg); opacity: 0; }
+            50% { transform: scale(1.1) rotate(5deg); }
+            100% { transform: scale(1) rotate(0); opacity: 1; }
+        }
+        
+        .success-icon {
+            font-size: 5rem;
+            margin-bottom: var(--space-lg);
+            animation: successPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes successPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .slide {
+                height: 420px;
+            }
+            
+            .slide-content-overlay {
+                padding: 1rem;
+            }
+            
+            .slide-layout-centered,
+            .slide-layout-content-focused {
+                max-width: 100%;
+                min-height: 280px;
+            }
+            
+            .phases-container,
+            .benefits-list {
+                max-width: 100%;
+                gap: 0.75rem;
+            }
+            
+            .phase-item,
+            .benefit-item {
+                padding: 0.25rem 0;
+            }
+            
+            .navigation-container {
+                flex-direction: column;
+                gap: var(--space-sm);
+                padding: 1rem;
+            }
+            
+            .nav-button {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            /* Header responsive */
+            header div[style*="display: flex"] {
+                flex-direction: column !important;
+                text-align: center !important;
+                gap: 0.25rem;
+            }
+            
+            header div[style*="flex: 1"] {
+                text-align: center !important;
+            }
+            
+            .progress-dots {
+                justify-content: center !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.5rem;
+            }
+            
+            .slide {
+                height: 380px;
+            }
+            
+            .slide-content-overlay {
+                padding: 0.75rem;
+            }
+            
+            .phases-container,
+            .benefits-list {
+                gap: 0.5rem;
+            }
+            
+            .phase-number {
+                width: 30px;
+                height: 30px;
+                font-size: 0.8rem;
+            }
+            
+            /* Header mobile */
+            header {
+                padding: 0.5rem !important;
+            }
+            
+            header h1 {
+                font-size: 1rem !important;
+            }
+            
+            header p {
+                font-size: 0.8rem !important;
+            }
+        }
+    </style>
+</head>
+<body class="module-slideshow">
+    <div class="container">
+        <!-- Header du module -->
+        <header class="card animate-fade-in" style="padding: 0.75rem 1rem; margin-bottom: 0.5rem;">
+            <div style="text-align: center; position: relative; display: flex; align-items: center; justify-content: space-between; min-height: 60px;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent)); border-radius: var(--radius-xl) var(--radius-xl) 0 0; margin: -0.75rem -1rem 0 -1rem;"></div>
+                
+                <div style="flex: 1; text-align: left;">
+                    <span style="display: inline-block; padding: 0.2rem 0.5rem; background: var(--primary-bg); color: var(--primary); border-radius: var(--radius); font-size: 0.75rem; font-weight: 600; margin-bottom: 0.25rem;">Module 3</span>
+                    <h1 style="font-size: 1.25rem; font-weight: 700; margin: 0; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                        Le Bilan de Compétences
+                    </h1>
+                </div>
+                
+                <div style="flex: 1; text-align: center;">
+                    <p style="color: var(--gray-600); font-size: 0.9rem; margin: 0;">
+                        Découvrez les étapes clés d'un bilan de compétences
+                    </p>
+                </div>
+                
+                <div style="flex: 1; text-align: right;">
+                    <!-- Indicateurs de progression -->
+                    <div class="progress-dots" style="margin: 0; justify-content: flex-end;">
+                        <span class="dot" data-slide="1"></span>
+                        <span class="dot" data-slide="2"></span>
+                        <span class="dot" data-slide="3"></span>
+                        <span class="dot" data-slide="4"></span>
+                        <span class="dot" data-slide="5"></span>
+                        <span class="dot" data-slide="6"></span>
+                        <span class="dot" data-slide="7"></span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Container du slideshow -->
+        <div class="slideshow-container">
+            
+            <!-- Slide 1: Accueil -->
+            <div class="slide active" id="slide1">
+                <div class="slide-content-overlay">
+                    <div class="slide-layout-centered">
+                        <h1 class="slide-title">Le Bilan de<br>Compétences</h1>
+                        <p class="slide-subtitle">Découvrez les étapes clés pour transformer votre carrière</p>
+                        <p class="slide-content">
+                            Ce parcours interactif vous guide à travers une méthodologie éprouvée pour mieux comprendre vos atouts et construire votre projet professionnel.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2: Introduction -->
+            <div class="slide" id="slide2">
+                <div class="slide-content-overlay">
+                    <div class="slide-layout-content-focused">
+                        <h2 class="slide-title">Pourquoi faire un bilan ?</h2>
+                        <div class="benefits-list">
+                            <div class="benefit-item">
+                                <span class="benefit-icon">💡</span>
+                                <div>
+                                    <div class="benefit-title">Faire le point</div>
+                                    <div class="benefit-text">Prenez du recul sur votre parcours et projetez-vous sereinement</div>
+                                </div>
+                            </div>
+                            <div class="benefit-item">
+                                <span class="benefit-icon">🚀</span>
+                                <div>
+                                    <div class="benefit-title">Rebondir</div>
+                                    <div class="benefit-text">Dépassez les difficultés et retrouvez motivation et perspectives</div>
+                                </div>
+                            </div>
+                            <div class="benefit-item">
+                                <span class="benefit-icon">🔄</span>
+                                <div>
+                                    <div class="benefit-title">Évoluer</div>
+                                    <div class="benefit-text">Accompagnez les transitions vers votre nouvelle identité professionnelle</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: Phase Préliminaire -->
+            <div class="slide" id="slide3">
+                <div class="slide-content-overlay">
+                    <div class="slide-layout-content-focused">
+                        <h2 class="slide-title">Phase 1 : Préliminaire</h2>
+                        <p class="slide-subtitle">On définit ensemble votre parcours</p>
+                        <div class="phases-container">
+                            <div class="phase-item">
+                                <div class="phase-number">1</div>
+                                <div class="phase-content">
+                                    <h3>Analyse de vos besoins</h3>
+                                    <p>Nous écoutons vos attentes et comprenons votre situation actuelle</p>
+                                </div>
+                            </div>
+                            <div class="phase-item">
+                                <div class="phase-number">2</div>
+                                <div class="phase-content">
+                                    <h3>Présentation de la méthode</h3>
+                                    <p>Découvrez les outils utilisés tout au long de votre bilan</p>
+                                </div>
+                            </div>
+                            <div class="phase-item">
+                                <div class="phase-number">3</div>
+                                <div class="phase-content">
+                                    <h3>Définition du cadre</h3>
+                                    <p>Planning, modalités et signature de la convention tripartite</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 4: Phase d'Investigation -->
+            <div class="slide" id="slide4">
+                <div class="slide-content-overlay">
+                    <div class="slide-layout-content-focused">
+                        <h2 class="slide-title">Phase 2 : Investigation</h2>
+                        <p class="slide-subtitle">On explore vos potentiels</p>
+                        <div class="phases-container">
+                            <div class="phase-item">
+                                <div class="phase-number">1</div>
+                                <div class="phase-content">
+                                    <h3>Analyse des motivations</h3>
+                                    <p>Identification de ce qui vous anime et de vos sources de satisfaction</p>
+                                </div>
+                            </div>
+                            <div class="phase-item">
+                                <div class="phase-number">2</div>
+                                <div class="phase-content">
+                                    <h3>Identification des compétences</h3>
+                                    <p>Mise en lumière de vos savoir-faire, savoir-être et compétences transférables</p>
+                                </div>
+                            </div>
+                            <div class="phase-item">
+                                <div class="phase-number">3</div>
+                                <div class="phase-content">
+                                    <h3>Exploration des possibilités</h3>
+                                    <p>Étude du marché, des métiers accessibles et des formations éventuelles</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 5: Phase de Conclusion -->
+            <div class="slide" id="slide5">
+                <div class="slide-content-overlay">
+                    <div class="slide-layout-content-focused">
+                        <h2 class="slide-title">Phase 3 : Conclusion</h2>
+                        <p class="slide-subtitle">On construit votre projet</p>
+                        <div class="phases-container">
+                            <div class="phase-item">
+                                <div class="phase-number">1</div>
+                                <div class="phase-content">
+                                    <h3>Synthèse des résultats</h3>
+                                    <p>Appropriation des découvertes et construction d'un projet professionnel réaliste</p>
+                                </div>
+                            </div>
+                            <div class="phase-item">
+                                <div class="phase-number">2</div>
+                                <div class="phase-content">
+                                    <h3>Plan d'action</h3>
+                                    <p>Définition des étapes concrètes pour mettre en œuvre votre projet</p>
+                                </div>
+                            </div>
+                            <div class="phase-item">
+                                <div class="phase-number">3</div>
+                                <div class="phase-content">
+                                    <h3>Document de synthèse</h3>
+                                    <p>Remise d'un document complet reprenant l'ensemble des conclusions du bilan</p>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="slide-content" style="text-align: center; margin-top: 2rem; font-weight: 600;">
+                            🔒 Confidentialité garantie : Les résultats restent votre propriété exclusive
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 6: Prêt à commencer ? -->
+            <div class="slide" id="slide6">
+                <div class="slide-content-overlay">
+                    <div class="slide-layout-content-focused">
+                        <h2 class="slide-title">Prêt à commencer ?</h2>
+                        <p class="slide-subtitle">Ce que vous allez gagner</p>
+                        
+                        <div class="benefits-list">
+                            <div class="benefit-item">
+                                <span class="benefit-icon">✨</span>
+                                <div>
+                                    <div class="benefit-title">Confiance renforcée</div>
+                                    <div class="benefit-text">En vos capacités et votre valeur professionnelle</div>
+                                </div>
+                            </div>
+                            <div class="benefit-item">
+                                <span class="benefit-icon">🎯</span>
+                                <div>
+                                    <div class="benefit-title">Projet professionnel clair</div>
+                                    <div class="benefit-text">Aligné avec vos aspirations et le marché</div>
+                                </div>
+                            </div>
+                            <div class="benefit-item">
+                                <span class="benefit-icon">🗺️</span>
+                                <div>
+                                    <div class="benefit-title">Feuille de route détaillée</div>
+                                    <div class="benefit-text">Pour atteindre vos objectifs professionnels</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="confirmCheckbox">
+                            <label for="confirmCheckbox" class="checkbox-label">
+                                J'ai lu et compris le déroulement du bilan de compétences
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 7: Confirmation -->
+            <div class="slide" id="slide7">
+                <div class="success-message">
+                    <div class="success-icon">🎉</div>
+                    <h2 style="color: var(--white); font-size: var(--text-3xl); margin-bottom: var(--space-md);">
+                        Félicitations !
+                    </h2>
+                    <p style="font-size: var(--text-lg); margin-bottom: var(--space-md);">
+                        Vous avez terminé la présentation du bilan de compétences.
+                    </p>
+                    <p style="opacity: 0.9;">
+                        Vous êtes maintenant prêt à entamer votre parcours de découverte professionnelle. 
+                        Cette première étape montre votre engagement dans votre développement de carrière.
+                    </p>
+                    <p style="margin-top: var(--space-lg); font-style: italic;">
+                        "Le succès, c'est d'aller d'échec en échec sans perdre son enthousiasme." - Winston Churchill
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation-container">
+            <button class="nav-button prev" id="prevBtn" onclick="changeSlide(-1)">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+                Précédent
+            </button>
+            
+            <button class="nav-button next" id="nextBtn" onclick="changeSlide(1)">
+                Suivant
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+            </button>
+            
+            <button class="nav-button finish hidden" id="finishBtn" onclick="finishActivity()">
+                Terminer l'activité
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script src="../../shared/js/scorm-api.js"></script>
+    <script src="/modules/module-03/module.js"></script>
+</body>
+</html>

@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 2 : Mon Autoportrait</title>
+    <link rel="stylesheet" href="/shared/css/modern-theme.css">
+    <style>
+        /* Styles spécifiques au module */
+        /* Score Badge supprimé */
+
+        .question-container {
+            background: var(--white);
+            border-radius: var(--radius-2xl);
+            padding: 3rem;
+            margin: 2rem 0;
+            box-shadow: var(--shadow-xl);
+            text-align: center;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .question-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+        }
+
+        .question-number {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--primary-bg);
+            color: var(--primary);
+            border-radius: var(--radius);
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+
+        .question-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: var(--text-3xl);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .question-subtitle {
+            color: var(--gray-600);
+            font-size: var(--text-base);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .answer-input {
+            width: 100%;
+            max-width: 500px;
+            padding: 1rem 1.5rem;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            font-size: 1.125rem;
+            font-family: inherit;
+            color: var(--gray-900);
+            background: var(--white);
+            transition: var(--transition-fast);
+            margin: 0 auto 2rem auto;
+            display: block;
+            text-align: center;
+        }
+
+        .answer-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .answer-textarea {
+            min-height: 120px;
+            resize: vertical;
+            text-align: left;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-nav {
+            padding: 0.75rem 2rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            transition: var(--transition-fast);
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .btn-prev {
+            background: var(--gray-200);
+            color: var(--gray-700);
+        }
+
+        .btn-prev:hover:not(:disabled) {
+            background: var(--gray-300);
+            transform: translateY(-1px);
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-next:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-nav:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Blason styles */
+        .blason-container {
+            background: var(--white);
+            border-radius: var(--radius-2xl);
+            padding: 3rem;
+            margin: 2rem 0;
+            box-shadow: var(--shadow-xl);
+            text-align: center;
+        }
+
+        .blason-shield {
+            max-width: 600px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border: 3px solid var(--primary);
+            border-radius: 20px 20px 80px 80px;
+            padding: 2rem;
+            position: relative;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .blason-banner {
+            background: var(--primary);
+            color: var(--white);
+            padding: 1rem 2rem;
+            border-radius: var(--radius-lg);
+            margin-bottom: 2rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .blason-sections {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .blason-section {
+            background: var(--white);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            min-height: 120px;
+        }
+
+        .blason-section h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .blason-section p {
+            color: var(--gray-700);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .blason-foundations {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, var(--primary-bg), rgba(16, 185, 129, 0.05));
+            border-color: var(--primary);
+        }
+
+        .blason-supports {
+            position: absolute;
+            left: -20px;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            justify-content: space-between;
+            pointer-events: none;
+        }
+
+        .support-left, .support-right {
+            width: 40px;
+            height: 120px;
+            background: var(--primary);
+            border-radius: 20px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .final-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+
+        .btn-final {
+            padding: 1rem 2rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            font-family: inherit;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-finish {
+            background: linear-gradient(135deg, var(--success), var(--secondary-dark));
+            color: var(--white);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-restart {
+            background: var(--accent);
+            color: var(--white);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-final:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Animations */
+        .question-enter {
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .points-animation {
+            animation: pointsGain 0.8s ease-out;
+        }
+
+        @keyframes pointsGain {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); color: #FFD700; }
+            100% { transform: scale(1); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            
+            .question-container {
+                padding: 2rem;
+                margin: 1rem 0;
+            }
+            
+            .question-title {
+                font-size: 2rem;
+            }
+            
+            .blason-sections {
+                grid-template-columns: 1fr;
+            }
+            
+            .navigation-buttons {
+                flex-direction: column;
+            }
+            
+            .btn-nav {
+                width: 100%;
+            }
+            
+            .final-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Score Badge supprimé -->
+
+        <!-- Header avec progression -->
+        <header class="card animate-fade-in">
+            <div style="text-align: center; position: relative;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent)); border-radius: var(--radius-xl) var(--radius-xl) 0 0; margin: -2rem -2rem 0 -2rem;"></div>
+                
+                <span style="display: inline-block; padding: 0.25rem 0.75rem; background: var(--primary-bg); color: var(--primary); border-radius: var(--radius); font-size: 0.875rem; font-weight: 600; margin-bottom: 0.75rem; margin-top: 1rem;">Module 2</span>
+                
+                <h1 class="title-responsive title-gradient" style="margin-bottom: 0.75rem;">
+                    Mon Autoportrait
+                </h1>
+                
+                <p class="body-responsive" style="color: var(--gray-600); max-width: 600px; margin: 0 auto;">
+                    Découvrez-vous à travers un questionnaire interactif et créez votre blason personnel
+                </p>
+                
+                <div class="progress-bar" style="margin: 1.5rem 0 0.5rem 0;">
+                    <div class="progress-fill" id="progressBar" style="width: 0%;"></div>
+                </div>
+                <span style="font-size: 0.875rem; color: var(--gray-500); font-weight: 500;" id="progressText">0% complété</span>
+            </div>
+        </header>
+
+        <!-- Questionnaire -->
+        <div id="questionnaire">
+            <!-- Question 1 -->
+            <div class="question-step" id="step-1" style="display: block;">
+                <div class="question-container question-enter">
+                    <span class="question-number">Question 1 / 10</span>
+                    <h2 class="question-title">Qui suis-je ?</h2>
+                    <p class="question-subtitle">Décrivez-vous en quelques mots. Qui êtes-vous vraiment ?</p>
+                    
+                    <textarea 
+                        class="answer-input answer-textarea"
+                        placeholder="Parlez de vous, de votre personnalité, de ce qui vous définit..."
+                        maxlength="500"
+                    ></textarea>
+                    
+                    <div class="navigation-buttons">
+                        <button class="btn-nav btn-prev" disabled>Précédent</button>
+                        <button class="btn-nav btn-next">Suivant</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="question-step" id="step-2" style="display: none;">
+                <div class="question-container">
+                    <span class="question-number">Question 2 / 10</span>
+                    <h2 class="question-title">Qu'est-ce qui m'anime ?</h2>
+                    <p class="question-subtitle">Qu'est-ce qui vous motive et vous donne de l'énergie au quotidien ?</p>
+                    
+                    <textarea 
+                        class="answer-input answer-textarea"
+                        placeholder="Vos passions, vos sources de motivation, ce qui vous fait lever le matin..."
+                        maxlength="500"
+                    ></textarea>
+                    
+                    <div class="navigation-buttons">
+                        <button class="btn-nav btn-prev">Précédent</button>
+                        <button class="btn-nav btn-next">Suivant</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="question-step" id="step-3" style="display: none;">
+                <div class="question-container">
+                    <span class="question-number">Question 3 / 10</span>
+                    <h2 class="question-title">Qu'est-ce que je fais actuellement ?</h2>
+                    <p class="question-subtitle">Décrivez votre situation actuelle, professionnelle et personnelle</p>
+                    
+                    <textarea 
+                        class="answer-input answer-textarea"
+                        placeholder="Votre travail, vos activités, vos projets en cours..."
+                        maxlength="500"
+                    ></textarea>
+                    
+                    <div class="navigation-buttons">
+                        <button class="btn-nav btn-prev">Précédent</button>
+                        <button class="btn-nav btn-next">Suivant</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="question-step" id="step-4" style="display: none;">
+                <div class="question-container">
+                    <span class="question-number">Question 4 / 10</span>
+                    <h2 class="question-title">Qu'est-ce qui me plaît dans la vie ?</h2>
+                    <p class="question-subtitle">Partagez ce qui vous apporte du bonheur et de la satisfaction</p>
+                    
+                    <textarea 
+                        class="answer-input answer-textarea"
+                        placeholder="Vos plaisirs, vos moments de bonheur, ce que vous aimez faire..."
+                        maxlength="500"
+                    ></textarea>
+                    
+                    <div class="navigation-buttons">
+                        <button class="btn-nav btn-prev">Précédent</button>
+                        <button class="btn-nav btn-next">Suivant</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="question-step" id="step-5" style="display: none;">
+                <div class="question-container">
+                    <span class="question-number">Question 5 / 10</span>
+                    <h2 class="question-title">Qu'est-ce qui est important pour moi ?</h2>
+                    <p class="question-subtitle">Identifiez vos valeurs fondamentales et vos priorités dans la vie</p>
+                    
+                    <textarea 
+                        class="answer-input answer-textarea"
+                        placeholder="Vos valeurs, vos principes, ce qui compte vraiment pour vous..."
+                        maxlength="500"
+                    ></textarea>
+                    
+                    <div class="navigation-buttons">
+                        <button class="btn-nav btn-prev">Précédent</button>
+                        <button class="btn-nav btn-next">Suivant</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="question-step" id="step-6" style="display: none;">
+                <div class="question-container">
+                    <span class="question-number">Question 6 / 10</span>
+                    <h2 class="question-title">Mon objectif principal</h2>
+                    <p class="question-subtitle">Quel est votre objectif le plus important à atteindre ?</p>
+                    
+                    <input 
+                        type="text" 
+                        class="answer-input"
+                        placeholder="Votre objectif principal..."
+                        maxlength="200"
+                    />
+                    
+                    <div class="navigation-buttons">
+                        <button class="btn-nav btn-prev">Précédent</button>
+                        <button class="btn-nav btn-next">Suivant</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 7 -->
+            <div class="question-step" id="step-7" style="display: none;">
+                <div class="question-container">
+                    <span class="question-number">Question 7 / 10</span>
+                    <h2 class="question-title">Mes 2 points forts</h2>
+                    <p class="question-subtitle">Identifiez vos deux principales forces ou talents</p>
+                    
+                    <input 
+                        type="text" 
+                        name="strength1"
+                        class="answer-input"
+                        placeholder="Premier point fort..."
+                        maxlength="100"
+                        style="margin-bottom: 1rem;"
+                    />
+                    <input 
+                        type="text" 
+                        name="strength2"
+                        class="answer-input"
+                        placeholder="Deuxième point fort..."
+                        maxlength="100"
+                    />
+                    
+                    <div class="navigation-buttons">
+                        <button class="btn-nav btn-prev">Précédent</button>
+                        <button class="btn-nav btn-next">Suivant</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 8 -->
+            <div class="question-step" id="step-8" style="display: none;">
+                <div class="question-container">
+                    <span class="question-number">Question 8 / 10</span>
+                    <h2 class="question-title">Mon rêve le plus fou</h2>
+                    <p class="question-subtitle">Si tout était possible, quel serait votre rêve le plus ambitieux ?</p>
+                    
+                    <input 
+                        type="text" 
+                        class="answer-input"
+                        placeholder="Votre rêve le plus fou..."
+                        maxlength="200"
+                    />
+                    
+                    <div class="navigation-buttons">
+                        <button class="btn-nav btn-prev">Précédent</button>
+                        <button class="btn-nav btn-next">Suivant</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 9 -->
+            <div class="question-step" id="step-9" style="display: none;">
+                <div class="question-container">
+                    <span class="question-number">Question 9 / 10</span>
+                    <h2 class="question-title">Ma plus grande peur</h2>
+                    <p class="question-subtitle">Qu'est-ce qui vous fait le plus peur ou vous inquiète ?</p>
+                    
+                    <input 
+                        type="text" 
+                        class="answer-input"
+                        placeholder="Votre plus grande peur..."
+                        maxlength="200"
+                    />
+                    
+                    <div class="navigation-buttons">
+                        <button class="btn-nav btn-prev">Précédent</button>
+                        <button class="btn-nav btn-next">Suivant</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 10 -->
+            <div class="question-step" id="step-10" style="display: none;">
+                <div class="question-container">
+                    <span class="question-number">Question 10 / 10</span>
+                    <h2 class="question-title">Ma devise</h2>
+                    <p class="question-subtitle">Quelle phrase ou citation guide votre vie ?</p>
+                    
+                    <input 
+                        type="text" 
+                        class="answer-input"
+                        placeholder="Votre devise personnelle..."
+                        maxlength="200"
+                    />
+                    
+                    <div class="navigation-buttons">
+                        <button class="btn-nav btn-prev">Précédent</button>
+                        <button class="btn-nav btn-next">Créer mon blason</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blason Final -->
+        <div class="blason-container" id="blason-result" style="display: none;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent)); border-radius: var(--radius-xl) var(--radius-xl) 0 0; margin: -3rem -3rem 0 -3rem;"></div>
+            
+            <h2 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 2.5rem; font-weight: 800; margin-bottom: 2rem;" class="title-gradient">
+                🏆 Votre Blason Personnel
+            </h2>
+            
+            <div class="blason-shield">
+                <div class="blason-banner" id="blason-aspirations">Aspirations</div>
+                
+                <div class="blason-sections">
+                    <div class="blason-section">
+                        <h4>Valeurs</h4>
+                        <p id="blason-valeurs">Vos valeurs personnelles</p>
+                    </div>
+                    
+                    <div class="blason-section">
+                        <h4>Talents</h4>
+                        <p id="blason-talents">Vos points forts</p>
+                    </div>
+                    
+                    <div class="blason-section">
+                        <h4>Enjeux</h4>
+                        <p id="blason-enjeux">Vos défis</p>
+                    </div>
+                    
+                    <div class="blason-section">
+                        <h4>Limites</h4>
+                        <p id="blason-limites">Vos craintes</p>
+                    </div>
+                    
+                    <div class="blason-section blason-foundations">
+                        <h4>Fondations</h4>
+                        <p id="blason-fondations">Votre devise</p>
+                    </div>
+                </div>
+                
+                <div class="blason-supports">
+                    <div class="support-left"></div>
+                    <div class="support-right"></div>
+                </div>
+            </div>
+
+            <div class="final-actions">
+                <button class="btn-final btn-finish">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    Terminer l'activité
+                </button>
+                
+                <button class="btn-final btn-restart">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                    Recommencer
+                </button>
+            </div>
+        </div>
+
+        <!-- Message de succès final -->
+        <div class="card" id="successMessage" style="display: none; text-align: center; background: linear-gradient(135deg, var(--success), var(--secondary-dark)); color: var(--white);">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">🎉</div>
+            <h2 style="color: var(--white); margin-bottom: 1rem;">Félicitations !</h2>
+            <p style="font-size: 1.125rem; margin-bottom: 0.5rem;">
+                Vous avez terminé votre autoportrait avec succès !
+            </p>
+            <p style="opacity: 0.9; margin-bottom: 2rem;">
+                Votre blason personnel reflète qui vous êtes et vos aspirations. Cette introspection vous aidera dans votre parcours professionnel.
+            </p>
+            <button class="btn" style="background: var(--white); color: var(--success);" onclick="goToNextModule()">
+                Continuer vers le module 3
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script src="../../shared/js/scorm-api.js"></script>
+    <script src="/modules/module-02/module.js"></script>
+</body>
+</html>

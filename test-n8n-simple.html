@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Simple n8n</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .webhook-url {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-family: monospace;
+            word-break: break-all;
+        }
+        .webhook-url.not-set {
+            background: #fff3cd;
+            border: 2px dashed #ffc107;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 16px;
+            transition: transform 0.2s;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border-left: 4px solid #28a745;
+        }
+        .result.error {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+        .result h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+        .step {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border-left: 4px solid #2196f3;
+        }
+        .step-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: #2196f3;
+            color: white;
+            text-align: center;
+            line-height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status.waiting {
+            background: #fff3cd;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 Test Simple: Connexion n8n</h1>
+        
+        <div class="step">
+            <span class="step-number">1</span>
+            <strong>Configuration n8n</strong>
+            <ol>
+                <li>Ouvrez n8n (http://localhost:5678)</li>
+                <li>Créez un nouveau workflow</li>
+                <li>Ajoutez un node "Webhook"</li>
+                <li>Dans le webhook, mettez Path: <code>test-bilan</code></li>
+                <li>Cliquez sur "Listen for Test Event"</li>
+                <li>Copiez l'URL du webhook qui apparaît</li>
+            </ol>
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <strong>Collez l'URL du webhook n8n ici:</strong>
+            <input type="text" 
+                   id="webhookUrl" 
+                   placeholder="http://localhost:5678/webhook-test/xxx-xxx-xxx"
+                   value="">
+            <button class="btn" onclick="saveWebhookUrl()">💾 Sauvegarder l'URL</button>
+        </div>
+
+        <div class="step">
+            <span class="step-number">3</span>
+            <strong>Testez la connexion:</strong>
+            <br><br>
+            <button class="btn" onclick="testSimple()" id="testBtn">
+                🚀 Envoyer Test Simple
+            </button>
+            <button class="btn" onclick="testModuleData()">
+                📊 Envoyer Données Module
+            </button>
+            <button class="btn" onclick="testCompletion()">
+                ✅ Envoyer Completion
+            </button>
+        </div>
+
+        <div id="currentUrl" class="webhook-url not-set">
+            <strong>URL actuelle:</strong> <span id="urlDisplay">Non configurée</span>
+            <span id="urlStatus" class="status waiting">En attente</span>
+        </div>
+
+        <div id="result"></div>
+    </div>
+
+    <script src="shared/js/n8n-config.js"></script>
+    <script>
+        // Display current URL on load
+        function displayCurrentUrl() {
+            const urlDisplay = document.getElementById('urlDisplay');
+            const urlStatus = document.getElementById('urlStatus');
+            const currentUrl = window.N8N_CONFIG.webhookUrl;
+            
+            urlDisplay.textContent = currentUrl;
+            
+            if (currentUrl.includes('webhook-test')) {
+                urlStatus.className = 'status waiting';
+                urlStatus.textContent = 'Non configurée';
+                document.getElementById('currentUrl').className = 'webhook-url not-set';
+            } else {
+                urlStatus.className = 'status success';
+                urlStatus.textContent = 'Configurée';
+                document.getElementById('currentUrl').className = 'webhook-url';
+            }
+            
+            // Pre-fill the input if URL exists
+            if (!currentUrl.includes('webhook-test')) {
+                document.getElementById('webhookUrl').value = currentUrl;
+            }
+        }
+
+        // Save webhook URL
+        function saveWebhookUrl() {
+            const url = document.getElementById('webhookUrl').value;
+            if (!url) {
+                alert('Veuillez entrer une URL');
+                return;
+            }
+            
+            window.N8N_CONFIG.webhookUrl = url;
+            displayCurrentUrl();
+            showResult('success', 'URL sauvegardée', 'URL mise à jour: ' + url);
+        }
+
+        // Simple test
+        async function testSimple() {
+            const btn = document.getElementById('testBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ Envoi en cours...';
+            
+            try {
+                const testData = {
+                    message: "Test simple depuis le module",
+                    timestamp: new Date().toISOString(),
+                    testType: "simple"
+                };
+                
+                console.log('Sending to n8n:', testData);
+                
+                const result = await window.sendToN8N('test_simple', testData);
+                
+                showResult('success', '✅ Succès!', 
+                    'Données envoyées à n8n.\n\nRéponse reçue:\n' + JSON.stringify(result, null, 2));
+                
+            } catch (error) {
+                showResult('error', '❌ Erreur', error.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '🚀 Envoyer Test Simple';
+            }
+        }
+
+        // Test with module data
+        async function testModuleData() {
+            try {
+                const moduleData = {
+                    moduleId: "module-01",
+                    userId: "test-user-123",
+                    progress: 50,
+                    data: {
+                        prenom: "Jean",
+                        nom: "Test",
+                        age: 30
+                    }
+                };
+                
+                const result = await window.sendToN8N('module_progress', moduleData);
+                showResult('success', '📊 Données Module Envoyées', JSON.stringify(result, null, 2));
+                
+            } catch (error) {
+                showResult('error', '❌ Erreur', error.message);
+            }
+        }
+
+        // Test completion event
+        async function testCompletion() {
+            try {
+                const completionData = {
+                    moduleId: "module-01",
+                    userId: "test-user-123",
+                    completed: true,
+                    score: 85,
+                    timeSpent: 1250,
+                    completedAt: new Date().toISOString()
+                };
+                
+                const result = await window.sendToN8N('module_completed', completionData);
+                showResult('success', '✅ Completion Envoyée', JSON.stringify(result, null, 2));
+                
+            } catch (error) {
+                showResult('error', '❌ Erreur', error.message);
+            }
+        }
+
+        // Show result
+        function showResult(type, title, message) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.className = type === 'error' ? 'result error' : 'result';
+            resultDiv.innerHTML = `
+                <h3>${title}</h3>
+                <pre>${message}</pre>
+                <p><strong>👀 Vérifiez dans n8n:</strong> Vous devriez voir les données dans votre workflow!</p>
+            `;
+        }
+
+        // Initialize
+        displayCurrentUrl();
+    </script>
+</body>
+</html>

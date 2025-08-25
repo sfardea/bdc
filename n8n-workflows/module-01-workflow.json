@@ -1,0 +1,336 @@
+{
+  "name": "Bilan Compétences - Module 1 Analytics",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "/bc-module-analytics",
+        "options": {}
+      },
+      "name": "Webhook - Receive Analytics",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "webhookId": "bc-analytics-webhook"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Validate and enrich data\nconst data = items[0].json;\n\n// Add timestamp if not present\nif (!data.timestamp) {\n  data.timestamp = new Date().toISOString();\n}\n\n// Add module metadata\ndata.moduleInfo = {\n  id: 'BC_Module_01',\n  name: 'Présentons-nous',\n  version: '1.0'\n};\n\n// Calculate completion score\nconst requiredFields = ['prenom', 'nom', 'age', 'region', 'niveauEtudes', 'situationPerso', 'situationPro'];\nconst completedFields = requiredFields.filter(field => data.data && data.data[field]);\ndata.completionScore = (completedFields.length / requiredFields.length) * 100;\n\n// Add user session ID\ndata.sessionId = data.userId || 'anonymous_' + Date.now();\n\nreturn [data];"
+      },
+      "name": "Process Analytics Data",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "operation": "insert",
+        "table": "module_analytics",
+        "columns": "user_id,module_id,event_type,data,completion_score,time_spent,timestamp",
+        "options": {}
+      },
+      "name": "Store in PostgreSQL",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [650, 200],
+      "credentials": {
+        "postgres": {
+          "id": "1",
+          "name": "BC Database"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "http://influxdb:8086/write?db=bilan_competences",
+        "method": "POST",
+        "bodyParametersUi": {
+          "parameter": [
+            {
+              "name": "Content-Type",
+              "value": "text/plain"
+            }
+          ]
+        },
+        "body": "module_completion,module={{$json.moduleInfo.id}},user={{$json.sessionId}} score={{$json.completionScore}},time_spent={{$json.timeSpent}} {{Date.now()}}000000"
+      },
+      "name": "Send to InfluxDB",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [650, 400]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{$json.event}}",
+              "value2": "module_completed"
+            }
+          ]
+        }
+      },
+      "name": "IF Module Completed",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [850, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParametersUi": {
+          "parameter": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "claude-3-opus-20240229"
+            },
+            {
+              "name": "max_tokens",
+              "value": 1000
+            },
+            {
+              "name": "messages",
+              "value": "=[{\"role\": \"user\", \"content\": \"Analyse le profil suivant d'un participant au bilan de compétences et génère 3 insights personnalisés et 2 recommandations pour la suite du parcours. Profil: {{JSON.stringify($json.data)}}\"}]"
+            }
+          ]
+        }
+      },
+      "name": "Claude - Generate Insights",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [1050, 200],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "2",
+          "name": "Anthropic API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "functionCode": "// Parse Claude response and format insights\nconst claudeResponse = items[0].json;\nconst userData = items[0].json.originalData;\n\nconst insights = {\n  userId: userData.sessionId,\n  module: 'BC_Module_01',\n  timestamp: new Date().toISOString(),\n  profile: userData.data,\n  aiInsights: claudeResponse.content[0].text,\n  nextSteps: [\n    {\n      module: 'BC_Module_02',\n      priority: 'high',\n      reason: 'Module suivant dans le parcours'\n    }\n  ],\n  personalizedTips: []\n};\n\n// Add personalized tips based on profile\nif (userData.data.situationPro === 'recherche-emploi') {\n  insights.personalizedTips.push({\n    type: 'focus',\n    message: 'Concentrez-vous particulièrement sur les modules d\\'exploration professionnelle'\n  });\n}\n\nif (userData.data.age < 25) {\n  insights.personalizedTips.push({\n    type: 'advice',\n    message: 'Les modules sur les motivations et valeurs seront particulièrement importants pour vous'\n  });\n}\n\nreturn [insights];"
+      },
+      "name": "Format AI Insights",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1250, 200]
+    },
+    {
+      "parameters": {
+        "fromEmail": "bilan-competences@company.com",
+        "toEmail": "={{$json.data.email || 'coordinator@company.com'}}",
+        "subject": "Module 1 complété - {{$json.data.prenom}} {{$json.data.nom}}",
+        "html": "<h2>Module 1 : Présentons-nous - Complété ✅</h2>\n<p><strong>Participant:</strong> {{$json.data.prenom}} {{$json.data.nom}}</p>\n<p><strong>Temps passé:</strong> {{Math.floor($json.timeSpent / 60)}} minutes</p>\n<p><strong>Score de complétion:</strong> {{$json.completionScore}}%</p>\n<h3>Profil du participant</h3>\n<ul>\n  <li><strong>Âge:</strong> {{$json.data.age}} ans</li>\n  <li><strong>Région:</strong> {{$json.data.region}}</li>\n  <li><strong>Niveau d'études:</strong> {{$json.data.niveauEtudes}}</li>\n  <li><strong>Situation professionnelle:</strong> {{$json.data.situationPro}}</li>\n</ul>\n<h3>Prochaines étapes recommandées</h3>\n<p>Le participant peut maintenant accéder au Module 2 : Mon autoportrait</p>",
+        "options": {}
+      },
+      "name": "Send Notification Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [1050, 400],
+      "credentials": {
+        "smtp": {
+          "id": "3",
+          "name": "SMTP Server"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://zoho.eu/learn/api/v1/users/{{$json.data.email}}/progress",
+        "method": "POST",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "courseId",
+              "value": "bilan-competences-digital"
+            },
+            {
+              "name": "moduleId",
+              "value": "BC_Module_01"
+            },
+            {
+              "name": "status",
+              "value": "completed"
+            },
+            {
+              "name": "score",
+              "value": "={{$json.completionScore}}"
+            },
+            {
+              "name": "timeSpent",
+              "value": "={{$json.timeSpent}}"
+            }
+          ]
+        }
+      },
+      "name": "Update Zoho Learn",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [1250, 400],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "4",
+          "name": "Zoho API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "channel": "#bilan-competences-alerts",
+        "text": "📊 *Module Analytics Alert*\n\n*User:* {{$json.data.prenom}} {{$json.data.nom}}\n*Module:* Présentons-nous\n*Status:* {{$json.event}}\n*Completion:* {{$json.completionScore}}%\n*Time:* {{Math.floor($json.timeSpent / 60)}} min",
+        "options": {
+          "username": "BC Analytics Bot",
+          "icon_emoji": ":chart_with_upwards_trend:"
+        }
+      },
+      "name": "Slack Notification",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 1,
+      "position": [850, 500],
+      "credentials": {
+        "slackApi": {
+          "id": "5",
+          "name": "Slack Workspace"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "aggregateGroup",
+        "collection": "module_analytics",
+        "query": "[\n  {\n    \"$match\": {\n      \"module_id\": \"BC_Module_01\",\n      \"timestamp\": {\n        \"$gte\": new Date(Date.now() - 24*60*60*1000)\n      }\n    }\n  },\n  {\n    \"$group\": {\n      \"_id\": null,\n      \"totalCompletions\": { \"$sum\": 1 },\n      \"avgCompletionScore\": { \"$avg\": \"$completion_score\" },\n      \"avgTimeSpent\": { \"$avg\": \"$time_spent\" }\n    }\n  }\n]"
+      },
+      "name": "Daily Stats Aggregation",
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1,
+      "position": [650, 600],
+      "credentials": {
+        "mongoDb": {
+          "id": "6",
+          "name": "MongoDB Analytics"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook - Receive Analytics": {
+      "main": [
+        [
+          {
+            "node": "Process Analytics Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Analytics Data": {
+      "main": [
+        [
+          {
+            "node": "Store in PostgreSQL",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send to InfluxDB",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "IF Module Completed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Daily Stats Aggregation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF Module Completed": {
+      "main": [
+        [
+          {
+            "node": "Claude - Generate Insights",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send Notification Email",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Slack Notification",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Claude - Generate Insights": {
+      "main": [
+        [
+          {
+            "node": "Format AI Insights",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format AI Insights": {
+      "main": [
+        [
+          {
+            "node": "Update Zoho Learn",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "error-handler-workflow"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "name": "bilan-competences",
+      "createdAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "name": "analytics",
+      "createdAt": "2024-01-01T00:00:00.000Z"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-01-01T00:00:00.000Z",
+  "versionId": "v1"
+}

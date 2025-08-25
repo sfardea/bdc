@@ -1,0 +1,403 @@
+{
+  "name": "Bilan Compétences - Module 2 Autoportrait Analytics",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "/bc-module-analytics",
+        "options": {}
+      },
+      "name": "Webhook - Receive Analytics",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "webhookId": "bc-analytics-webhook"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Process Module 2 specific data\nconst data = items[0].json;\n\n// Add timestamp if not present\nif (!data.timestamp) {\n  data.timestamp = new Date().toISOString();\n}\n\n// Add module metadata\ndata.moduleInfo = {\n  id: 'BC_Module_02',\n  name: 'Mon autoportrait',\n  version: '1.0'\n};\n\n// Calculate psychological profile scores\nif (data.data && data.data.peurs) {\n  const fears = data.data.peurs;\n  data.fearProfile = {\n    averageIntensity: (fears.echec + fears.jugement + fears.inconnu + fears.hauteur + fears.changement) / 5,\n    dominantFear: Object.entries(fears).reduce((a, b) => b[1] > a[1] ? b : a)[0],\n    fearPattern: categorizeFearPattern(fears)\n  };\n}\n\n// Analyze qualities selection\nif (data.data && data.data.qualites) {\n  data.qualityProfile = {\n    count: data.data.qualites.length,\n    categories: categorizeQualities(data.data.qualites),\n    leadership: data.data.qualites.some(q => ['Leader', 'Autonome', 'Innovant'].includes(q)),\n    creativity: data.data.qualites.some(q => ['Créatif', 'Innovant', 'Curieux'].includes(q)),\n    social: data.data.qualites.some(q => ['Empathique', 'Communicant', 'Collaboratif', 'Bienveillant'].includes(q))\n  };\n}\n\n// Add session info\ndata.sessionId = data.userId || 'anonymous_' + Date.now();\n\nfunction categorizeFearPattern(fears) {\n  const avg = (fears.echec + fears.jugement + fears.inconnu + fears.hauteur + fears.changement) / 5;\n  if (avg < 4) return 'low_anxiety';\n  if (avg < 7) return 'moderate_anxiety';\n  return 'high_anxiety';\n}\n\nfunction categorizeQualities(qualities) {\n  const categories = {\n    leadership: ['Leader', 'Autonome', 'Innovant', 'Dynamique'],\n    analytical: ['Analytique', 'Rigoureux', 'Organisé'],\n    creative: ['Créatif', 'Innovant', 'Curieux'],\n    social: ['Empathique', 'Communicant', 'Collaboratif', 'Bienveillant'],\n    reliability: ['Fiable', 'Persévérant', 'Patient', 'Intègre']\n  };\n  \n  const result = {};\n  for (const [cat, keywords] of Object.entries(categories)) {\n    result[cat] = qualities.filter(q => keywords.includes(q)).length;\n  }\n  return result;\n}\n\nreturn [data];"
+      },
+      "name": "Process Autoportrait Data",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{$json.data.blason}}",
+              "operation": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "name": "IF Has Blason",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParametersUi": {
+          "parameter": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "claude-3-opus-20240229"
+            },
+            {
+              "name": "max_tokens",
+              "value": 1500
+            },
+            {
+              "name": "messages",
+              "value": "=[{\"role\": \"user\", \"content\": \"Analyse ce profil d'autoportrait d'un participant au bilan de compétences et génère une analyse psychologique approfondie. Profil: Ce qui plaît: {{$json.data.plaisirs}}, Peurs (échec: {{$json.data.peurs.echec}}, jugement: {{$json.data.peurs.jugement}}, inconnu: {{$json.data.peurs.inconnu}}, hauteur: {{$json.data.peurs.hauteur}}, changement: {{$json.data.peurs.changement}}), Qualités: {{$json.data.qualites}}, Rêve: {{$json.data.reve}}. Fournis: 1) Une analyse de personnalité en 3-4 points clés, 2) Des recommandations pour les modules suivants, 3) Des pistes professionnelles cohérentes avec ce profil, 4) Des points de vigilance pour l'accompagnement.\"}]"
+            }
+          ]
+        }
+      },
+      "name": "Claude - Analyze Portrait",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [850, 200],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "2",
+          "name": "Anthropic API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://vision-api.anthropic.com/v1/analyze",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParametersUi": {
+          "parameter": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "claude-3-opus-20240229"
+            },
+            {
+              "name": "image",
+              "value": "={{$json.data.blason}}"
+            },
+            {
+              "name": "prompt",
+              "value": "Analyse ce blason personnel créé par un participant. Identifie les symboles utilisés, les couleurs dominantes, la répartition dans les 4 quadrants (valeurs, forces, aspirations, essence), et fournis une interprétation psychologique de l'ensemble."
+            }
+          ]
+        }
+      },
+      "name": "Claude Vision - Analyze Blason",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [850, 100],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "insert",
+        "table": "module_2_autoportrait",
+        "columns": "user_id,plaisirs,fear_profile,quality_profile,dream_text,blason_url,ai_analysis,timestamp",
+        "options": {}
+      },
+      "name": "Store Portrait Data",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [650, 500],
+      "credentials": {
+        "postgres": {
+          "id": "1",
+          "name": "BC Database"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "functionCode": "// Combine all analyses\nconst portraitAnalysis = items[0].json.claudeResponse || {};\nconst blasonAnalysis = items[0].json.blasonResponse || {};\nconst userData = items[0].json.originalData;\n\nconst combinedInsights = {\n  userId: userData.sessionId,\n  module: 'BC_Module_02',\n  timestamp: new Date().toISOString(),\n  \n  // Profile synthesis\n  profile: {\n    interests: userData.data.plaisirs,\n    fearProfile: userData.fearProfile,\n    qualities: userData.qualityProfile,\n    dream: userData.data.reve\n  },\n  \n  // AI insights\n  aiAnalysis: {\n    portrait: portraitAnalysis.content ? portraitAnalysis.content[0].text : null,\n    blason: blasonAnalysis.content ? blasonAnalysis.content[0].text : null\n  },\n  \n  // Personalized recommendations\n  recommendations: {\n    nextModules: determineRecommendedModules(userData),\n    focusAreas: determineFocusAreas(userData),\n    professionalPaths: suggestProfessionalPaths(userData)\n  },\n  \n  // Alerts for counselor\n  alerts: generateAlerts(userData)\n};\n\nfunction determineRecommendedModules(data) {\n  const modules = [];\n  \n  // High creativity = suggest creative modules\n  if (data.qualityProfile && data.qualityProfile.creativity) {\n    modules.push({\n      id: 'BC_Module_09',\n      name: 'Les Ailes du Désir',\n      reason: 'Profil créatif identifié'\n    });\n  }\n  \n  // High fear levels = suggest confidence modules\n  if (data.fearProfile && data.fearProfile.averageIntensity > 7) {\n    modules.push({\n      id: 'BC_Module_10',\n      name: 'Le cocktail de la réussite',\n      reason: 'Besoin de renforcement de la confiance'\n    });\n  }\n  \n  return modules;\n}\n\nfunction determineFocusAreas(data) {\n  const areas = [];\n  \n  if (data.fearProfile) {\n    if (data.fearProfile.dominantFear === 'changement') {\n      areas.push('Gestion du changement');\n    }\n    if (data.fearProfile.dominantFear === 'jugement') {\n      areas.push('Affirmation de soi');\n    }\n  }\n  \n  if (data.qualityProfile) {\n    if (data.qualityProfile.leadership > 2) {\n      areas.push('Développement du leadership');\n    }\n    if (data.qualityProfile.social > 3) {\n      areas.push('Métiers relationnels');\n    }\n  }\n  \n  return areas;\n}\n\nfunction suggestProfessionalPaths(data) {\n  const paths = [];\n  \n  // Logic to suggest paths based on profile\n  if (data.data.plaisirs.includes('technologie') && data.qualityProfile.analytical > 0) {\n    paths.push('Tech & Innovation');\n  }\n  if (data.data.plaisirs.includes('social') && data.qualityProfile.social > 2) {\n    paths.push('Ressources Humaines / Formation');\n  }\n  if (data.data.plaisirs.includes('art') && data.qualityProfile.creativity) {\n    paths.push('Industries créatives');\n  }\n  \n  return paths;\n}\n\nfunction generateAlerts(data) {\n  const alerts = [];\n  \n  if (data.fearProfile && data.fearProfile.averageIntensity > 8) {\n    alerts.push({\n      type: 'high_priority',\n      message: 'Niveau d\\'anxiété élevé détecté',\n      action: 'Accompagnement renforcé recommandé'\n    });\n  }\n  \n  if (data.data.reve && data.data.reve.toLowerCase().includes('impossible')) {\n    alerts.push({\n      type: 'medium_priority',\n      message: 'Croyances limitantes détectées',\n      action: 'Travail sur la confiance en soi'\n    });\n  }\n  \n  return alerts;\n}\n\nreturn [combinedInsights];"
+      },
+      "name": "Generate Insights Report",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1050, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://zoho.eu/learn/api/v1/users/{{$json.userId}}/modules/BC_Module_02",
+        "method": "PATCH",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "status",
+              "value": "completed"
+            },
+            {
+              "name": "score",
+              "value": "100"
+            },
+            {
+              "name": "customData",
+              "value": "={{JSON.stringify($json.profile)}}"
+            },
+            {
+              "name": "aiInsights",
+              "value": "={{JSON.stringify($json.aiAnalysis)}}"
+            }
+          ]
+        }
+      },
+      "name": "Update Zoho Learn",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [1250, 300],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "4",
+          "name": "Zoho API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "bilan-competences@company.com",
+        "toEmail": "={{$json.counselorEmail || 'coordinator@company.com'}}",
+        "subject": "🎨 Autoportrait complété - {{$json.userName}}",
+        "html": "<h2>Module 2 : Mon autoportrait - Analyse complète</h2>\n\n<h3>👤 Profil du participant</h3>\n<ul>\n  <li><strong>Centres d'intérêt:</strong> {{$json.profile.interests.join(', ')}}</li>\n  <li><strong>Qualités dominantes:</strong> Leadership ({{$json.profile.qualities.leadership}}), Créativité ({{$json.profile.qualities.creativity}}), Social ({{$json.profile.qualities.social}})</li>\n  <li><strong>Niveau d'anxiété:</strong> {{$json.profile.fearProfile.fearPattern}}</li>\n  <li><strong>Peur dominante:</strong> {{$json.profile.fearProfile.dominantFear}}</li>\n</ul>\n\n<h3>💭 Rêve exprimé</h3>\n<blockquote style='border-left: 3px solid #1155cc; padding-left: 15px; font-style: italic;'>\n  {{$json.profile.dream}}\n</blockquote>\n\n<h3>🎯 Recommandations</h3>\n<ul>\n  <li><strong>Focus:</strong> {{$json.recommendations.focusAreas.join(', ')}}</li>\n  <li><strong>Pistes pro:</strong> {{$json.recommendations.professionalPaths.join(', ')}}</li>\n</ul>\n\n{{#if $json.alerts}}\n<h3>⚠️ Points d'attention</h3>\n<ul>\n{{#each $json.alerts}}\n  <li style='color: {{this.type === \"high_priority\" ? \"#dc3545\" : \"#ffc107\"}}'>\n    <strong>{{this.message}}</strong> - {{this.action}}\n  </li>\n{{/each}}\n</ul>\n{{/if}}\n\n<p>Voir le blason créé et l'analyse complète dans le dashboard.</p>",
+        "attachments": {
+          "blasonImage": "={{$json.profile.blason}}"
+        }
+      },
+      "name": "Email Detailed Report",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [1250, 500],
+      "credentials": {
+        "smtp": {
+          "id": "3",
+          "name": "SMTP Server"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{$json.profile.fearProfile.averageIntensity}}",
+              "operation": "larger",
+              "value2": 8
+            }
+          ],
+          "boolean": [
+            {
+              "value1": "={{$json.alerts.length > 0}}",
+              "value2": true
+            }
+          ]
+        },
+        "combineOperation": "any"
+      },
+      "name": "IF Needs Immediate Attention",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [1050, 500]
+    },
+    {
+      "parameters": {
+        "channel": "#bc-urgent-alerts",
+        "text": "🚨 *Alerte Module 2 - Attention requise*\n\n*Participant:* {{$json.userName}}\n*Module:* Mon autoportrait\n\n{{#each $json.alerts}}\n• {{this.message}} ({{this.type}})\n  → Action: {{this.action}}\n{{/each}}\n\n*Niveau anxiété:* {{$json.profile.fearProfile.averageIntensity}}/10\n*Pattern:* {{$json.profile.fearProfile.fearPattern}}\n\n_Intervention conseiller recommandée_",
+        "options": {
+          "username": "BC Alert Bot",
+          "icon_emoji": ":warning:"
+        }
+      },
+      "name": "Slack Urgent Alert",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 1,
+      "position": [1250, 600],
+      "credentials": {
+        "slackApi": {
+          "id": "5",
+          "name": "Slack Workspace"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "collection": "blason_gallery",
+        "operation": "insert",
+        "fields": {
+          "userId": "={{$json.userId}}",
+          "blasonImage": "={{$json.data.blason}}",
+          "metadata": {
+            "qualities": "={{$json.data.qualites}}",
+            "dream": "={{$json.data.reve}}",
+            "interests": "={{$json.data.plaisirs}}",
+            "createdAt": "={{new Date().toISOString()}}"
+          },
+          "aiInterpretation": "={{$json.blasonAnalysis}}"
+        }
+      },
+      "name": "Store Blason in Gallery",
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1,
+      "position": [850, 400],
+      "credentials": {
+        "mongoDb": {
+          "id": "6",
+          "name": "MongoDB Analytics"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook - Receive Analytics": {
+      "main": [
+        [
+          {
+            "node": "Process Autoportrait Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Autoportrait Data": {
+      "main": [
+        [
+          {
+            "node": "IF Has Blason",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Claude - Analyze Portrait",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Store Portrait Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF Has Blason": {
+      "main": [
+        [
+          {
+            "node": "Claude Vision - Analyze Blason",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Store Blason in Gallery",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Claude - Analyze Portrait": {
+      "main": [
+        [
+          {
+            "node": "Generate Insights Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Insights Report": {
+      "main": [
+        [
+          {
+            "node": "Update Zoho Learn",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Email Detailed Report",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "IF Needs Immediate Attention",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF Needs Immediate Attention": {
+      "main": [
+        [
+          {
+            "node": "Slack Urgent Alert",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "error-handler-workflow"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "name": "bilan-competences",
+      "createdAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "name": "module-2",
+      "createdAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "name": "psychological-analysis",
+      "createdAt": "2024-01-01T00:00:00.000Z"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-01-01T00:00:00.000Z",
+  "versionId": "v1"
+}

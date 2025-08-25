@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(for i in {03..25})",
+      "Bash(do mkdir -p etapes/etape-$i)",
+      "Bash(done)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 4 : Les objectifs du bilan</title>
+    <link rel="stylesheet" href="/shared/css/modern-theme.css">
+    <style>
+        /* Styles spécifiques inspirés des modules 1-3 */
+        .module-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Section d'étapes avec navigation fluide */
+        .step-section {
+            display: none;
+            animation: slideInUp 0.6s ease-out;
+            min-height: 500px;
+        }
+
+        .step-section.active {
+            display: block;
+        }
+
+        .step-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .step-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: var(--text-3xl);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .step-subtitle {
+            color: var(--gray-600);
+            font-size: var(--text-lg);
+            max-width: 600px;
+            margin: 0 auto 2rem auto;
+            line-height: 1.6;
+        }
+
+        /* Grille d'objectifs moderne */
+        .objectives-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .objective-card {
+            background: var(--white);
+            border-radius: var(--radius-2xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 2px solid var(--gray-200);
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .objective-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            transform: scaleX(0);
+            transition: var(--transition);
+            border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+        }
+
+        .objective-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--primary-light);
+        }
+
+        .objective-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .objective-card.selected {
+            border-color: var(--primary);
+            background: var(--primary-bg);
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .objective-card.selected::before {
+            transform: scaleX(1);
+        }
+
+        .objective-checkbox {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .objective-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: block;
+            filter: grayscale(20%);
+            transition: var(--transition);
+        }
+
+        .objective-card:hover .objective-icon,
+        .objective-card.selected .objective-icon {
+            filter: grayscale(0%);
+            transform: scale(1.1);
+        }
+
+        .objective-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        .objective-description {
+            color: var(--gray-600);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Section objectif principal avec style moderne */
+        .primary-objective-container {
+            background: linear-gradient(135deg, var(--white) 0%, var(--primary-bg) 100%);
+            border-radius: var(--radius-2xl);
+            padding: 3rem;
+            margin: 3rem 0;
+            border: 2px solid var(--primary-light);
+            position: relative;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .primary-objective-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+        }
+
+        .primary-objective-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: var(--text-2xl);
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .primary-objective-input {
+            width: 100%;
+            min-height: 140px;
+            padding: 1.5rem;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-xl);
+            font-size: 1.1rem;
+            font-family: inherit;
+            resize: vertical;
+            transition: var(--transition);
+            background: var(--white);
+            line-height: 1.6;
+        }
+
+        .primary-objective-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-bg);
+            transform: translateY(-2px);
+        }
+
+        /* Compteur de sélection moderne */
+        .selected-count {
+            background: linear-gradient(135deg, var(--success), var(--secondary));
+            color: var(--white);
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-xl);
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 1.5rem 0;
+            display: inline-block;
+            box-shadow: var(--shadow-md);
+            animation: countBounce 0.5s ease-out;
+        }
+
+        @keyframes countBounce {
+            0% { transform: scale(0.8); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Navigation inspirée des modules 1-3 */
+        .step-navigation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin: 3rem 0;
+        }
+
+        .nav-button {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-md);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-button.primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+        }
+
+        .nav-button.primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .nav-button.secondary {
+            background: var(--gray-200);
+            color: var(--gray-700);
+        }
+
+        .nav-button.secondary:hover:not(:disabled) {
+            background: var(--gray-300);
+            transform: translateY(-2px);
+        }
+
+        .nav-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Message de succès */
+        .success-message {
+            background: linear-gradient(135deg, var(--success), var(--secondary-dark));
+            color: var(--white);
+            padding: 3rem;
+            border-radius: var(--radius-2xl);
+            text-align: center;
+            animation: successSlideIn 0.8s ease-out;
+            box-shadow: var(--shadow-xl);
+        }
+
+        @keyframes successSlideIn {
+            0% { transform: scale(0.8) rotate(-5deg); opacity: 0; }
+            50% { transform: scale(1.1) rotate(2deg); }
+            100% { transform: scale(1) rotate(0); opacity: 1; }
+        }
+
+        /* Animations */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .objectives-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .objective-card {
+                padding: 1.5rem;
+            }
+
+            .primary-objective-container {
+                padding: 2rem;
+                margin: 2rem 0;
+            }
+
+            .step-navigation {
+                flex-direction: column;
+            }
+
+            .nav-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header avec progression -->
+        <header class="card animate-fade-in">
+            <div style="text-align: center; position: relative;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent)); border-radius: var(--radius-xl) var(--radius-xl) 0 0; margin: -2rem -2rem 0 -2rem;"></div>
+                
+                <span style="display: inline-block; padding: 0.25rem 0.75rem; background: var(--primary-bg); color: var(--primary); border-radius: var(--radius); font-size: 0.875rem; font-weight: 600; margin-bottom: 0.75rem; margin-top: 1rem;">Module 4</span>
+                
+                <h1 class="title-responsive title-gradient" style="margin-bottom: 0.75rem;">
+                    Les objectifs du bilan
+                </h1>
+                
+                <p class="body-responsive" style="color: var(--gray-600); max-width: 600px; margin: 0 auto;">
+                    Définissez vos attentes et objectifs pour personnaliser votre parcours
+                </p>
+                
+                <div class="progress-bar" style="margin: 1.5rem 0 0.5rem 0;">
+                    <div class="progress-fill" id="progressBar" style="width: 0%;"></div>
+                </div>
+                <span style="font-size: 0.875rem; color: var(--gray-500); font-weight: 500;" id="progressText">Étape 1 sur 2</span>
+            </div>
+        </header>
+
+        <!-- Contenu principal -->
+        <main class="module-container">
+            <!-- Étape 1: Sélection des objectifs -->
+            <section class="step-section active" id="step1">
+                <div class="step-header">
+                    <h2 class="step-title">🎯 Vos objectifs</h2>
+                    <p class="step-subtitle">
+                        Sélectionnez les objectifs qui correspondent à vos attentes pour ce bilan de compétences.
+                        Vous pouvez en choisir plusieurs.
+                    </p>
+                </div>
+
+                <div id="selectedCount" class="selected-count" style="display: none;">
+                    0 objectif sélectionné
+                </div>
+
+                <div class="objectives-grid" id="objectivesGrid">
+                    <div class="objective-card" data-objective="orientation">
+                        <input type="checkbox" class="objective-checkbox" id="obj-orientation">
+                        <span class="objective-icon">🎯</span>
+                        <h4 class="objective-title">Faire le point sur mon parcours</h4>
+                        <p class="objective-description">
+                            Analyser mes expériences, identifier mes points forts et axes d'amélioration pour mieux comprendre mon profil professionnel.
+                        </p>
+                    </div>
+
+                    <div class="objective-card" data-objective="reconversion">
+                        <input type="checkbox" class="objective-checkbox" id="obj-reconversion">
+                        <span class="objective-icon">🔄</span>
+                        <h4 class="objective-title">Préparer une reconversion</h4>
+                        <p class="objective-description">
+                            Explorer de nouveaux secteurs d'activité ou métiers en adéquation avec mes aspirations et compétences.
+                        </p>
+                    </div>
+
+                    <div class="objective-card" data-objective="evolution">
+                        <input type="checkbox" class="objective-checkbox" id="obj-evolution">
+                        <span class="objective-icon">📈</span>
+                        <h4 class="objective-title">Évoluer dans mon métier</h4>
+                        <p class="objective-description">
+                            Identifier les opportunités d'évolution et les compétences à développer dans mon domaine actuel.
+                        </p>
+                    </div>
+
+                    <div class="objective-card" data-objective="competences">
+                        <input type="checkbox" class="objective-checkbox" id="obj-competences">
+                        <span class="objective-icon">🛠️</span>
+                        <h4 class="objective-title">Développer mes compétences</h4>
+                        <p class="objective-description">
+                            Identifier mes lacunes et les formations nécessaires pour atteindre mes objectifs professionnels.
+                        </p>
+                    </div>
+
+                    <div class="objective-card" data-objective="confiance">
+                        <input type="checkbox" class="objective-checkbox" id="obj-confiance">
+                        <span class="objective-icon">💪</span>
+                        <h4 class="objective-title">Reprendre confiance en moi</h4>
+                        <p class="objective-description">
+                            Retrouver estime de soi et motivation après une période difficile ou un changement de situation.
+                        </p>
+                    </div>
+
+                    <div class="objective-card" data-objective="equilibre">
+                        <input type="checkbox" class="objective-checkbox" id="obj-equilibre">
+                        <span class="objective-icon">⚖️</span>
+                        <h4 class="objective-title">Améliorer mon équilibre vie pro/perso</h4>
+                        <p class="objective-description">
+                            Trouver un meilleur équilibre entre mes aspirations professionnelles et personnelles.
+                        </p>
+                    </div>
+
+                    <div class="objective-card" data-objective="entrepreneuriat">
+                        <input type="checkbox" class="objective-checkbox" id="obj-entrepreneuriat">
+                        <span class="objective-icon">🚀</span>
+                        <h4 class="objective-title">Créer mon activité</h4>
+                        <p class="objective-description">
+                            Évaluer ma capacité à entreprendre et construire un projet de création d'entreprise ou d'activité indépendante.
+                        </p>
+                    </div>
+
+                    <div class="objective-card" data-objective="autre">
+                        <input type="checkbox" class="objective-checkbox" id="obj-autre">
+                        <span class="objective-icon">💭</span>
+                        <h4 class="objective-title">Autre objectif</h4>
+                        <p class="objective-description">
+                            J'ai un objectif spécifique que je détaillerai dans la section suivante.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="step-navigation">
+                    <button class="nav-button primary" id="continueBtn" disabled>
+                        Continuer
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M7 15L12 10L7 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Étape 2: Objectif principal -->
+            <section class="step-section" id="step2">
+                <div class="step-header">
+                    <h2 class="step-title">📝 Votre objectif principal</h2>
+                    <p class="step-subtitle">
+                        Décrivez en détail votre objectif principal pour ce bilan de compétences.
+                        Il sera rappelé tout au long de votre parcours.
+                    </p>
+                </div>
+
+                <div class="primary-objective-container">
+                    <h3 class="primary-objective-title">
+                        Qu'attendez-vous de ce bilan ?
+                    </h3>
+                    <p style="color: var(--gray-600); margin-bottom: 2rem; text-align: center; line-height: 1.6;">
+                        Exprimez clairement vos attentes, vos questionnements et ce que vous souhaitez découvrir ou clarifier grâce à ce parcours.
+                    </p>
+                    <textarea 
+                        id="primaryObjective"
+                        class="primary-objective-input"
+                        placeholder="Par exemple : Je souhaite faire le point sur mon parcours pour identifier les opportunités d'évolution dans le domaine du marketing digital. J'aimerais comprendre quelles compétences développer pour accéder à un poste de responsable marketing dans les 2 prochaines années..."
+                        required
+                    ></textarea>
+                    <div style="text-align: right; color: var(--gray-500); font-size: 0.9rem; margin-top: 0.5rem;">
+                        <span id="charCount">0</span> / 500 caractères minimum
+                    </div>
+                </div>
+
+                <div class="step-navigation">
+                    <button class="nav-button secondary" id="backBtn">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M13 15L8 10L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Retour
+                    </button>
+                    <button class="nav-button primary" id="submitBtn" disabled>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M5 13L4 12L8 8L12 12L11 13L8 10L5 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Valider mes objectifs
+                    </button>
+                </div>
+            </section>
+
+            <!-- Message de succès -->
+            <div id="successMessage" style="display: none;">
+                <div class="success-message">
+                    <div style="font-size: 4rem; margin-bottom: 1.5rem;">🎯</div>
+                    <h2 style="color: var(--white); font-size: 2rem; margin-bottom: 1rem;">
+                        Objectifs enregistrés !
+                    </h2>
+                    <p style="font-size: 1.2rem; margin-bottom: 1rem; opacity: 0.95;">
+                        Vos objectifs ont été sauvegardés avec succès.
+                    </p>
+                    <p style="opacity: 0.9; margin-bottom: 2rem;">
+                        Ils guideront votre parcours et seront rappelés dans les prochains modules.
+                        Vous pourrez les modifier à tout moment si nécessaire.
+                    </p>
+                    <button class="nav-button" style="background: var(--white); color: var(--success);" onclick="goToNextModule()">
+                        Continuer vers le module 5
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M7 15L12 10L7 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../shared/js/scorm-api.js"></script>
+    <script src="/modules/module-04/module.js"></script>
+</body>
+</html>

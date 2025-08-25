@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest identifier="BILAN_COMPETENCES_COMPLET" version="1.0"
+          xmlns="http://www.imsproject.org/xsd/imscp_rootv1p1p2"
+          xmlns:adlcp="http://www.adlnet.org/xsd/adlcp_rootv1p2"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.imsproject.org/xsd/imscp_rootv1p1p2 imscp_rootv1p1p2.xsd
+                              http://www.adlnet.org/xsd/adlcp_rootv1p2 adlcp_rootv1p2.xsd">
+    
+    <metadata>
+        <schema>ADL SCORM</schema>
+        <schemaversion>1.2</schemaversion>
+    </metadata>
+    
+    <organizations default="BILAN_ORG">
+        <organization identifier="BILAN_ORG">
+            <title>Bilan de Compétences Digitalisé - 25 Modules</title>
+            
+            <!-- Module 1: Présentons-nous -->
+            <item identifier="MODULE_01" identifierref="MODULE_01_RES">
+                <title>Module 1 : Présentons-nous</title>
+                <adlcp:masteryscore>70</adlcp:masteryscore>
+            </item>
+            
+            <!-- Module 2: Mon autoportrait -->
+            <item identifier="MODULE_02" identifierref="MODULE_02_RES">
+                <title>Module 2 : Mon autoportrait</title>
+                <adlcp:masteryscore>70</adlcp:masteryscore>
+            </item>
+            
+            <!-- Module 3: Mes valeurs professionnelles -->
+            <item identifier="MODULE_03" identifierref="MODULE_03_RES">
+                <title>Module 3 : Mes valeurs professionnelles</title>
+                <adlcp:masteryscore>70</adlcp:masteryscore>
+            </item>
+            
+            <!-- Module 4: Mes motivations -->
+            <item identifier="MODULE_04" identifierref="MODULE_04_RES">
+                <title>Module 4 : Mes motivations</title>
+                <adlcp:masteryscore>70</adlcp:masteryscore>
+            </item>
+            
+            <!-- Module 5: Mon parcours professionnel -->
+            <item identifier="MODULE_05" identifierref="MODULE_05_RES">
+                <title>Module 5 : Mon parcours professionnel</title>
+                <adlcp:masteryscore>70</adlcp:masteryscore>
+            </item>
+            
+            <!-- Module 6: Mes compétences techniques -->
+            <item identifier="MODULE_06" identifierref="MODULE_06_RES">
+                <title>Module 6 : Mes compétences techniques</title>
+                <adlcp:masteryscore>70</adlcp:masteryscore>
+            </item>
+            
+            <!-- Module 7: Mes compétences transversales -->
+            <item identifier="MODULE_07" identifierref="MODULE_07_RES">
+                <title>Module 7 : Mes compétences transversales</title>
+                <adlcp:masteryscore>70</adlcp:masteryscore>
+            </item>
+            
+            <!-- Module 8: Mes soft skills -->
+            <item identifier="MODULE_08" identifierref="MODULE_08_RES">
+                <title>Module 8 : Mes soft skills</title>
+                <adlcp:masteryscore>70</adlcp:masteryscore>
+            </item>
+            
+            <!-- Module 9: Mon environnement de travail idéal -->
+            <item identifier="MODULE_09" identifierref="MODULE_09_RES">
+                <title>Module 9 : Mon environnement de travail idéal</title>
+                <adlcp:masteryscore>70</adlcp:masteryscore>
+            </item>
+            
+            <!-- Module 10: Mes accomplissements -->
+            <item identifier="MODULE_10" identifierref="MODULE_10_RES">
+                <title>Module 10 : Mes accomplissements</title>
+                <adlcp:masteryscore>70</adlcp:masteryscore>
+            </item>
+            
+            <!-- Module 11: Mes centres d'intérêt -->
+            <item identifier="MODULE_11" identifierref="MODULE_11_RES">
+                <title>Module 11 : Mes centres d'intérêt</title>
+                <adlcp:masteryscore>70</adlcp:masteryscore>
+            </item>
+            
+            <!-- Module 12: Mon analyse SWOT personnelle -->
+            <item identifier="MODULE_12" identifierref="MODULE_12_RES">
+                <title>Module 12 : Mon analyse SWOT personnelle</title>
+                <adlcp:masteryscore>70</adlcp:masteryscore>
+            </item>
+            
+            <!-- Module 13: Mes axes de développement -->
+            <item identifier="MODULE_13" identifierref="MODULE_13_RES">
+                <title>Module 13 : Mes axes de développement</title>
+                <adlcp:masteryscore>70</adlcp:masteryscore>
+            </item>
+            
+            <!-- Module 14: Mon projet professionnel -->
+            <item identifier="MODULE_14" identifierref="MODULE_14_RES">
+                <title>Module 14 : Mon projet professionnel</title>
+                <adlcp:masteryscore>70</adlcp:masteryscore>
+            </item>
+            
+            <!-- Module 15: Mon plan d'action -->
+            <item identifier="MODULE_15" identifierref="MODULE_15_RES">
+                <title>Module 15 : Mon plan d'action</title>
+                <adlcp:masteryscore>70</adlcp:masteryscore>
+            </item>
+            
+            <!-- Module 16: Mon réseau professionnel -->
+            <item identifier="MODULE_16" identifierref="MODULE_16_RES">
+                <title>Module 16 : Mon réseau professionnel</title>
+                <adlcp:masteryscore>70</adlcp:masteryscore>
+            </item>
+            
+            <!-- Module 17: Ma stratégie de recherche -->
+            <item identifier="MODULE_17" identifierref="MODULE_17_RES">
+                <title>Module 17 : Ma stratégie de recherche</title>
+                <adlcp:masteryscore>70</adlcp:masteryscore>
+            </item>
+            
+            <!-- Module 18: Mon CV optimisé -->
+            <item identifier="MODULE_18" identifierref="MODULE_18_RES">
+                <title>Module 18 : Mon CV optimisé</title>
+                <adlcp:masteryscore>70</adlcp:masteryscore>
+            </item>
+            
+            <!-- Module 19: Ma lettre de motivation -->
+            <item identifier="MODULE_19" identifierref="MODULE_19_RES">
+                <title>Module 19 : Ma lettre de motivation</title>
+                <adlcp:masteryscore>70</adlcp:masteryscore>
+            </item>
+            
+            <!-- Module 20: Mon pitch personnel -->
+            <item identifier="MODULE_20" identifierref="MODULE_20_RES">
+                <title>Module 20 : Mon pitch personnel</title>
+                <adlcp:masteryscore>70</adlcp:masteryscore>
+            </item>
+            
+            <!-- Module 21: Ma préparation aux entretiens -->
+            <item identifier="MODULE_21" identifierref="MODULE_21_RES">
+                <title>Module 21 : Ma préparation aux entretiens</title>
+                <adlcp:masteryscore>70</adlcp:masteryscore>
+            </item>
+            
+            <!-- Module 22: Mon personal branding -->
+            <item identifier="MODULE_22" identifierref="MODULE_22_RES">
+                <title>Module 22 : Mon personal branding</title>
+                <adlcp:masteryscore>70</adlcp:masteryscore>
+            </item>
+            
+            <!-- Module 23: Ma négociation salariale -->
+            <item identifier="MODULE_23" identifierref="MODULE_23_RES">
+                <title>Module 23 : Ma négociation salariale</title>
+                <adlcp:masteryscore>70</adlcp:masteryscore>
+            </item>
+            
+            <!-- Module 24: Mon équilibre vie pro/perso -->
+            <item identifier="MODULE_24" identifierref="MODULE_24_RES">
+                <title>Module 24 : Mon équilibre vie pro/perso</title>
+                <adlcp:masteryscore>70</adlcp:masteryscore>
+            </item>
+            
+            <!-- Module 25: Ma synthèse et bilan final -->
+            <item identifier="MODULE_25" identifierref="MODULE_25_RES">
+                <title>Module 25 : Ma synthèse et bilan final</title>
+                <adlcp:masteryscore>80</adlcp:masteryscore>
+            </item>
+        </organization>
+    </organizations>
+    
+    <resources>
+        <!-- Module 1 -->
+        <resource identifier="MODULE_01_RES" type="webcontent" adlcp:scormtype="sco" href="modules/module-01/index.html">
+            <file href="modules/module-01/index.html"/>
+            <file href="modules/module-01/module.js"/>
+            <file href="shared/js/scorm-api.js"/>
+            <file href="shared/css/bilan-styles.css"/>
+        </resource>
+        
+        <!-- Module 2 -->
+        <resource identifier="MODULE_02_RES" type="webcontent" adlcp:scormtype="sco" href="modules/module-02/index.html">
+            <file href="modules/module-02/index.html"/>
+            <file href="modules/module-02/module.js"/>
+            <file href="shared/js/scorm-api.js"/>
+            <file href="shared/css/bilan-styles.css"/>
+        </resource>
+        
+        <!-- Module 3 (placeholder) -->
+        <resource identifier="MODULE_03_RES" type="webcontent" adlcp:scormtype="sco" href="modules/module-03/index.html">
+            <file href="modules/module-03/index.html"/>
+        </resource>
+        
+        <!-- Module 4 (placeholder) -->
+        <resource identifier="MODULE_04_RES" type="webcontent" adlcp:scormtype="sco" href="modules/module-04/index.html">
+            <file href="modules/module-04/index.html"/>
+        </resource>
+        
+        <!-- Module 5 (placeholder) -->
+        <resource identifier="MODULE_05_RES" type="webcontent" adlcp:scormtype="sco" href="modules/module-05/index.html">
+            <file href="modules/module-05/index.html"/>
+        </resource>
+        
+        <!-- Module 6 (placeholder) -->
+        <resource identifier="MODULE_06_RES" type="webcontent" adlcp:scormtype="sco" href="modules/module-06/index.html">
+            <file href="modules/module-06/index.html"/>
+        </resource>
+        
+        <!-- Module 7 (placeholder) -->
+        <resource identifier="MODULE_07_RES" type="webcontent" adlcp:scormtype="sco" href="modules/module-07/index.html">
+            <file href="modules/module-07/index.html"/>
+        </resource>
+        
+        <!-- Module 8 (placeholder) -->
+        <resource identifier="MODULE_08_RES" type="webcontent" adlcp:scormtype="sco" href="modules/module-08/index.html">
+            <file href="modules/module-08/index.html"/>
+        </resource>
+        
+        <!-- Module 9 (placeholder) -->
+        <resource identifier="MODULE_09_RES" type="webcontent" adlcp:scormtype="sco" href="modules/module-09/index.html">
+            <file href="modules/module-09/index.html"/>
+        </resource>
+        
+        <!-- Module 10 (placeholder) -->
+        <resource identifier="MODULE_10_RES" type="webcontent" adlcp:scormtype="sco" href="modules/module-10/index.html">
+            <file href="modules/module-10/index.html"/>
+        </resource>
+        
+        <!-- Module 11 (placeholder) -->
+        <resource identifier="MODULE_11_RES" type="webcontent" adlcp:scormtype="sco" href="modules/module-11/index.html">
+            <file href="modules/module-11/index.html"/>
+        </resource>
+        
+        <!-- Module 12 (placeholder) -->
+        <resource identifier="MODULE_12_RES" type="webcontent" adlcp:scormtype="sco" href="modules/module-12/index.html">
+            <file href="modules/module-12/index.html"/>
+        </resource>
+        
+        <!-- Module 13 (placeholder) -->
+        <resource identifier="MODULE_13_RES" type="webcontent" adlcp:scormtype="sco" href="modules/module-13/index.html">
+            <file href="modules/module-13/index.html"/>
+        </resource>
+        
+        <!-- Module 14 (placeholder) -->
+        <resource identifier="MODULE_14_RES" type="webcontent" adlcp:scormtype="sco" href="modules/module-14/index.html">
+            <file href="modules/module-14/index.html"/>
+        </resource>
+        
+        <!-- Module 15 (placeholder) -->
+        <resource identifier="MODULE_15_RES" type="webcontent" adlcp:scormtype="sco" href="modules/module-15/index.html">
+            <file href="modules/module-15/index.html"/>
+        </resource>
+        
+        <!-- Module 16 (placeholder) -->
+        <resource identifier="MODULE_16_RES" type="webcontent" adlcp:scormtype="sco" href="modules/module-16/index.html">
+            <file href="modules/module-16/index.html"/>
+        </resource>
+        
+        <!-- Module 17 (placeholder) -->
+        <resource identifier="MODULE_17_RES" type="webcontent" adlcp:scormtype="sco" href="modules/module-17/index.html">
+            <file href="modules/module-17/index.html"/>
+        </resource>
+        
+        <!-- Module 18 (placeholder) -->
+        <resource identifier="MODULE_18_RES" type="webcontent" adlcp:scormtype="sco" href="modules/module-18/index.html">
+            <file href="modules/module-18/index.html"/>
+        </resource>
+        
+        <!-- Module 19 (placeholder) -->
+        <resource identifier="MODULE_19_RES" type="webcontent" adlcp:scormtype="sco" href="modules/module-19/index.html">
+            <file href="modules/module-19/index.html"/>
+        </resource>
+        
+        <!-- Module 20 (placeholder) -->
+        <resource identifier="MODULE_20_RES" type="webcontent" adlcp:scormtype="sco" href="modules/module-20/index.html">
+            <file href="modules/module-20/index.html"/>
+        </resource>
+        
+        <!-- Module 21 (placeholder) -->
+        <resource identifier="MODULE_21_RES" type="webcontent" adlcp:scormtype="sco" href="modules/module-21/index.html">
+            <file href="modules/module-21/index.html"/>
+        </resource>
+        
+        <!-- Module 22 (placeholder) -->
+        <resource identifier="MODULE_22_RES" type="webcontent" adlcp:scormtype="sco" href="modules/module-22/index.html">
+            <file href="modules/module-22/index.html"/>
+        </resource>
+        
+        <!-- Module 23 (placeholder) -->
+        <resource identifier="MODULE_23_RES" type="webcontent" adlcp:scormtype="sco" href="modules/module-23/index.html">
+            <file href="modules/module-23/index.html"/>
+        </resource>
+        
+        <!-- Module 24 (placeholder) -->
+        <resource identifier="MODULE_24_RES" type="webcontent" adlcp:scormtype="sco" href="modules/module-24/index.html">
+            <file href="modules/module-24/index.html"/>
+        </resource>
+        
+        <!-- Module 25 (placeholder) -->
+        <resource identifier="MODULE_25_RES" type="webcontent" adlcp:scormtype="sco" href="modules/module-25/index.html">
+            <file href="modules/module-25/index.html"/>
+        </resource>
+    </resources>
+</manifest>

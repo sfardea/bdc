@@ -1,0 +1,18 @@
+{
+  "name": "bilan-competences-digital",
+  "version": "1.0.0",
+  "description": "Parcours de Bilan de Compétences Digitalisé - Package SCORM Unifié",
+  "scripts": {
+    "build:scorm": "node scripts/build-scorm-package.js",
+    "create:scorm": "bash scripts/create-scorm-packages.sh",
+    "check:files": "bash scripts/check-files.sh",
+    "dev": "node scripts/serve-dev.js",
+    "start": "npm run dev",
+    "validate:scorm": "node scripts/validate-scorm.js"
+  },
+  "devDependencies": {
+    "archiver": "^5.3.1",
+    "express": "^4.18.2",
+    "fs-extra": "^11.1.1"
+  }
+}

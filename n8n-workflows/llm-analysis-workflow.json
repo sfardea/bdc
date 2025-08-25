@@ -1,0 +1,268 @@
+{
+  "name": "Bilan Compétences - LLM Analysis Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "/llm-analysis",
+        "responseMode": "responseNode",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Access-Control-Allow-Methods",
+                "value": "POST, OPTIONS"
+              }
+            ]
+          }
+        }
+      },
+      "name": "Webhook - LLM Analysis Request",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "webhookId": "llm-analysis-webhook"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Extract and validate request data\nconst requestData = items[0].json;\n\n// Determine the type of analysis needed\nlet analysisType = 'general';\nlet systemPrompt = '';\nlet userPrompt = '';\n\nif (requestData.requestType === 'completion_analysis') {\n  analysisType = 'completion';\n  systemPrompt = `You are a career counseling AI assistant helping users with their skills assessment (bilan de compétences). \nAnalyze the user's profile and provide personalized recommendations in French.\nBe encouraging, specific, and actionable.`;\n  \n  userPrompt = `Analysez ce profil et générez:\n1. Un insight principal sur le profil\n2. 3 modules prioritaires à suivre avec justification\n3. 3 conseils personnalisés pour optimiser le bilan\n\nProfil:\n${JSON.stringify(requestData.data, null, 2)}`;\n\n} else if (requestData.specificQuestion) {\n  analysisType = 'question';\n  systemPrompt = `You are a helpful AI assistant for a digital skills assessment platform.\nAnswer the user's question in French, being helpful and encouraging.`;\n  \n  userPrompt = requestData.specificQuestion;\n  \n} else if (requestData.context === 'profile_analysis') {\n  analysisType = 'profile';\n  systemPrompt = `You are analyzing an initial user profile for a skills assessment.\nProvide insights about what to focus on during their assessment journey.\nRespond in French.`;\n  \n  userPrompt = `Analysez ce profil initial et identifiez:\n1. Les points forts apparents\n2. Les zones à explorer en priorité\n3. Des questions complémentaires pertinentes\n\nProfil:\n${JSON.stringify(requestData.formData, null, 2)}`;\n\n} else if (requestData.changeType === 'edit') {\n  analysisType = 'changes';\n  systemPrompt = `You are reviewing changes made to a skills assessment form.\nDetermine if the changes are significant and provide relevant feedback.\nRespond in French.`;\n  \n  userPrompt = `L'utilisateur a modifié ses réponses.\nChamps modifiés: ${requestData.changedFields.join(', ')}\n\nAnalysez si ces changements sont significatifs et si de nouveaux conseils sont nécessaires.`;\n\n} else {\n  // Default field help or general assistance\n  analysisType = 'help';\n  systemPrompt = `You are a helpful AI assistant for a skills assessment platform.\nProvide clear, actionable guidance in French.`;\n  \n  userPrompt = requestData.specificQuestion || \n    `Provide guidance for module ${requestData.moduleId} in context: ${requestData.context}`;\n}\n\n// Add metadata for tracking\nconst enrichedData = {\n  ...requestData,\n  analysisType,\n  systemPrompt,\n  userPrompt,\n  timestamp: new Date().toISOString(),\n  requestId: `llm_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`\n};\n\nreturn [enrichedData];"
+      },
+      "name": "Prepare LLM Prompt",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParametersUi": {
+          "parameter": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "claude-3-haiku-20240307"
+            },
+            {
+              "name": "max_tokens",
+              "value": 1500
+            },
+            {
+              "name": "temperature",
+              "value": 0.7
+            },
+            {
+              "name": "system",
+              "value": "={{$json.systemPrompt}}"
+            },
+            {
+              "name": "messages",
+              "value": "=[{\"role\": \"user\", \"content\": \"{{$json.userPrompt}}\"}]"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Claude API Call",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [650, 300],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "anthropic-api",
+          "name": "Anthropic API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "functionCode": "// Parse Claude's response and format for the module\nconst llmResponse = items[0].json;\nconst originalRequest = items[0].json.originalRequest;\nconst analysisType = items[0].json.analysisType;\n\nlet formattedResponse = {\n  id: items[0].json.requestId,\n  timestamp: new Date().toISOString(),\n  analysisType: analysisType\n};\n\n// Extract the text content from Claude's response\nconst responseText = llmResponse.content[0].text;\n\n// Format based on analysis type\nif (analysisType === 'completion') {\n  // Parse completion recommendations\n  const lines = responseText.split('\\n');\n  \n  formattedResponse.mainInsight = lines.find(l => l.includes('insight') || l.includes('Insight'))?.replace(/[0-9.\\-*]/g, '').trim() || \n    lines[0];\n  \n  // Extract priority modules\n  formattedResponse.priorityModules = [];\n  const moduleSection = responseText.match(/modules? prioritaires?[\\s\\S]*?(?=\\n\\n|conseils|$)/i);\n  if (moduleSection) {\n    const moduleLines = moduleSection[0].split('\\n').slice(1);\n    moduleLines.forEach(line => {\n      if (line.trim()) {\n        const match = line.match(/(.+?)\\s*:\\s*(.+)/);\n        if (match) {\n          formattedResponse.priorityModules.push({\n            name: match[1].replace(/[0-9.\\-*]/g, '').trim(),\n            reason: match[2].trim()\n          });\n        }\n      }\n    });\n  }\n  \n  // Extract tips\n  formattedResponse.tips = [];\n  const tipsSection = responseText.match(/conseils?[\\s\\S]*$/i);\n  if (tipsSection) {\n    const tipLines = tipsSection[0].split('\\n').slice(1);\n    tipLines.forEach(line => {\n      const cleaned = line.replace(/[0-9.\\-*]/g, '').trim();\n      if (cleaned && cleaned.length > 10) {\n        formattedResponse.tips.push(cleaned);\n      }\n    });\n  }\n  \n} else if (analysisType === 'profile') {\n  // Profile analysis format\n  formattedResponse.feedback = responseText;\n  \n  // Try to extract structured insights\n  const sections = responseText.split('\\n\\n');\n  formattedResponse.insights = sections[0];\n  formattedResponse.suggestions = [];\n  \n  sections.forEach(section => {\n    if (section.includes('explorer') || section.includes('priorité')) {\n      const lines = section.split('\\n').slice(1);\n      lines.forEach(line => {\n        const cleaned = line.replace(/[0-9.\\-*]/g, '').trim();\n        if (cleaned) {\n          formattedResponse.suggestions.push(cleaned);\n        }\n      });\n    }\n  });\n  \n  formattedResponse.nextSteps = \"Continuez à remplir le module en étant authentique dans vos réponses.\";\n  \n} else if (analysisType === 'changes') {\n  // Edit analysis\n  formattedResponse.significantChange = responseText.toLowerCase().includes('significatif') || \n                                       responseText.toLowerCase().includes('important');\n  formattedResponse.feedback = responseText;\n  \n} else {\n  // General help or questions\n  formattedResponse.feedback = responseText;\n  formattedResponse.allowFollowUp = true;\n  \n  // Try to extract actionable items\n  const bullets = responseText.match(/[•\\-*]\\s*.+/g);\n  if (bullets) {\n    formattedResponse.suggestions = bullets.map(b => b.replace(/[•\\-*]/g, '').trim());\n  }\n}\n\n// Add resources if mentioned in response\nif (responseText.includes('ressource') || responseText.includes('lien')) {\n  formattedResponse.resources = [\n    {\n      title: \"Guide complet du bilan de compétences\",\n      url: \"https://travail-emploi.gouv.fr/formation-professionnelle/droit-a-la-formation-et-orientation-professionnelle/bilan-competences\"\n    },\n    {\n      title: \"Test d'orientation professionnelle\",\n      url: \"https://www.pole-emploi.fr/candidat/votre-projet-professionnel/evaluer-vos-competences/\"\n    }\n  ];\n}\n\nreturn [formattedResponse];"
+      },
+      "name": "Format LLM Response",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [850, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{JSON.stringify($json)}}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "name": "Send Response to Module",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1050, 300]
+    },
+    {
+      "parameters": {
+        "operation": "insert",
+        "table": "llm_interactions",
+        "columns": "request_id,module_id,analysis_type,user_prompt,llm_response,timestamp",
+        "options": {}
+      },
+      "name": "Store LLM Interaction",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [850, 450],
+      "credentials": {
+        "postgres": {
+          "id": "bc-database",
+          "name": "BC Database"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.analysisType}}",
+              "operation": "equals",
+              "value2": "completion"
+            }
+          ]
+        }
+      },
+      "name": "IF Completion Analysis",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [850, 600]
+    },
+    {
+      "parameters": {
+        "channel": "#bilan-competences-ai",
+        "text": "🤖 *LLM Analysis Completed*\n\n*Module:* {{$json.moduleId}}\n*Type:* {{$json.analysisType}}\n*User:* {{$json.metadata.userId}}\n*Key Insight:* {{$json.mainInsight || $json.feedback}}",
+        "options": {
+          "username": "BC AI Assistant",
+          "icon_emoji": ":robot_face:"
+        }
+      },
+      "name": "Notify Slack",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 1,
+      "position": [1050, 600],
+      "credentials": {
+        "slackApi": {
+          "id": "slack-api",
+          "name": "Slack API"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook - LLM Analysis Request": {
+      "main": [
+        [
+          {
+            "node": "Prepare LLM Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare LLM Prompt": {
+      "main": [
+        [
+          {
+            "node": "Claude API Call",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claude API Call": {
+      "main": [
+        [
+          {
+            "node": "Format LLM Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format LLM Response": {
+      "main": [
+        [
+          {
+            "node": "Send Response to Module",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Store LLM Interaction",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "IF Completion Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF Completion Analysis": {
+      "main": [
+        [
+          {
+            "node": "Notify Slack",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "error-handler-workflow"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "name": "bilan-competences",
+      "createdAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "name": "ai-integration",
+      "createdAt": "2024-01-01T00:00:00.000Z"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-01-01T00:00:00.000Z",
+  "versionId": "v1"
+}

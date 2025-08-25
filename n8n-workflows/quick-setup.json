@@ -1,0 +1,62 @@
+{
+  "name": "Bilan Competences - Quick Setup",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "bilan-module-01",
+        "responseMode": "responseNode",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Access-Control-Allow-Methods",
+                "value": "POST, GET, OPTIONS"
+              },
+              {
+                "name": "Access-Control-Allow-Headers",
+                "value": "Content-Type, Authorization"
+              }
+            ]
+          }
+        }
+      },
+      "name": "Module 01 Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "webhookId": "module-01-analytics"
+    },
+    {
+      "parameters": {
+        "functionCode": "const data = items[0].json;\nconsole.log('Received from Module 1:', data);\n\n// Add timestamp\ndata.receivedAt = new Date().toISOString();\ndata.processedBy = 'n8n';\n\nreturn [data];"
+      },
+      "name": "Process Data",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\"success\": true, \"message\": \"Data received\", \"timestamp\": \"{{$now.toISO()}}\"}",
+        "options": {}
+      },
+      "name": "Send Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [650, 300]
+    }
+  ],
+  "connections": {
+    "Module 01 Webhook": {
+      "main": [[{"node": "Process Data", "type": "main", "index": 0}]]
+    },
+    "Process Data": {
+      "main": [[{"node": "Send Response", "type": "main", "index": 0}]]
+    }
+  }
+}

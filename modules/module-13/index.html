@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 13 : Mes motivations au travail</title>
+    <link rel="stylesheet" href="/shared/css/modern-theme.css">
+    <style>
+        .module-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .main-content {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: var(--shadow-lg);
+        }
+        .validate-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-md);
+        }
+        .validate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+    </style>
+</head>
+<body class="module-scrollable">
+    <div class="container">
+        <header class="card animate-fade-in" style="padding: 0.75rem 1rem; margin-bottom: 0.5rem;">
+            <div style="text-align: center; position: relative; display: flex; align-items: center; justify-content: space-between; min-height: 60px;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent)); border-radius: var(--radius-xl) var(--radius-xl) 0 0; margin: -0.75rem -1rem 0 -1rem;"></div>
+                <div style="flex: 1; text-align: left;">
+                    <span style="display: inline-block; padding: 0.2rem 0.5rem; background: var(--primary-bg); color: var(--primary); border-radius: var(--radius); font-size: 0.75rem; font-weight: 600; margin-bottom: 0.25rem;">Module 13</span>
+                    <h1 style="font-size: 1.25rem; font-weight: 700; margin: 0; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                        Mes motivations au travail
+                    </h1>
+                </div>
+                <div style="flex: 1; text-align: center;">
+                    <p style="color: var(--gray-600); font-size: 0.9rem; margin: 0;">
+                        Investigation Professionnelle
+                    </p>
+                </div>
+                <div style="flex: 1; text-align: right;">
+                    <div class="status-badge status-in-progress">
+                        Investigation Professionnelle
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="card" style="padding: 2rem;">
+            <div class="module-container">
+                <div class="text-center" style="margin-bottom: 2rem;">
+                    <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--gray-900); margin-bottom: 1rem;">
+                        💪 Mes motivations au travail
+                    </h2>
+                    <p style="color: var(--gray-600); font-size: 1.1rem; line-height: 1.6; max-width: 800px; margin: 0 auto;">
+                        Drag-and-drop de 20 facteurs de motivation par priorité
+                    </p>
+                </div>
+
+                <div class="main-content" id="mainContent">
+                    <div class="motivations-drag-drop">
+                   <h3>Classez vos motivations</h3>
+                   <div class="motivations-columns" id="motivationsColumns">
+                       <div class="column" data-priority="high"><h4>Priorité haute</h4></div>
+                       <div class="column" data-priority="medium"><h4>Priorité moyenne</h4></div>
+                       <div class="column" data-priority="low"><h4>Priorité basse</h4></div>
+                   </div>
+               </div>
+                </div>
+
+                <div style="text-align: center; margin: 2rem 0;">
+                    <button id="validateBtn" class="validate-btn">
+                        Valider le module 13
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../shared/js/scorm-api.js"></script>
+    <script src="/modules/module-13/module.js"></script>
+</body>
+</html>

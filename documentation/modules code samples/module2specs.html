@@ -1,0 +1,268 @@
+
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Présentation du Bilan de Compétences</title>
+    <!-- Tailwind CSS CDN pour un style moderne et responsive -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Personnalisation de la police Inter */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Arrière-plan doux */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .slide-container {
+            background-color: #ffffff;
+            border-radius: 1.5rem; /* Coins arrondis */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 500px; /* Hauteur minimale pour les slides */
+        }
+        .slide {
+            display: none; /* Les slides sont cachées par défaut */
+            flex-grow: 1;
+            padding: 1rem;
+            animation: fadeIn 0.5s ease-in-out; /* Animation d'apparition */
+        }
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 1.5rem;
+            gap: 1rem; /* Espace entre les boutons */
+        }
+        .nav-button {
+            background-color: #4f46e5; /* Bleu indigo */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem; /* Coins arrondis pour les boutons */
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            border: none;
+            flex: 1; /* Permet aux boutons de prendre de l'espace égal */
+        }
+        .nav-button:hover {
+            background-color: #4338ca; /* Bleu indigo plus foncé au survol */
+            transform: translateY(-2px);
+        }
+        .nav-button:disabled {
+            background-color: #a5b4fc; /* Couleur plus claire quand désactivé */
+            cursor: not-allowed;
+            transform: none;
+        }
+        h1, h2, h3 {
+            color: #1f2937; /* Gris foncé pour les titres */
+            margin-bottom: 1rem;
+        }
+        p, ul {
+            color: #4b5563; /* Gris moyen pour le texte */
+            line-height: 1.6;
+        }
+        ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            text-align: left; /* Alignement du texte des listes */
+            width: 100%; /* S'assure que la liste prend toute la largeur disponible */
+            max-width: 600px; /* Limite la largeur pour une meilleure lisibilité */
+            margin: 0 auto; /* Centre la liste */
+        }
+        li {
+            margin-bottom: 0.5rem;
+        }
+        /* Styles spécifiques pour les petits écrans */
+        @media (max-width: 768px) {
+            .slide-container {
+                padding: 1.5rem;
+                border-radius: 1rem;
+            }
+            .nav-button {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            h2 {
+                font-size: 1.5rem;
+            }
+            h3 {
+                font-size: 1.2rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .slide-container {
+                padding: 1rem;
+                border-radius: 0.75rem;
+            }
+            .nav-button {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.8rem;
+            }
+            .navigation-buttons {
+                flex-direction: column;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            h2 {
+                font-size: 1.3rem;
+            }
+            h3 {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Slide 1: Bienvenue -->
+        <div class="slide active" id="slide1">
+            <h1 class="text-3xl font-bold text-gray-800 mb-4">Votre Parcours de Compétences</h1>
+            <h2 class="text-2xl font-semibold text-indigo-700 mb-6">Bienvenue à [Nom de Votre Structure/Logo ici]</h2>
+            <p class="text-lg text-gray-700 leading-relaxed">
+                Nous sommes ravis de vous accompagner dans cette étape clé de votre parcours professionnel. Chez [Nom de Votre Structure], notre mission est de vous aider à explorer vos talents, à identifier vos aspirations et à construire un projet professionnel qui vous ressemble. Nous croyons en votre potentiel et sommes là pour vous guider.
+            </p>
+        </div>
+
+        <!-- Slide 2: Introduction aux étapes -->
+        <div class="slide" id="slide2">
+            <h2 class="text-2xl font-semibold text-indigo-700 mb-6">Votre Bilan de Compétences : Les Étapes Clés</h2>
+            <p class="text-lg text-gray-700 leading-relaxed mb-8">
+                Ce bilan est un processus personnalisé et confidentiel, conçu pour vous offrir une vision claire de vos atouts et de vos opportunités. Voici comment nous allons procéder ensemble :
+            </p>
+            <p class="text-xl font-medium text-gray-800">
+                Prêt(e) à découvrir les étapes ?
+            </p>
+        </div>
+
+        <!-- Slide 3: Phase Préliminaire -->
+        <div class="slide" id="slide3">
+            <h3 class="text-xl font-semibold text-indigo-700 mb-4">1. Phase Préliminaire : Découverte & Objectifs</h3>
+            <ul class="list-disc text-lg text-gray-700 mb-6">
+                <li>**Objectif :** Comprendre vos attentes, valider votre engagement et définir ensemble les objectifs de votre bilan.</li>
+                <li>**Activités :** Entretien individuel d'accueil, présentation de la démarche, signature de la convention.</li>
+            </ul>
+            <p class="text-md text-gray-600">
+                C'est le point de départ de votre réflexion !
+            </p>
+        </div>
+
+        <!-- Slide 4: Phase d'Investigation -->
+        <div class="slide" id="slide4">
+            <h3 class="text-xl font-semibold text-indigo-700 mb-4">2. Phase d'Investigation : Exploration & Analyse</h3>
+            <ul class="list-disc text-lg text-gray-700 mb-6">
+                <li>**Objectif :** Analyser vos expériences personnelles et professionnelles, identifier vos compétences, vos intérêts, vos valeurs et vos motivations.</li>
+                <li>**Activités :** Entretiens approfondis, tests (personnalité, intérêts), exercices d'auto-analyse, recherches documentaires.</li>
+            </ul>
+            <p class="text-md text-gray-600">
+                Plongez au cœur de vos atouts et de vos aspirations.
+            </p>
+        </div>
+
+        <!-- Slide 5: Phase de Conclusion -->
+        <div class="slide" id="slide5">
+            <h3 class="text-xl font-semibold text-indigo-700 mb-4">3. Phase de Conclusion : Synthèse & Projet</h3>
+            <ul class="list-disc text-lg text-gray-700 mb-6">
+                <li>**Objectif :** Formaliser votre projet professionnel ou de formation, définir les étapes de sa mise en œuvre et les actions à mener.</li>
+                <li>**Activités :** Élaboration d'une synthèse personnalisée, construction du plan d'action, remise du document de synthèse.</li>
+            </ul>
+            <p class="text-md text-gray-600">
+                Le moment de concrétiser votre vision !
+            </p>
+        </div>
+
+        <!-- Slide 6: Notre Engagement -->
+        <div class="slide" id="slide6">
+            <h2 class="text-2xl font-semibold text-indigo-700 mb-6">Notre Engagement : Votre Réussite</h2>
+            <p class="text-lg text-gray-700 leading-relaxed mb-8">
+                Nous sommes là pour vous écouter, vous conseiller et vous soutenir à chaque étape. Ensemble, faisons de ce bilan une opportunité de croissance et de développement pour votre carrière.
+            </p>
+            <p class="text-xl font-bold text-gray-800">
+                Prêt(e) à commencer ?
+            </p>
+        </div>
+
+        <!-- Boutons de navigation -->
+        <div class="navigation-buttons">
+            <button id="prevBtn" class="nav-button">Précédent</button>
+            <button id="nextBtn" class="nav-button">Suivant</button>
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        let currentSlide = 0;
+
+        // Fonction pour afficher la slide actuelle
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                if (i === index) {
+                    slide.classList.add('active');
+                }
+            });
+            updateButtons();
+        }
+
+        // Fonction pour mettre à jour l'état des boutons de navigation
+        function updateButtons() {
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+        }
+
+        // Écouteur d'événement pour le bouton "Précédent"
+        prevBtn.addEventListener('click', () => {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        });
+
+        // Écouteur d'événement pour le bouton "Suivant"
+        nextBtn.addEventListener('click', () => {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        });
+
+        // Afficher la première slide au chargement de la page
+        document.addEventListener('DOMContentLoaded', () => {
+            showSlide(currentSlide);
+        });
+    </script>
+</body>
+</html>
+
+

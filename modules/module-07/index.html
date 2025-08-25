@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 7 : Les 16 grands types de personnalité (MBTI®)</title>
+    <link rel="stylesheet" href="/shared/css/modern-theme.css">
+    <style>
+        .mbti-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .questionnaire-section {
+            margin: 2rem 0;
+        }
+
+        .question-card {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            margin: 1.5rem 0;
+            box-shadow: var(--shadow-md);
+            border: 2px solid var(--gray-100);
+            transition: var(--transition);
+        }
+
+        .question-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .question-number {
+            background: var(--primary);
+            color: var(--white);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--gray-900);
+            line-height: 1.6;
+        }
+
+        .answers-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .answer-option {
+            background: var(--gray-50);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .answer-option:hover {
+            border-color: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .answer-option.selected {
+            border-color: var(--primary);
+            background: var(--primary-bg);
+        }
+
+        .answer-label {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .answer-text {
+            color: var(--gray-800);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .progress-bar-container {
+            background: var(--gray-100);
+            border-radius: var(--radius);
+            height: 8px;
+            margin: 2rem 0;
+            
+        }
+
+        .progress-bar-fill {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            height: 100%;
+            border-radius: var(--radius);
+            transition: width 0.3s ease;
+        }
+
+        .results-section {
+            display: none;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .personality-type {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            padding: 3rem 2rem;
+            border-radius: var(--radius-2xl);
+            margin: 2rem 0;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .type-code {
+            font-size: 4rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+
+        .type-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            opacity: 0.95;
+        }
+
+        .type-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .dimensions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .dimension-card {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            border: 2px solid var(--gray-100);
+        }
+
+        .dimension-title {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .dimension-result {
+            font-size: 2rem;
+            font-weight: 800;
+            margin: 0.5rem 0;
+        }
+
+        .dimension-percentage {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+        }
+
+        .careers-section {
+            background: var(--gray-50);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .careers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .career-item {
+            background: var(--white);
+            padding: 1rem;
+            border-radius: var(--radius);
+            text-align: center;
+            border: 1px solid var(--gray-200);
+            transition: var(--transition);
+        }
+
+        .career-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .validate-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-md);
+            margin: 2rem 0;
+        }
+
+        .validate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .validate-btn:disabled {
+            background: var(--gray-400);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        @media (max-width: 768px) {
+            .answers-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .dimensions-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .careers-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="module-scrollable">
+    <div class="container">
+        <!-- Header du module -->
+        <header class="card animate-fade-in" style="padding: 0.75rem 1rem; margin-bottom: 0.5rem;">
+            <div style="text-align: center; position: relative; display: flex; align-items: center; justify-content: space-between; min-height: 60px;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent)); border-radius: var(--radius-xl) var(--radius-xl) 0 0; margin: -0.75rem -1rem 0 -1rem;"></div>
+                
+                <div style="flex: 1; text-align: left;">
+                    <span style="display: inline-block; padding: 0.2rem 0.5rem; background: var(--primary-bg); color: var(--primary); border-radius: var(--radius); font-size: 0.75rem; font-weight: 600; margin-bottom: 0.25rem;">Module 7</span>
+                    <h1 style="font-size: 1.25rem; font-weight: 700; margin: 0; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                        Types de personnalité (MBTI®)
+                    </h1>
+                </div>
+                
+                <div style="flex: 1; text-align: center;">
+                    <p style="color: var(--gray-600); font-size: 0.9rem; margin: 0;">
+                        Découvrez votre profil psychologique
+                    </p>
+                </div>
+                
+                <div style="flex: 1; text-align: right;">
+                    <div class="status-badge status-in-progress">
+                        Investigation Personnelle
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Contenu principal -->
+        <main class="card" style="padding: 2rem;">
+            <div class="mbti-container">
+                <!-- Introduction -->
+                <div class="text-center" style="margin-bottom: 2rem;">
+                    <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--gray-900); margin-bottom: 1rem;">
+                        🧠 Découvrez votre type de personnalité
+                    </h2>
+                    <p style="color: var(--gray-600); font-size: 1.1rem; line-height: 1.6; max-width: 800px; margin: 0 auto;">
+                        Le MBTI® (Myers-Briggs Type Indicator) identifie 16 types de personnalité basés sur 4 dimensions. 
+                        Répondez sincèrement aux questions suivantes pour découvrir votre profil psychologique.
+                    </p>
+                </div>
+
+                <!-- Barre de progression -->
+                <div style="text-align: center; margin: 2rem 0;">
+                    <p style="color: var(--gray-600); margin-bottom: 0.5rem;">Progression du questionnaire</p>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="progressBar" style="width: 0%;"></div>
+                    </div>
+                    <p id="progressText" style="color: var(--gray-500); font-size: 0.9rem; margin-top: 0.5rem;">0 / 20 questions</p>
+                </div>
+
+                <!-- Section questionnaire -->
+                <div class="questionnaire-section" id="questionnaireSection">
+                    <!-- Les questions seront générées dynamiquement -->
+                </div>
+
+                <!-- Section résultats -->
+                <div class="results-section" id="resultsSection">
+                    <div class="personality-type" id="personalityType">
+                        <div class="type-code" id="typeCode">ENFP</div>
+                        <div class="type-name" id="typeName">L'Inspirateur</div>
+                        <div class="type-description" id="typeDescription">
+                            Enthousiastes, créatifs et sociables, les ENFP sont des libres penseurs qui voient la vie comme pleine de possibilités.
+                        </div>
+                    </div>
+
+                    <h3 style="color: var(--gray-900); margin: 2rem 0 1rem 0;">Vos dimensions de personnalité :</h3>
+                    <div class="dimensions-grid" id="dimensionsGrid">
+                        <!-- Les dimensions seront générées dynamiquement -->
+                    </div>
+
+                    <div class="careers-section">
+                        <h3 style="color: var(--gray-900); margin-bottom: 1rem;">Métiers recommandés pour votre profil :</h3>
+                        <div class="careers-grid" id="careersGrid">
+                            <!-- Les métiers seront générés dynamiquement -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Validation -->
+                <div style="text-align: center; margin: 2rem 0;">
+                    <button id="validateBtn" class="validate-btn" style="display: none;">
+                        Valider mon profil MBTI®
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../shared/js/scorm-api.js"></script>
+    <script src="/modules/module-07/module.js"></script>
+</body>
+</html>

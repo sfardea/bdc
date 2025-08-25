@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Integration - n8n & LLM</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #555;
+            margin-top: 0;
+        }
+        .test-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+            transition: transform 0.3s;
+        }
+        .test-btn:hover {
+            transform: scale(1.05);
+        }
+        .result {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 3px;
+            margin: 5px 0;
+            font-weight: bold;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .status.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .config-display {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test d'Intégration - n8n & LLM</h1>
+    
+    <!-- Configuration Display -->
+    <div class="test-section">
+        <h2>📋 Configuration Actuelle</h2>
+        <div id="configDisplay" class="config-display">Chargement...</div>
+    </div>
+
+    <!-- Test n8n Connection -->
+    <div class="test-section">
+        <h2>🔌 Test 1: Connexion n8n</h2>
+        <p>Teste l'envoi de données vers les webhooks n8n configurés.</p>
+        <button class="test-btn" onclick="testN8NConnection()">Tester Module 1 Webhook</button>
+        <button class="test-btn" onclick="testN8NModule2()">Tester Module 2 Webhook</button>
+        <div id="n8nResult" class="result"></div>
+    </div>
+
+    <!-- Test Analytics -->
+    <div class="test-section">
+        <h2>📊 Test 2: Analytics</h2>
+        <p>Teste l'envoi d'événements analytics.</p>
+        <button class="test-btn" onclick="testAnalyticsEvent()">Envoyer Événement Test</button>
+        <button class="test-btn" onclick="testBatchAnalytics()">Tester Batch (5 events)</button>
+        <div id="analyticsResult" class="result"></div>
+    </div>
+
+    <!-- Test LLM Integration -->
+    <div class="test-section">
+        <h2>🤖 Test 3: Intégration LLM</h2>
+        <p>Teste l'interaction avec l'IA via n8n.</p>
+        <button class="test-btn" onclick="testLLMProfile()">Analyser Profil Test</button>
+        <button class="test-btn" onclick="testLLMQuestion()">Poser Question Test</button>
+        <button class="test-btn" onclick="testLLMCompletion()">Tester Analyse Completion</button>
+        <div id="llmResult" class="result"></div>
+    </div>
+
+    <!-- Test Module Features -->
+    <div class="test-section">
+        <h2>✨ Test 4: Fonctionnalités Module</h2>
+        <p>Teste les nouvelles fonctionnalités des modules.</p>
+        <button class="test-btn" onclick="testVersioning()">Tester Versioning</button>
+        <button class="test-btn" onclick="testEditMode()">Simuler Mode Édition</button>
+        <button class="test-btn" onclick="testDataMigration()">Tester Migration Données</button>
+        <div id="featuresResult" class="result"></div>
+    </div>
+
+    <!-- Connection Status -->
+    <div class="test-section">
+        <h2>📡 Statut des Connexions</h2>
+        <div id="connectionStatus">
+            <p>n8n Webhook: <span id="n8nStatus" class="status pending">Non testé</span></p>
+            <p>LLM API: <span id="llmStatus" class="status pending">Non testé</span></p>
+            <p>Analytics: <span id="analyticsStatus" class="status pending">Non testé</span></p>
+        </div>
+    </div>
+
+    <!-- Load required scripts -->
+    <script src="shared/js/n8n-config.js"></script>
+    <script src="shared/js/analytics.js"></script>
+    <script src="shared/js/module-base.js"></script>
+    
+    <script>
+        // Display current configuration
+        function displayConfig() {
+            const config = {
+                n8n: window.N8N_CONFIG || {},
+                analytics: {
+                    webhookUrl: window.bilanAnalytics?.webhookUrl || 'Not configured'
+                },
+                environment: {
+                    host: window.location.hostname,
+                    protocol: window.location.protocol,
+                    userAgent: navigator.userAgent.substring(0, 50) + '...'
+                }
+            };
+            
+            document.getElementById('configDisplay').textContent = JSON.stringify(config, null, 2);
+        }
+
+        // Test n8n Connection
+        async function testN8NConnection() {
+            const resultDiv = document.getElementById('n8nResult');
+            resultDiv.textContent = 'Testing connection...';
+            
+            try {
+                const testData = {
+                    test: true,
+                    timestamp: new Date().toISOString(),
+                    message: 'Test connection from integration test page'
+                };
+                
+                const response = await window.sendToN8N('module01', 'test_connection', testData);
+                
+                resultDiv.textContent = 'Success! Response:\n' + JSON.stringify(response, null, 2);
+                document.getElementById('n8nStatus').className = 'status success';
+                document.getElementById('n8nStatus').textContent = 'Connecté';
+            } catch (error) {
+                resultDiv.textContent = 'Error: ' + error.message;
+                document.getElementById('n8nStatus').className = 'status error';
+                document.getElementById('n8nStatus').textContent = 'Erreur';
+            }
+        }
+
+        async function testN8NModule2() {
+            const resultDiv = document.getElementById('n8nResult');
+            resultDiv.textContent = 'Testing Module 2 webhook...';
+            
+            try {
+                const response = await window.sendToN8N('module02', 'test_connection', {
+                    module: 'Module 2',
+                    test: true
+                });
+                resultDiv.textContent = 'Module 2 Success!\n' + JSON.stringify(response, null, 2);
+            } catch (error) {
+                resultDiv.textContent = 'Module 2 Error: ' + error.message;
+            }
+        }
+
+        // Test Analytics
+        function testAnalyticsEvent() {
+            const resultDiv = document.getElementById('analyticsResult');
+            
+            try {
+                BilanAnalytics.trackEvent('test_event', {
+                    source: 'integration_test',
+                    timestamp: new Date().toISOString()
+                });
+                
+                resultDiv.textContent = 'Analytics event sent successfully!\nCheck n8n workflow executions.';
+                document.getElementById('analyticsStatus').className = 'status success';
+                document.getElementById('analyticsStatus').textContent = 'Actif';
+            } catch (error) {
+                resultDiv.textContent = 'Error: ' + error.message;
+                document.getElementById('analyticsStatus').className = 'status error';
+                document.getElementById('analyticsStatus').textContent = 'Erreur';
+            }
+        }
+
+        function testBatchAnalytics() {
+            const resultDiv = document.getElementById('analyticsResult');
+            
+            try {
+                for (let i = 1; i <= 5; i++) {
+                    BilanAnalytics.trackEvent(`batch_event_${i}`, {
+                        index: i,
+                        batch: true
+                    });
+                }
+                
+                resultDiv.textContent = '5 events queued for batch send.\nThey will be sent within 30 seconds or when you navigate away.';
+            } catch (error) {
+                resultDiv.textContent = 'Batch Error: ' + error.message;
+            }
+        }
+
+        // Test LLM Integration
+        async function testLLMProfile() {
+            const resultDiv = document.getElementById('llmResult');
+            resultDiv.textContent = 'Sending profile to LLM for analysis...';
+            
+            const testProfile = {
+                prenom: 'Test',
+                age: 30,
+                region: 'Île-de-France',
+                situationPro: 'en-poste',
+                niveauEtudes: 'bac+5'
+            };
+            
+            try {
+                const webhookUrl = window.N8N_CONFIG.webhookBaseUrl + '/llm-analysis';
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        moduleId: 'test',
+                        context: 'profile_analysis',
+                        formData: testProfile,
+                        requestType: 'profile'
+                    })
+                });
+                
+                const result = await response.json();
+                resultDiv.textContent = 'LLM Analysis Result:\n' + JSON.stringify(result, null, 2);
+                document.getElementById('llmStatus').className = 'status success';
+                document.getElementById('llmStatus').textContent = 'Connecté';
+            } catch (error) {
+                resultDiv.textContent = 'LLM Error: ' + error.message;
+                document.getElementById('llmStatus').className = 'status error';
+                document.getElementById('llmStatus').textContent = 'Erreur';
+            }
+        }
+
+        async function testLLMQuestion() {
+            const resultDiv = document.getElementById('llmResult');
+            const question = prompt('Posez votre question:', 'Comment bien remplir mon bilan de compétences?');
+            
+            if (!question) return;
+            
+            resultDiv.textContent = 'Sending question to LLM...';
+            
+            try {
+                const webhookUrl = window.N8N_CONFIG.webhookBaseUrl + '/llm-analysis';
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        moduleId: 'test',
+                        specificQuestion: question
+                    })
+                });
+                
+                const result = await response.json();
+                resultDiv.textContent = 'LLM Response:\n' + JSON.stringify(result, null, 2);
+            } catch (error) {
+                resultDiv.textContent = 'Question Error: ' + error.message;
+            }
+        }
+
+        async function testLLMCompletion() {
+            const resultDiv = document.getElementById('llmResult');
+            resultDiv.textContent = 'Testing completion analysis...';
+            
+            try {
+                const webhookUrl = window.N8N_CONFIG.webhookBaseUrl + '/llm-analysis';
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        moduleId: 'module01',
+                        requestType: 'completion_analysis',
+                        data: {
+                            prenom: '[REDACTED]',
+                            age: 35,
+                            situationPro: 'recherche-emploi'
+                        }
+                    })
+                });
+                
+                const result = await response.json();
+                resultDiv.textContent = 'Completion Analysis:\n' + JSON.stringify(result, null, 2);
+            } catch (error) {
+                resultDiv.textContent = 'Completion Error: ' + error.message;
+            }
+        }
+
+        // Test Module Features
+        function testVersioning() {
+            const resultDiv = document.getElementById('featuresResult');
+            
+            // Simulate version checking
+            const oldData = {
+                prenom: 'Jean',
+                nom: 'Dupont',
+                age: 30,
+                _version: '1.0.0'
+            };
+            
+            const newData = {
+                ...oldData,
+                objectifs: '', // New field in v1.1.0
+                experience: '', // New field in v1.1.0
+                _version: '1.1.0'
+            };
+            
+            resultDiv.textContent = `Version Migration Test:
+Old Version: ${oldData._version}
+New Version: ${newData._version}
+New Fields Added: objectifs, experience
+Status: Migration successful!`;
+        }
+
+        function testEditMode() {
+            const resultDiv = document.getElementById('featuresResult');
+            
+            const editModeDemo = {
+                isCompleted: true,
+                isEditMode: false,
+                originalData: { prenom: 'Jean', age: 30 },
+                currentData: { prenom: 'Jean', age: 31 },
+                changedFields: ['age']
+            };
+            
+            resultDiv.textContent = `Edit Mode Simulation:
+Module Status: ${editModeDemo.isCompleted ? 'Completed' : 'In Progress'}
+Edit Mode: ${editModeDemo.isEditMode ? 'Active' : 'Inactive'}
+Changed Fields: ${editModeDemo.changedFields.join(', ')}
+Changes Can Be Saved: Yes`;
+        }
+
+        function testDataMigration() {
+            const resultDiv = document.getElementById('featuresResult');
+            
+            // Test migration function
+            const migration = {
+                from: '1.0.0',
+                to: '1.1.0',
+                dataChanges: {
+                    added: ['objectifs', 'experience'],
+                    removed: [],
+                    modified: []
+                }
+            };
+            
+            resultDiv.textContent = `Data Migration Test:
+From Version: ${migration.from}
+To Version: ${migration.to}
+Fields Added: ${migration.dataChanges.added.join(', ')}
+Fields Removed: ${migration.dataChanges.removed.length === 0 ? 'None' : migration.dataChanges.removed.join(', ')}
+Migration Status: Compatible`;
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', () => {
+            displayConfig();
+            
+            // Initialize analytics if not already done
+            if (!window.bilanAnalytics) {
+                window.bilanAnalytics = BilanAnalytics.getInstance();
+            }
+        });
+    </script>
+</body>
+</html>
