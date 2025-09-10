@@ -8,8 +8,9 @@
     <style>
         /* Styles spécifiques au module */
         .life-curves-container {
-            max-width: 1200px;
-            margin: 0 auto;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
         }
 
         .timeline-selector {
@@ -44,23 +45,25 @@
         .timeline-container {
             background: var(--white);
             border-radius: var(--radius-2xl);
-            padding: 2rem;
-            margin: 2rem 0;
+            padding: 1.5rem;
+            margin: 1rem 0;
             box-shadow: var(--shadow-lg);
             border: 2px solid var(--gray-100);
-            min-height: 500px;
+            min-height: 350px;
             position: relative;
-            
+            display: flex;
+            flex-direction: column;
         }
 
         .timeline-canvas {
             width: 100%;
-            height: 400px;
+            height: 280px;
             position: relative;
             background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
             border-radius: var(--radius);
             border: 1px solid var(--gray-200);
             overflow: visible;
+            flex: 1;
         }
 
         .timeline-axis {
@@ -165,12 +168,82 @@
             border-top: 5px solid var(--gray-900);
         }
 
-        .add-point-form {
-            background: linear-gradient(135deg, var(--primary-bg), rgba(255, 255, 255, 0.8));
-            border-radius: var(--radius-xl);
+        /* Popup pour ajout d'événement */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .popup-overlay.active {
+            display: flex;
+        }
+
+        .popup-content {
+            background: var(--white);
+            border-radius: var(--radius-2xl);
             padding: 2rem;
-            margin: 2rem 0;
-            border: 2px solid var(--primary-light);
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-xl);
+            animation: popupAppear 0.3s ease-out;
+        }
+
+        @keyframes popupAppear {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .popup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--gray-100);
+        }
+
+        .popup-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray-500);
+            padding: 0.25rem;
+            border-radius: var(--radius);
+            transition: var(--transition);
+        }
+
+        .popup-close:hover {
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+
+        .add-event-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-md);
+            margin: 1rem 0;
+        }
+
+        .add-event-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
         }
 
         .form-row {
@@ -201,7 +274,14 @@
             border: 2px solid var(--gray-200);
             border-radius: var(--radius);
             font-size: 0.95rem;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             transition: var(--transition);
+        }
+
+        .form-input::placeholder, .form-textarea::placeholder {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--gray-500);
+            font-weight: 400;
         }
 
         .form-input:focus, .form-select:focus, .form-textarea:focus {
@@ -280,9 +360,21 @@
         .points-summary {
             background: var(--white);
             border-radius: var(--radius-xl);
-            padding: 1.5rem;
-            margin: 2rem 0;
+            padding: 1rem;
+            margin: 1rem 0;
             border: 2px solid var(--gray-200);
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .summary-timeline {
+            margin: 0;
         }
 
         .summary-timeline {
@@ -336,8 +428,32 @@
             margin: 2rem 0;
         }
 
+        /* Layout compact */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1rem;
+            height: 70vh;
+        }
+
+        .timeline-section {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .summary-section {
+            display: flex;
+            flex-direction: column;
+            max-height: 100%;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
             .timeline-selector {
                 flex-direction: column;
                 align-items: center;
@@ -349,10 +465,15 @@
 
             .timeline-container {
                 padding: 1rem;
+                min-height: 250px;
             }
 
             .timeline-canvas {
-                height: 300px;
+                height: 200px;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
             }
 
             .summary-point {
@@ -409,119 +530,140 @@
         <!-- Contenu principal -->
         <main class="card" style="padding: 2rem;">
             <div class="life-curves-container">
-                <!-- Introduction -->
-                <div class="text-center" style="margin-bottom: 2rem;">
-                    <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--gray-900); margin-bottom: 1rem;">
+                <!-- Introduction compacte -->
+                <div class="text-center" style="margin-bottom: 1rem;">
+                    <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--gray-900); margin-bottom: 0.5rem;">
                         📈 Tracez vos courbes de vie
                     </h2>
-                    <p style="color: var(--gray-600); font-size: 1.1rem; line-height: 1.6; max-width: 800px; margin: 0 auto;">
-                        Représentez graphiquement les moments marquants de votre parcours personnel et professionnel. 
-                        Chaque point reflète l'impact émotionnel de ces événements sur une échelle de -5 à +5.
+                    <p style="color: var(--gray-600); font-size: 1rem; line-height: 1.4;">
+                        Représentez les moments marquants de votre parcours (échelle -5 à +5)
                     </p>
                 </div>
 
-                <!-- Sélecteur de timeline -->
-                <div class="timeline-selector">
-                    <button class="timeline-btn active" data-timeline="personal" id="personalBtn">
-                        👤 Vie Personnelle
-                    </button>
-                    <button class="timeline-btn" data-timeline="professional" id="professionalBtn">
-                        💼 Vie Professionnelle
-                    </button>
-                </div>
+                <!-- Layout principal compact -->
+                <div class="main-layout">
+                    <!-- Section timeline -->
+                    <div class="timeline-section">
+                        <!-- Sélecteur de timeline -->
+                        <div class="timeline-selector">
+                            <button class="timeline-btn active" data-timeline="personal" id="personalBtn">
+                                👤 Vie Personnelle
+                            </button>
+                            <button class="timeline-btn" data-timeline="professional" id="professionalBtn">
+                                💼 Vie Professionnelle
+                            </button>
+                        </div>
 
-                <!-- Conteneur de la timeline -->
-                <div class="timeline-container">
-                    <h3 id="timelineTitle" style="font-size: 1.5rem; font-weight: 700; color: var(--primary); margin-bottom: 1.5rem; text-align: center;">
-                        📅 Timeline - Vie Personnelle
-                    </h3>
-                    
-                    <div class="timeline-canvas" id="timelineCanvas">
-                        <!-- Labels d'impact -->
-                        <div class="timeline-labels">
-                            <div class="timeline-label positive" style="top: 20px; left: 20px;">+5 Très positif</div>
-                            <div class="timeline-label" style="top: 50%; left: 20px; transform: translateY(-50%);">0 Neutre</div>
-                            <div class="timeline-label negative" style="bottom: 20px; left: 20px;">-5 Très négatif</div>
+                        <!-- Conteneur de la timeline -->
+                        <div class="timeline-container">
+                            <h3 id="timelineTitle" style="font-size: 1.25rem; font-weight: 700; color: var(--primary); margin-bottom: 1rem; text-align: center;">
+                                📅 Timeline - Vie Personnelle
+                            </h3>
+                            
+                            <div class="timeline-canvas" id="timelineCanvas">
+                                <!-- Labels d'impact -->
+                                <div class="timeline-labels">
+                                    <div class="timeline-label positive" style="top: 15px; left: 15px; font-size: 0.75rem;">+5</div>
+                                    <div class="timeline-label" style="top: 50%; left: 15px; transform: translateY(-50%); font-size: 0.75rem;">0</div>
+                                    <div class="timeline-label negative" style="bottom: 15px; left: 15px; font-size: 0.75rem;">-5</div>
+                                </div>
+                                
+                                <!-- Axe principal -->
+                                <div class="timeline-axis"></div>
+                                
+                                <!-- Les points seront ajoutés dynamiquement ici -->
+                            </div>
                         </div>
-                        
-                        <!-- Axe principal -->
-                        <div class="timeline-axis"></div>
-                        
-                        <!-- Les points seront ajoutés dynamiquement ici -->
-                    </div>
-                </div>
 
-                <!-- Formulaire d'ajout de point -->
-                <div class="add-point-form" id="addPointForm">
-                    <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--primary); margin-bottom: 1.5rem; text-align: center;">
-                        ➕ Ajouter un événement marquant
-                    </h3>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label" for="pointDate">Date</label>
-                            <input type="date" id="pointDate" class="form-input" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label" for="pointTitle">Titre de l'événement</label>
-                            <input type="text" id="pointTitle" class="form-input" placeholder="Ex: Obtention de mon diplôme" required>
+                        <!-- Bouton d'ajout -->
+                        <div style="text-align: center; margin: 1rem 0;">
+                            <button id="openPopupBtn" class="add-event-btn">
+                                ➕ Ajouter un événement marquant
+                            </button>
                         </div>
                     </div>
-                    
-                    <div class="form-group full-width">
-                        <label class="form-label" for="pointDescription">Description (optionnel)</label>
-                        <textarea id="pointDescription" class="form-textarea" rows="3" placeholder="Décrivez brièvement cet événement et son contexte..."></textarea>
-                    </div>
-                    
-                    <div class="form-group full-width">
-                        <label class="form-label">Impact émotionnel</label>
-                        <div class="impact-slider">
-                            <span style="font-size: 0.8rem; color: var(--error); font-weight: 600;">-5</span>
-                            <input type="range" id="impactRange" class="impact-range" min="-5" max="5" value="0">
-                            <span style="font-size: 0.8rem; color: var(--success); font-weight: 600;">+5</span>
-                            <div id="impactValue" class="impact-value">0</div>
-                        </div>
-                        <p style="font-size: 0.8rem; color: var(--gray-500); margin-top: 0.5rem;">
-                            -5 = Très négatif, 0 = Neutre, +5 = Très positif
-                        </p>
-                    </div>
-                    
-                    <div style="text-align: center; margin-top: 1.5rem;">
-                        <button id="addPointBtn" class="add-point-btn">
-                            Ajouter ce point
-                        </button>
-                    </div>
-                </div>
 
-                <!-- Résumé des points -->
-                <div class="points-summary" id="pointsSummary" style="display: none;">
-                    <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; text-align: center;">
-                        📋 Résumé de vos événements
-                    </h3>
-                    
-                    <div class="summary-timeline" id="personalSummary">
-                        <h4>👤 Vie Personnelle</h4>
-                        <div id="personalPoints"></div>
-                    </div>
-                    
-                    <div class="summary-timeline" id="professionalSummary">
-                        <h4>💼 Vie Professionnelle</h4>
-                        <div id="professionalPoints"></div>
+                    <!-- Section résumé -->
+                    <div class="summary-section">
+                        <div class="points-summary" id="pointsSummary" style="display: block; height: 100%;">
+                            <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; text-align: center;">
+                                📋 Vos événements
+                            </h3>
+                            
+                            <div class="summary-grid">
+                                <div class="summary-timeline" id="personalSummary">
+                                    <h4 style="font-size: 0.95rem; margin-bottom: 0.5rem;">👤 Personnelle</h4>
+                                    <div id="personalPoints" style="font-size: 0.85rem;"></div>
+                                </div>
+                                
+                                <div class="summary-timeline" id="professionalSummary">
+                                    <h4 style="font-size: 0.95rem; margin-bottom: 0.5rem;">💼 Professionnelle</h4>
+                                    <div id="professionalPoints" style="font-size: 0.85rem;"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Validation -->
-                <div class="validation-section">
+                <div class="validation-section" style="text-align: center; margin: 1rem 0;">
                     <button id="validateBtn" class="validate-btn" disabled>
                         Valider mes courbes de vie
                     </button>
-                    <p style="color: var(--gray-500); font-size: 0.9rem; margin-top: 1rem;">
+                    <p style="color: var(--gray-500); font-size: 0.85rem; margin-top: 0.5rem;">
                         Ajoutez au moins 3 points sur chaque timeline pour continuer
                     </p>
                 </div>
             </div>
         </main>
+    </div>
+
+    <!-- Popup pour ajout d'événement -->
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup-content">
+            <div class="popup-header">
+                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--primary); margin: 0;">
+                    ➕ Ajouter un événement marquant
+                </h3>
+                <button class="popup-close" id="closePopupBtn">✕</button>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label" for="pointDate">Date</label>
+                    <input type="date" id="pointDate" class="form-input" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="pointTitle">Titre de l'événement</label>
+                    <input type="text" id="pointTitle" class="form-input" placeholder="Ex: Obtention de mon diplôme" required>
+                </div>
+            </div>
+            
+            <div class="form-group full-width">
+                <label class="form-label" for="pointDescription">Description (optionnel)</label>
+                <textarea id="pointDescription" class="form-textarea" rows="3" placeholder="Décrivez brièvement cet événement et son contexte..."></textarea>
+            </div>
+            
+            <div class="form-group full-width">
+                <label class="form-label">Impact émotionnel</label>
+                <div class="impact-slider">
+                    <span style="font-size: 0.8rem; color: var(--error); font-weight: 600;">-5</span>
+                    <input type="range" id="impactRange" class="impact-range" min="-5" max="5" value="0">
+                    <span style="font-size: 0.8rem; color: var(--success); font-weight: 600;">+5</span>
+                    <div id="impactValue" class="impact-value">0</div>
+                </div>
+                <p style="font-size: 0.8rem; color: var(--gray-500); margin-top: 0.5rem;">
+                    -5 = Très négatif, 0 = Neutre, +5 = Très positif
+                </p>
+            </div>
+            
+            <div style="text-align: center; margin-top: 1.5rem;">
+                <button id="addPointBtn" class="add-point-btn">
+                    Ajouter ce point
+                </button>
+            </div>
+        </div>
     </div>
 
     <script src="../../shared/js/scorm-api.js"></script>

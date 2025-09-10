@@ -34,6 +34,19 @@ class LifeCurvesModule {
         personalBtn.addEventListener('click', () => this.switchTimeline('personal'));
         professionalBtn.addEventListener('click', () => this.switchTimeline('professional'));
 
+        // Gestion de la popup
+        const openPopupBtn = document.getElementById('openPopupBtn');
+        const closePopupBtn = document.getElementById('closePopupBtn');
+        const popupOverlay = document.getElementById('popupOverlay');
+
+        openPopupBtn.addEventListener('click', () => this.openPopup());
+        closePopupBtn.addEventListener('click', () => this.closePopup());
+        popupOverlay.addEventListener('click', (e) => {
+            if (e.target === popupOverlay) {
+                this.closePopup();
+            }
+        });
+
         // Slider d'impact
         const impactRange = document.getElementById('impactRange');
         const impactValue = document.getElementById('impactValue');
@@ -58,9 +71,12 @@ class LifeCurvesModule {
 
         // Gestion des entrées clavier
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && e.target.closest('.add-point-form')) {
+            if (e.key === 'Enter' && e.target.closest('.popup-content')) {
                 e.preventDefault();
                 this.addPoint();
+            }
+            if (e.key === 'Escape') {
+                this.closePopup();
             }
         });
     }
@@ -132,6 +148,25 @@ class LifeCurvesModule {
         this.saveData();
 
         this.showNotification(`Événement "${pointData.title}" ajouté avec succès !`, 'success');
+        
+        // Fermer la popup après ajout
+        this.closePopup();
+    }
+
+    openPopup() {
+        const popupOverlay = document.getElementById('popupOverlay');
+        popupOverlay.classList.add('active');
+        
+        // Focus sur le premier champ
+        setTimeout(() => {
+            const firstInput = document.getElementById('pointDate');
+            if (firstInput) firstInput.focus();
+        }, 100);
+    }
+
+    closePopup() {
+        const popupOverlay = document.getElementById('popupOverlay');
+        popupOverlay.classList.remove('active');
     }
 
     sortPointsByDate() {
@@ -283,12 +318,12 @@ class LifeCurvesModule {
         // Mise à jour des points personnels
         personalContainer.innerHTML = this.personalPoints.length > 0 ? 
             this.personalPoints.map(point => this.createSummaryPoint(point)).join('') :
-            '<p style="color: var(--gray-500); font-style: italic;">Aucun événement ajouté</p>';
+            '<p style="color: var(--gray-500); font-style: italic; font-size: 0.8rem;">Aucun événement</p>';
 
         // Mise à jour des points professionnels
         professionalContainer.innerHTML = this.professionalPoints.length > 0 ? 
             this.professionalPoints.map(point => this.createSummaryPoint(point)).join('') :
-            '<p style="color: var(--gray-500); font-style: italic;">Aucun événement ajouté</p>';
+            '<p style="color: var(--gray-500); font-style: italic; font-size: 0.8rem;">Aucun événement</p>';
     }
 
     createSummaryPoint(point) {
@@ -298,11 +333,11 @@ class LifeCurvesModule {
         const impactText = point.impact > 0 ? `+${point.impact}` : point.impact;
         
         return `
-            <div class="summary-point">
-                <div class="summary-point-impact" style="background: ${impactColor};"></div>
-                <div class="summary-point-date">${formatDate}</div>
-                <div class="summary-point-title">${point.title}</div>
-                <div class="summary-point-score" style="color: ${impactColor};">${impactText}</div>
+            <div class="summary-point" style="padding: 0.5rem; margin: 0.25rem 0; font-size: 0.8rem;">
+                <div class="summary-point-impact" style="background: ${impactColor}; width: 8px; height: 8px;"></div>
+                <div class="summary-point-date" style="min-width: 60px; font-size: 0.75rem;">${formatDate}</div>
+                <div class="summary-point-title" style="font-size: 0.8rem;">${point.title}</div>
+                <div class="summary-point-score" style="color: ${impactColor}; font-size: 0.75rem;">${impactText}</div>
             </div>
         `;
     }
