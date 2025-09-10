@@ -11,53 +11,93 @@
             max-width: 100%;
             margin: 0;
             padding: 0;
+            width: 100%;
         }
 
         .timeline-selector {
             display: flex;
             justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            margin: 1rem 0;
+            width: 100%;
+        }
+
+        .timeline-buttons-group {
+            display: flex;
             gap: 1rem;
-            margin: 2rem 0;
+            justify-content: center;
+        }
+
+        .timeline-buttons-group {
+            display: flex;
+            gap: 1rem;
         }
 
         .timeline-btn {
-            background: var(--white);
-            border: 2px solid var(--gray-200);
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--radius-lg);
+            background: transparent;
+            border: 1px solid var(--gray-300);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
             cursor: pointer;
             transition: var(--transition);
-            font-weight: 600;
-            color: var(--gray-700);
+            font-weight: 500;
+            color: var(--gray-600);
+            font-size: 0.9rem;
         }
 
         .timeline-btn.active {
-            background: var(--primary);
-            color: var(--white);
+            background: var(--primary-bg);
+            color: var(--primary);
             border-color: var(--primary);
         }
 
         .timeline-btn:hover {
-            border-color: var(--primary);
-            transform: translateY(-2px);
+            background: var(--gray-50);
+            border-color: var(--gray-400);
         }
 
-        .timeline-container {
+        .timeline-section-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+        }
+
+        .timeline-canvas-wrapper {
             background: var(--white);
             border-radius: var(--radius-2xl);
-            padding: 1.5rem;
-            margin: 1rem 0;
+            padding: 2rem;
             box-shadow: var(--shadow-lg);
             border: 2px solid var(--gray-100);
-            min-height: 350px;
+            flex: 1;
             position: relative;
             display: flex;
             flex-direction: column;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+
+        .add-event-btn-selector {
+            background: var(--primary);
+            color: var(--white);
+            border: 1px solid var(--gray-300);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .add-event-btn-selector:hover {
+            background: var(--primary-dark);
         }
 
         .timeline-canvas {
             width: 100%;
-            height: 280px;
+            height: 100%;
             position: relative;
             background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
             border-radius: var(--radius);
@@ -175,11 +215,19 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             z-index: 1000;
             display: none;
             align-items: center;
             justify-content: center;
+            animation: overlayAppear 0.3s ease-out;
+        }
+
+        @keyframes overlayAppear {
+            from { opacity: 0; backdrop-filter: blur(0); }
+            to { opacity: 1; backdrop-filter: blur(8px); }
         }
 
         .popup-overlay.active {
@@ -189,29 +237,44 @@
         .popup-content {
             background: var(--white);
             border-radius: var(--radius-2xl);
-            padding: 2rem;
-            max-width: 500px;
-            width: 90%;
-            max-height: 70vh;
+            padding: 3rem;
+            max-width: 1000px;
+            width: 98%;
+            max-height: 90vh;
             overflow: hidden;
-            box-shadow: var(--shadow-xl);
-            animation: popupAppear 0.3s ease-out;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.1);
+            animation: popupAppear 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             position: relative;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         @keyframes popupAppear {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+            0% { 
+                transform: scale(0.7) translateY(30px);
+                opacity: 0;
+                filter: blur(5px);
+            }
+            50% {
+                transform: scale(1.02) translateY(-5px);
+            }
+            100% { 
+                transform: scale(1) translateY(0);
+                opacity: 1;
+                filter: blur(0);
+            }
         }
 
         .popup-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--gray-100);
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--gray-200);
+            position: relative;
         }
+
 
         .popup-close {
             background: none;
@@ -276,10 +339,11 @@
         }
 
         .step-content {
-            min-height: 200px;
+            min-height: 280px;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            padding: 1rem 0;
         }
 
         .step-panel {
@@ -297,56 +361,84 @@
         }
 
         .step-title {
-            font-size: 1.25rem;
-            font-weight: 700;
+            font-size: 1.5rem;
+            font-weight: 800;
             color: var(--primary);
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             text-align: center;
+            letter-spacing: -0.02em;
         }
 
         .step-description {
             color: var(--gray-600);
             text-align: center;
-            margin-bottom: 1.5rem;
-            font-size: 0.95rem;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         /* Sélecteurs de timeline dans popup */
         .timeline-choice {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin: 1rem 0;
+            gap: 1.5rem;
+            margin: 2rem 0;
         }
 
         .timeline-option {
-            background: var(--white);
+            background: linear-gradient(135deg, var(--white), #fafbfc);
             border: 2px solid var(--gray-200);
-            border-radius: var(--radius-lg);
-            padding: 1.5rem;
+            border-radius: var(--radius-xl);
+            padding: 2rem 1.5rem;
             text-align: center;
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timeline-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.6s;
         }
 
         .timeline-option:hover {
             border-color: var(--primary);
-            transform: translateY(-2px);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.15);
+        }
+
+        .timeline-option:hover::before {
+            left: 100%;
         }
 
         .timeline-option.selected {
             border-color: var(--primary);
-            background: var(--primary-bg);
+            background: linear-gradient(135deg, var(--primary-bg), rgba(99, 102, 241, 0.1));
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.2);
         }
 
         .timeline-icon {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
         }
 
         .timeline-label {
-            font-weight: 600;
+            font-weight: 700;
             color: var(--gray-800);
+            font-size: 1.1rem;
+            letter-spacing: -0.01em;
         }
 
         /* Navigation des étapes */
@@ -386,6 +478,201 @@
         .step-nav-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+        }
+
+        /* Styles pour les événements multiples */
+        .event-item {
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+            position: relative;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .event-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .event-item.completed {
+            border-color: var(--success);
+            background: rgba(34, 197, 94, 0.05);
+        }
+
+        .event-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .event-number {
+            background: var(--primary);
+            color: var(--white);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .event-delete {
+            background: var(--error);
+            color: var(--white);
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .event-delete:hover {
+            background: #DC2626;
+        }
+
+        .event-fields {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 1.5rem;
+            align-items: end;
+        }
+
+        .event-field-full {
+            grid-column: 1 / -1;
+        }
+
+        .timeline-select {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .timeline-radio {
+            display: none;
+        }
+
+        .timeline-radio-label {
+            background: var(--white);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .timeline-radio:checked + .timeline-radio-label {
+            border-color: var(--primary);
+            background: var(--primary-bg);
+            color: var(--primary);
+        }
+
+        .events-form-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .events-form-container::-webkit-scrollbar-track {
+            background: var(--gray-100);
+            border-radius: 3px;
+        }
+
+        .events-form-container::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        /* Modal d'accueil */
+        .welcome-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .welcome-modal-content {
+            background: var(--white);
+            border-radius: var(--radius-2xl);
+            padding: 3rem;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+            animation: welcomeAppear 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+
+        @keyframes welcomeAppear {
+            0% { 
+                transform: scale(0.8) translateY(50px);
+                opacity: 0;
+            }
+            100% { 
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .welcome-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #3B82F6, #F59E0B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .welcome-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--gray-900);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .welcome-description {
+            color: var(--gray-600);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .welcome-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .welcome-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
         }
 
         .add-event-btn {
@@ -520,22 +807,93 @@
         .points-summary {
             background: var(--white);
             border-radius: var(--radius-xl);
-            padding: 1rem;
-            margin: 1rem 0;
+            padding: 1.5rem;
+            margin: 0;
             border: 2px solid var(--gray-200);
-            max-height: 200px;
-            overflow-y: auto;
+            height: 100%;
+            overflow: hidden;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
         }
 
-        .summary-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
+        /* Scrollbar personnalisée pour l'intérieur des cards */
+        .events-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .events-list::-webkit-scrollbar-track {
+            background: var(--gray-100);
+            border-radius: 3px;
+        }
+
+        .events-list::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        .events-list::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Améliorations desktop pour la colonne événements */
+        @media (min-width: 1024px) {
+            .points-summary {
+                padding: 1.5rem;
+                border-width: 2px;
+            }
+        }
+
+        /* Couleurs expressives pour les types d'événements */
+        .event-personal {
+            border-left-color: #3B82F6 !important;
+        }
+
+        .event-professional {
+            border-left-color: #F59E0B !important;
+        }
+
+        .event-personal .summary-point-impact {
+            background: #3B82F6 !important;
+        }
+
+        .event-professional .summary-point-impact {
+            background: #F59E0B !important;
+        }
+
+        .event-personal .summary-point-score {
+            color: #3B82F6 !important;
+            border-color: #3B82F6 !important;
+        }
+
+        .event-professional .summary-point-score {
+            color: #F59E0B !important;
+            border-color: #F59E0B !important;
+        }
+
+        .events-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            padding-right: 0.5rem;
         }
 
         .summary-timeline {
             margin: 0;
+            flex: 1;
+            min-height: 0;
         }
+
+        .summary-timeline h4 {
+            margin-bottom: 1rem !important;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-light);
+            font-size: 1rem !important;
+        }
+
 
         .summary-timeline {
             margin: 1rem 0;
@@ -588,23 +946,45 @@
             margin: 2rem 0;
         }
 
-        /* Layout compact */
+        /* Layout compact élargi - optimisé pour desktop */
         .main-layout {
             display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 1rem;
-            height: 70vh;
+            grid-template-columns: 4fr 1.5fr;
+            gap: 2rem;
+            height: calc(100vh - 350px);
+            width: 100%;
+            max-width: none;
+            overflow: hidden;
+        }
+
+        /* Optimisations desktop uniquement */
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 95vw !important;
+                padding: 0 2rem;
+            }
+            
+            .main-layout {
+                gap: 2.5rem;
+                height: calc(100vh - 320px);
+            }
+            
+            .timeline-canvas-wrapper {
+                padding: 2rem;
+            }
         }
 
         .timeline-section {
             display: flex;
             flex-direction: column;
+            width: 100%;
         }
 
         .summary-section {
             display: flex;
             flex-direction: column;
             max-height: 100%;
+            width: 100%;
         }
 
         /* Responsive */
@@ -657,12 +1037,39 @@
         .timeline-point.new {
             animation: pointAppear 0.6s ease-out;
         }
+
+        /* Lignes de connexion */
+        .timeline-line {
+            position: absolute;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .timeline-line line {
+            transition: stroke-opacity 0.3s ease;
+        }
+
+        /* Animation d'apparition des lignes */
+        @keyframes lineAppear {
+            0% {
+                stroke-dasharray: 1000;
+                stroke-dashoffset: 1000;
+            }
+            100% {
+                stroke-dasharray: 0;
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .timeline-line.new line {
+            animation: lineAppear 1s ease-out;
+        }
     </style>
 </head>
-<body class="module-scrollable">
-    <div class="container">
+<body style="overflow: hidden; height: 100vh; margin: 0; padding: 1rem 0; box-sizing: border-box;">
+    <div class="container" style="max-width: 100%; padding: 0 1rem; height: calc(100vh - 2rem); overflow: hidden; display: flex; flex-direction: column;">
         <!-- Header du module -->
-        <header class="card animate-fade-in" style="padding: 0.75rem 1rem; margin-bottom: 0.5rem;">
+        <header class="card animate-fade-in" style="padding: 0.5rem 1rem; margin-bottom: 1rem; width: 100%; box-sizing: border-box; flex-shrink: 0;">
             <div style="text-align: center; position: relative; display: flex; align-items: center; justify-content: space-between; min-height: 60px;">
                 <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent)); border-radius: var(--radius-xl) var(--radius-xl) 0 0; margin: -0.75rem -1rem 0 -1rem;"></div>
                 
@@ -688,77 +1095,60 @@
         </header>
 
         <!-- Contenu principal -->
-        <main class="card" style="padding: 2rem;">
-            <div class="life-curves-container">
-                <!-- Introduction compacte -->
-                <div class="text-center" style="margin-bottom: 1rem;">
-                    <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--gray-900); margin-bottom: 0.5rem;">
-                        📈 Tracez vos courbes de vie
-                    </h2>
-                    <p style="color: var(--gray-600); font-size: 1rem; line-height: 1.4;">
-                        Représentez les moments marquants de votre parcours (échelle -5 à +5)
-                    </p>
-                </div>
-
+        <main class="card" style="padding: 1rem; margin: 0; border-radius: var(--radius-xl); width: 100%; box-sizing: border-box; flex: 1; overflow: hidden; display: flex; flex-direction: column;">
+                <div class="life-curves-container" style="flex: 1; display: flex; flex-direction: column; overflow: hidden;">
                 <!-- Layout principal compact -->
-                <div class="main-layout">
+                <div class="main-layout" style="flex: 1; overflow: hidden;">
                     <!-- Section timeline -->
-                    <div class="timeline-section">
-                        <!-- Sélecteur de timeline -->
-                        <div class="timeline-selector">
-                            <button class="timeline-btn active" data-timeline="personal" id="personalBtn">
-                                👤 Vie Personnelle
-                            </button>
-                            <button class="timeline-btn" data-timeline="professional" id="professionalBtn">
-                                💼 Vie Professionnelle
+                    <div class="timeline-section" style="overflow: hidden; display: flex; flex-direction: column;">
+                        <!-- Introduction -->
+                        <div style="margin-bottom: 2rem; flex-shrink: 0; text-align: left;">
+                            <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--gray-900); margin-bottom: 1rem;">
+                                Tracez vos courbes de vie
+                            </h2>
+                            <p style="color: var(--gray-900); font-size: 1rem; line-height: 1.4; margin: 0 0 0.75rem 0; font-weight: 500;">
+                                Représentez graphiquement les moments marquants de votre parcours personnel et professionnel.
+                            </p>
+                            <p style="color: var(--gray-900); font-size: 1rem; line-height: 1.4; margin: 0 0 1.5rem 0; font-weight: 500;">
+                                Chaque point reflète l'impact émotionnel de ces événements sur une échelle de -5 à +5.
+                            </p>
+                        </div>
+                        
+                        <!-- Bouton d'ajout à droite -->
+                        <div style="display: flex; justify-content: flex-end; margin-bottom: 1rem; flex-shrink: 0;">
+                            <button id="openPopupBtnSelector" class="add-event-btn-selector">
+                                Ajouter un événement
                             </button>
                         </div>
 
-                        <!-- Conteneur de la timeline -->
-                        <div class="timeline-container">
-                            <h3 id="timelineTitle" style="font-size: 1.25rem; font-weight: 700; color: var(--primary); margin-bottom: 1rem; text-align: center;">
-                                📅 Timeline - Vie Personnelle
-                            </h3>
-                            
+                        <!-- Canvas de la timeline (sans conteneur limitant) -->
+                        <div class="timeline-canvas-wrapper" style="flex: 1; overflow: hidden;">
                             <div class="timeline-canvas" id="timelineCanvas">
                                 <!-- Labels d'impact -->
                                 <div class="timeline-labels">
-                                    <div class="timeline-label positive" style="top: 15px; left: 15px; font-size: 0.75rem;">+5</div>
-                                    <div class="timeline-label" style="top: 50%; left: 15px; transform: translateY(-50%); font-size: 0.75rem;">0</div>
-                                    <div class="timeline-label negative" style="bottom: 15px; left: 15px; font-size: 0.75rem;">-5</div>
+                                    <div class="timeline-label positive" style="top: 15px; left: 15px; font-size: 0.8rem;">+5</div>
+                                    <div class="timeline-label" style="top: 50%; left: 15px; transform: translateY(-50%); font-size: 0.8rem;">0</div>
+                                    <div class="timeline-label negative" style="bottom: 15px; left: 15px; font-size: 0.8rem;">-5</div>
                                 </div>
                                 
-                                <!-- Axe principal -->
-                                <div class="timeline-axis"></div>
+                                    <!-- Axe principal supprimé -->
                                 
                                 <!-- Les points seront ajoutés dynamiquement ici -->
                             </div>
                         </div>
 
-                        <!-- Bouton d'ajout -->
-                        <div style="text-align: center; margin: 1rem 0;">
-                            <button id="openPopupBtn" class="add-event-btn">
-                                ➕ Ajouter un événement marquant
-                            </button>
-                        </div>
                     </div>
 
                     <!-- Section résumé -->
-                    <div class="summary-section">
-                        <div class="points-summary" id="pointsSummary" style="display: block; height: 100%;">
-                            <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; text-align: center;">
-                                📋 Vos événements
-                            </h3>
-                            
-                            <div class="summary-grid">
-                                <div class="summary-timeline" id="personalSummary">
-                                    <h4 style="font-size: 0.95rem; margin-bottom: 0.5rem;">👤 Personnelle</h4>
-                                    <div id="personalPoints" style="font-size: 0.85rem;"></div>
-                                </div>
+                    <div class="summary-section" style="overflow: hidden; display: flex; flex-direction: column;">
+                        <div class="points-summary" id="pointsSummary" style="display: flex; height: 100%; overflow: hidden;">
+                            <div style="width: 100%; display: flex; flex-direction: column; height: 100%;">
+                                <h3 style="font-size: 1rem; font-weight: 700; color: var(--gray-900); margin-bottom: 0.5rem; text-align: center; flex-shrink: 0;">
+                                    Vos événements
+                                </h3>
                                 
-                                <div class="summary-timeline" id="professionalSummary">
-                                    <h4 style="font-size: 0.95rem; margin-bottom: 0.5rem;">💼 Professionnelle</h4>
-                                    <div id="professionalPoints" style="font-size: 0.85rem;"></div>
+                                <div class="events-list" id="allEventsList" style="flex: 1; min-height: 0;">
+                                    <!-- Tous les événements seront affichés ici -->
                                 </div>
                             </div>
                         </div>
@@ -766,7 +1156,7 @@
                 </div>
 
                 <!-- Validation -->
-                <div class="validation-section" style="text-align: center; margin: 1rem 0;">
+                <div class="validation-section" style="text-align: center; margin: 1rem 0; flex-shrink: 0;">
                     <button id="validateBtn" class="validate-btn" disabled>
                         Valider mes courbes de vie
                     </button>
@@ -782,105 +1172,49 @@
     <div class="popup-overlay" id="popupOverlay">
         <div class="popup-content">
             <div class="popup-header">
-                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--primary); margin: 0;">
-                    ➕ Ajouter un événement marquant
+                <h3 style="font-size: 1.75rem; font-weight: 800; margin: 0; color: var(--gray-900);">
+                    Ajouter des événements marquants
                 </h3>
                 <button class="popup-close" id="closePopupBtn">✕</button>
             </div>
-
-            <!-- Indicateur de progression -->
-            <div class="step-progress" id="stepProgress">
-                <div class="step-indicator active" data-step="1">1</div>
-                <div class="step-connector"></div>
-                <div class="step-indicator" data-step="2">2</div>
-                <div class="step-connector"></div>
-                <div class="step-indicator" data-step="3">3</div>
-                <div class="step-connector"></div>
-                <div class="step-indicator" data-step="4">4</div>
-                <div class="step-connector"></div>
-                <div class="step-indicator" data-step="5">5</div>
-            </div>
             
-            <div class="step-content">
-                <!-- Étape 1: Choix Personnel/Professionnel -->
-                <div class="step-panel active" id="step1">
-                    <div class="step-title">🎯 Type d'événement</div>
-                    <div class="step-description">Cet événement concerne-t-il votre vie personnelle ou professionnelle ?</div>
-                    
-                    <div class="timeline-choice">
-                        <div class="timeline-option" data-timeline="personal" id="personalChoice">
-                            <div class="timeline-icon">👤</div>
-                            <div class="timeline-label">Vie Personnelle</div>
-                        </div>
-                        <div class="timeline-option" data-timeline="professional" id="professionalChoice">
-                            <div class="timeline-icon">💼</div>
-                            <div class="timeline-label">Vie Professionnelle</div>
-                        </div>
-                    </div>
+            <!-- Contenu du formulaire multiple -->
+            <div class="events-form-container" style="max-height: 60vh; overflow-y: auto; padding-right: 0.5rem;">
+                <div id="eventsContainer">
+                    <!-- Le premier événement sera généré par JavaScript -->
                 </div>
-
-                <!-- Étape 2: Titre -->
-                <div class="step-panel" id="step2">
-                    <div class="step-title">📝 Titre de l'événement</div>
-                    <div class="step-description">Donnez un titre court et descriptif à cet événement</div>
-                    
-                    <div class="form-group">
-                        <input type="text" id="pointTitle" class="form-input" 
-                               placeholder="Ex: Obtention de mon diplôme, Naissance de mon enfant, Promotion..." 
-                               style="font-size: 1rem; padding: 1rem; text-align: center;" required>
-                    </div>
-                </div>
-
-                <!-- Étape 3: Date -->
-                <div class="step-panel" id="step3">
-                    <div class="step-title">📅 Date de l'événement</div>
-                    <div class="step-description">Quand cet événement a-t-il eu lieu ?</div>
-                    
-                    <div class="form-group">
-                        <input type="date" id="pointDate" class="form-input" 
-                               style="font-size: 1rem; padding: 1rem; text-align: center;" required>
-                    </div>
-                </div>
-
-                <!-- Étape 4: Description -->
-                <div class="step-panel" id="step4">
-                    <div class="step-title">💭 Brève description</div>
-                    <div class="step-description">Décrivez brièvement cet événement et son contexte (optionnel)</div>
-                    
-                    <div class="form-group">
-                        <textarea id="pointDescription" class="form-textarea" rows="4" 
-                                  placeholder="Décrivez le contexte, les circonstances, ce qui a rendu cet événement marquant..."
-                                  style="resize: none;"></textarea>
-                    </div>
-                </div>
-
-                <!-- Étape 5: Impact émotionnel -->
-                <div class="step-panel" id="step5">
-                    <div class="step-title">💫 Impact émotionnel</div>
-                    <div class="step-description">Quel a été l'impact de cet événement sur votre bien-être ?</div>
-                    
-                    <div class="form-group">
-                        <div class="impact-slider">
-                            <span style="font-size: 0.9rem; color: var(--error); font-weight: 600;">-5<br><small>Très négatif</small></span>
-                            <input type="range" id="impactRange" class="impact-range" min="-5" max="5" value="0">
-                            <span style="font-size: 0.9rem; color: var(--success); font-weight: 600;">+5<br><small>Très positif</small></span>
-                            <div id="impactValue" class="impact-value" style="font-size: 1.5rem; min-width: 60px;">0</div>
-                        </div>
-                        <p style="font-size: 0.85rem; color: var(--gray-500); margin-top: 1rem; text-align: center;">
-                            Déplacez le curseur pour évaluer l'impact de cet événement
-                        </p>
-                    </div>
+                
+                <div style="text-align: center; margin: 1.5rem 0;">
+                    <button id="addEventFieldBtn" class="step-nav-btn" style="background: var(--secondary); border-color: var(--secondary);">
+                        Ajouter un autre événement
+                    </button>
                 </div>
             </div>
 
             <!-- Navigation -->
             <div class="step-navigation">
-                <button id="prevStepBtn" class="step-nav-btn" style="visibility: hidden;">← Précédent</button>
-                <div style="color: var(--gray-500); font-size: 0.9rem;">
-                    <span id="currentStepText">Étape 1 sur 5</span>
+                <div style="color: var(--gray-500); font-size: 0.9rem; text-align: center;">
+                    <span id="eventsCount">1 événement à ajouter</span>
                 </div>
-                <button id="nextStepBtn" class="step-nav-btn primary">Suivant →</button>
+                <button id="submitAllEventsBtn" class="step-nav-btn primary">
+                    Ajouter tous les événements
+                </button>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal d'accueil -->  
+    <div class="welcome-modal-overlay" id="welcomeModal" style="display: none;">
+        <div class="welcome-modal-content">
+            <div class="welcome-icon">📈</div>
+            <h2 class="welcome-title">Tracez vos courbes de vie</h2>
+            <div class="welcome-description">
+                <p style="margin-bottom: 1rem;">Représentez graphiquement les moments marquants de votre parcours personnel et professionnel.</p>
+                <p style="margin-bottom: 0;">Chaque point reflète l'impact émotionnel de ces événements sur une échelle de -5 à +5.</p>
+            </div>
+            <button class="welcome-btn" id="startActivityBtn">
+                Commencer l'activité
+            </button>
         </div>
     </div>
 
