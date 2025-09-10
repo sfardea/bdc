@@ -190,12 +190,13 @@
             background: var(--white);
             border-radius: var(--radius-2xl);
             padding: 2rem;
-            max-width: 600px;
+            max-width: 500px;
             width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
+            max-height: 70vh;
+            overflow: hidden;
             box-shadow: var(--shadow-xl);
             animation: popupAppear 0.3s ease-out;
+            position: relative;
         }
 
         @keyframes popupAppear {
@@ -226,6 +227,165 @@
         .popup-close:hover {
             background: var(--gray-100);
             color: var(--gray-700);
+        }
+
+        /* Système d'étapes */
+        .step-progress {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
+        }
+
+        .step-indicator {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--gray-200);
+            color: var(--gray-500);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .step-indicator.active {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .step-indicator.completed {
+            background: var(--success);
+            color: var(--white);
+        }
+
+        .step-connector {
+            flex: 1;
+            height: 2px;
+            background: var(--gray-200);
+            margin: 0 0.5rem;
+            transition: var(--transition);
+        }
+
+        .step-connector.completed {
+            background: var(--success);
+        }
+
+        .step-content {
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .step-panel {
+            display: none;
+            animation: slideInStep 0.3s ease-out;
+        }
+
+        .step-panel.active {
+            display: block;
+        }
+
+        @keyframes slideInStep {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .step-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .step-description {
+            color: var(--gray-600);
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        /* Sélecteurs de timeline dans popup */
+        .timeline-choice {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .timeline-option {
+            background: var(--white);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .timeline-option:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .timeline-option.selected {
+            border-color: var(--primary);
+            background: var(--primary-bg);
+        }
+
+        .timeline-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-label {
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        /* Navigation des étapes */
+        .step-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .step-nav-btn {
+            background: var(--gray-100);
+            color: var(--gray-700);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .step-nav-btn:hover {
+            background: var(--gray-200);
+        }
+
+        .step-nav-btn.primary {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .step-nav-btn.primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .step-nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         .add-event-btn {
@@ -627,41 +787,99 @@
                 </h3>
                 <button class="popup-close" id="closePopupBtn">✕</button>
             </div>
-            
-            <div class="form-row">
-                <div class="form-group">
-                    <label class="form-label" for="pointDate">Date</label>
-                    <input type="date" id="pointDate" class="form-input" required>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label" for="pointTitle">Titre de l'événement</label>
-                    <input type="text" id="pointTitle" class="form-input" placeholder="Ex: Obtention de mon diplôme" required>
-                </div>
+
+            <!-- Indicateur de progression -->
+            <div class="step-progress" id="stepProgress">
+                <div class="step-indicator active" data-step="1">1</div>
+                <div class="step-connector"></div>
+                <div class="step-indicator" data-step="2">2</div>
+                <div class="step-connector"></div>
+                <div class="step-indicator" data-step="3">3</div>
+                <div class="step-connector"></div>
+                <div class="step-indicator" data-step="4">4</div>
+                <div class="step-connector"></div>
+                <div class="step-indicator" data-step="5">5</div>
             </div>
             
-            <div class="form-group full-width">
-                <label class="form-label" for="pointDescription">Description (optionnel)</label>
-                <textarea id="pointDescription" class="form-textarea" rows="3" placeholder="Décrivez brièvement cet événement et son contexte..."></textarea>
-            </div>
-            
-            <div class="form-group full-width">
-                <label class="form-label">Impact émotionnel</label>
-                <div class="impact-slider">
-                    <span style="font-size: 0.8rem; color: var(--error); font-weight: 600;">-5</span>
-                    <input type="range" id="impactRange" class="impact-range" min="-5" max="5" value="0">
-                    <span style="font-size: 0.8rem; color: var(--success); font-weight: 600;">+5</span>
-                    <div id="impactValue" class="impact-value">0</div>
+            <div class="step-content">
+                <!-- Étape 1: Choix Personnel/Professionnel -->
+                <div class="step-panel active" id="step1">
+                    <div class="step-title">🎯 Type d'événement</div>
+                    <div class="step-description">Cet événement concerne-t-il votre vie personnelle ou professionnelle ?</div>
+                    
+                    <div class="timeline-choice">
+                        <div class="timeline-option" data-timeline="personal" id="personalChoice">
+                            <div class="timeline-icon">👤</div>
+                            <div class="timeline-label">Vie Personnelle</div>
+                        </div>
+                        <div class="timeline-option" data-timeline="professional" id="professionalChoice">
+                            <div class="timeline-icon">💼</div>
+                            <div class="timeline-label">Vie Professionnelle</div>
+                        </div>
+                    </div>
                 </div>
-                <p style="font-size: 0.8rem; color: var(--gray-500); margin-top: 0.5rem;">
-                    -5 = Très négatif, 0 = Neutre, +5 = Très positif
-                </p>
+
+                <!-- Étape 2: Titre -->
+                <div class="step-panel" id="step2">
+                    <div class="step-title">📝 Titre de l'événement</div>
+                    <div class="step-description">Donnez un titre court et descriptif à cet événement</div>
+                    
+                    <div class="form-group">
+                        <input type="text" id="pointTitle" class="form-input" 
+                               placeholder="Ex: Obtention de mon diplôme, Naissance de mon enfant, Promotion..." 
+                               style="font-size: 1rem; padding: 1rem; text-align: center;" required>
+                    </div>
+                </div>
+
+                <!-- Étape 3: Date -->
+                <div class="step-panel" id="step3">
+                    <div class="step-title">📅 Date de l'événement</div>
+                    <div class="step-description">Quand cet événement a-t-il eu lieu ?</div>
+                    
+                    <div class="form-group">
+                        <input type="date" id="pointDate" class="form-input" 
+                               style="font-size: 1rem; padding: 1rem; text-align: center;" required>
+                    </div>
+                </div>
+
+                <!-- Étape 4: Description -->
+                <div class="step-panel" id="step4">
+                    <div class="step-title">💭 Brève description</div>
+                    <div class="step-description">Décrivez brièvement cet événement et son contexte (optionnel)</div>
+                    
+                    <div class="form-group">
+                        <textarea id="pointDescription" class="form-textarea" rows="4" 
+                                  placeholder="Décrivez le contexte, les circonstances, ce qui a rendu cet événement marquant..."
+                                  style="resize: none;"></textarea>
+                    </div>
+                </div>
+
+                <!-- Étape 5: Impact émotionnel -->
+                <div class="step-panel" id="step5">
+                    <div class="step-title">💫 Impact émotionnel</div>
+                    <div class="step-description">Quel a été l'impact de cet événement sur votre bien-être ?</div>
+                    
+                    <div class="form-group">
+                        <div class="impact-slider">
+                            <span style="font-size: 0.9rem; color: var(--error); font-weight: 600;">-5<br><small>Très négatif</small></span>
+                            <input type="range" id="impactRange" class="impact-range" min="-5" max="5" value="0">
+                            <span style="font-size: 0.9rem; color: var(--success); font-weight: 600;">+5<br><small>Très positif</small></span>
+                            <div id="impactValue" class="impact-value" style="font-size: 1.5rem; min-width: 60px;">0</div>
+                        </div>
+                        <p style="font-size: 0.85rem; color: var(--gray-500); margin-top: 1rem; text-align: center;">
+                            Déplacez le curseur pour évaluer l'impact de cet événement
+                        </p>
+                    </div>
+                </div>
             </div>
-            
-            <div style="text-align: center; margin-top: 1.5rem;">
-                <button id="addPointBtn" class="add-point-btn">
-                    Ajouter ce point
-                </button>
+
+            <!-- Navigation -->
+            <div class="step-navigation">
+                <button id="prevStepBtn" class="step-nav-btn" style="visibility: hidden;">← Précédent</button>
+                <div style="color: var(--gray-500); font-size: 0.9rem;">
+                    <span id="currentStepText">Étape 1 sur 5</span>
+                </div>
+                <button id="nextStepBtn" class="step-nav-btn primary">Suivant →</button>
             </div>
         </div>
     </div>

@@ -12,6 +12,18 @@ class LifeCurvesModule {
         this.minDate = new Date('1950-01-01');
         this.maxDate = new Date();
         this.tooltip = null;
+        
+        // Gestion des étapes de la popup
+        this.currentStep = 1;
+        this.totalSteps = 5;
+        this.stepData = {
+            timeline: null,
+            title: '',
+            date: '',
+            description: '',
+            impact: 0
+        };
+        
         this.init();
     }
 
@@ -47,6 +59,20 @@ class LifeCurvesModule {
             }
         });
 
+        // Navigation des étapes
+        const prevStepBtn = document.getElementById('prevStepBtn');
+        const nextStepBtn = document.getElementById('nextStepBtn');
+        
+        prevStepBtn.addEventListener('click', () => this.previousStep());
+        nextStepBtn.addEventListener('click', () => this.nextStep());
+
+        // Choix timeline étape 1
+        const personalChoice = document.getElementById('personalChoice');
+        const professionalChoice = document.getElementById('professionalChoice');
+        
+        personalChoice.addEventListener('click', () => this.selectTimeline('personal'));
+        professionalChoice.addEventListener('click', () => this.selectTimeline('professional'));
+
         // Slider d'impact
         const impactRange = document.getElementById('impactRange');
         const impactValue = document.getElementById('impactValue');
@@ -61,9 +87,12 @@ class LifeCurvesModule {
             if (value < 0) impactValue.classList.add('negative');
         });
 
-        // Bouton d'ajout de point
-        const addPointBtn = document.getElementById('addPointBtn');
-        addPointBtn.addEventListener('click', () => this.addPoint());
+        // Validation des champs
+        const pointTitle = document.getElementById('pointTitle');
+        const pointDate = document.getElementById('pointDate');
+        
+        pointTitle.addEventListener('input', () => this.validateCurrentStep());
+        pointDate.addEventListener('change', () => this.validateCurrentStep());
 
         // Bouton de validation
         const validateBtn = document.getElementById('validateBtn');
@@ -71,12 +100,18 @@ class LifeCurvesModule {
 
         // Gestion des entrées clavier
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && e.target.closest('.popup-content')) {
-                e.preventDefault();
-                this.addPoint();
-            }
-            if (e.key === 'Escape') {
-                this.closePopup();
+            if (e.target.closest('.popup-content')) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (this.currentStep < this.totalSteps) {
+                        this.nextStep();
+                    } else {
+                        this.submitEvent();
+                    }
+                }
+                if (e.key === 'Escape') {
+                    this.closePopup();
+                }
             }
         });
     }
@@ -96,37 +131,192 @@ class LifeCurvesModule {
         this.drawTimeline();
     }
 
-    addPoint() {
-        const dateInput = document.getElementById('pointDate');
-        const titleInput = document.getElementById('pointTitle');
-        const descriptionInput = document.getElementById('pointDescription');
-        const impactRange = document.getElementById('impactRange');
+    // Méthode addPoint remplacée par submitEvent
 
-        // Validation
-        if (!dateInput.value.trim()) {
-            this.showNotification('Veuillez saisir une date.', 'error');
-            dateInput.focus();
-            return;
+    openPopup() {
+        const popupOverlay = document.getElementById('popupOverlay');
+        popupOverlay.classList.add('active');
+        
+        // Réinitialiser les étapes
+        this.currentStep = 1;
+        this.stepData = {
+            timeline: null,
+            title: '',
+            date: '',
+            description: '',
+            impact: 0
+        };
+        
+        this.updateStepDisplay();
+        this.resetForm();
+    }
+
+    closePopup() {
+        const popupOverlay = document.getElementById('popupOverlay');
+        popupOverlay.classList.remove('active');
+    }
+
+    selectTimeline(timeline) {
+        this.stepData.timeline = timeline;
+        
+        // Mettre à jour l'affichage
+        document.getElementById('personalChoice').classList.toggle('selected', timeline === 'personal');
+        document.getElementById('professionalChoice').classList.toggle('selected', timeline === 'professional');
+        
+        this.validateCurrentStep();
+    }
+
+    nextStep() {
+        if (this.currentStep < this.totalSteps && this.validateCurrentStep()) {
+            // Sauvegarder les données de l'étape actuelle
+            this.saveCurrentStepData();
+            
+            this.currentStep++;
+            this.updateStepDisplay();
+            
+            // Focus sur le champ de la nouvelle étape
+            this.focusCurrentStepInput();
+        } else if (this.currentStep === this.totalSteps && this.validateCurrentStep()) {
+            this.submitEvent();
         }
+    }
 
-        if (!titleInput.value.trim()) {
-            this.showNotification('Veuillez saisir un titre pour l\'événement.', 'error');
-            titleInput.focus();
-            return;
+    previousStep() {
+        if (this.currentStep > 1) {
+            this.currentStep--;
+            this.updateStepDisplay();
+            this.focusCurrentStepInput();
         }
+    }
 
+    updateStepDisplay() {
+        // Mettre à jour les indicateurs de progression
+        const indicators = document.querySelectorAll('.step-indicator');
+        const connectors = document.querySelectorAll('.step-connector');
+        
+        indicators.forEach((indicator, index) => {
+            const stepNum = index + 1;
+            indicator.classList.remove('active', 'completed');
+            
+            if (stepNum < this.currentStep) {
+                indicator.classList.add('completed');
+                indicator.innerHTML = '✓';
+            } else if (stepNum === this.currentStep) {
+                indicator.classList.add('active');
+                indicator.innerHTML = stepNum;
+            } else {
+                indicator.innerHTML = stepNum;
+            }
+        });
+        
+        connectors.forEach((connector, index) => {
+            connector.classList.toggle('completed', index + 1 < this.currentStep);
+        });
+        
+        // Afficher le bon panneau
+        document.querySelectorAll('.step-panel').forEach((panel, index) => {
+            panel.classList.toggle('active', index + 1 === this.currentStep);
+        });
+        
+        // Mettre à jour la navigation
+        const prevBtn = document.getElementById('prevStepBtn');
+        const nextBtn = document.getElementById('nextStepBtn');
+        const stepText = document.getElementById('currentStepText');
+        
+        prevBtn.style.visibility = this.currentStep > 1 ? 'visible' : 'hidden';
+        nextBtn.textContent = this.currentStep === this.totalSteps ? 'Ajouter l\'événement' : 'Suivant →';
+        stepText.textContent = `Étape ${this.currentStep} sur ${this.totalSteps}`;
+        
+        // Valider l'étape actuelle
+        this.validateCurrentStep();
+    }
+
+    validateCurrentStep() {
+        const nextBtn = document.getElementById('nextStepBtn');
+        let isValid = false;
+        
+        switch(this.currentStep) {
+            case 1: // Timeline
+                isValid = this.stepData.timeline !== null;
+                break;
+            case 2: // Titre
+                const title = document.getElementById('pointTitle').value.trim();
+                isValid = title.length > 0;
+                break;
+            case 3: // Date
+                const date = document.getElementById('pointDate').value;
+                isValid = date !== '';
+                break;
+            case 4: // Description (optionnelle)
+                isValid = true; // Toujours valide car optionnelle
+                break;
+            case 5: // Impact
+                isValid = true; // Toujours valide car a une valeur par défaut
+                break;
+        }
+        
+        nextBtn.disabled = !isValid;
+        return isValid;
+    }
+
+    saveCurrentStepData() {
+        switch(this.currentStep) {
+            case 1:
+                // Timeline déjà sauvegardée dans selectTimeline
+                break;
+            case 2:
+                this.stepData.title = document.getElementById('pointTitle').value.trim();
+                break;
+            case 3:
+                this.stepData.date = document.getElementById('pointDate').value;
+                break;
+            case 4:
+                this.stepData.description = document.getElementById('pointDescription').value.trim();
+                break;
+            case 5:
+                this.stepData.impact = parseInt(document.getElementById('impactRange').value);
+                break;
+        }
+    }
+
+    focusCurrentStepInput() {
+        setTimeout(() => {
+            let inputToFocus;
+            switch(this.currentStep) {
+                case 2:
+                    inputToFocus = document.getElementById('pointTitle');
+                    break;
+                case 3:
+                    inputToFocus = document.getElementById('pointDate');
+                    break;
+                case 4:
+                    inputToFocus = document.getElementById('pointDescription');
+                    break;
+                case 5:
+                    inputToFocus = document.getElementById('impactRange');
+                    break;
+            }
+            if (inputToFocus) inputToFocus.focus();
+        }, 100);
+    }
+
+    submitEvent() {
+        // Sauvegarder la dernière étape
+        this.saveCurrentStepData();
+        
+        // Créer l'événement
         const pointData = {
             id: Date.now(),
-            date: dateInput.value,
-            title: titleInput.value.trim(),
-            description: descriptionInput.value.trim(),
-            impact: parseInt(impactRange.value),
-            timeline: this.currentTimeline,
+            date: this.stepData.date,
+            title: this.stepData.title,
+            description: this.stepData.description,
+            impact: this.stepData.impact,
+            timeline: this.stepData.timeline,
             timestamp: new Date().toISOString()
         };
 
         // Ajouter le point à la timeline appropriée
-        if (this.currentTimeline === 'personal') {
+        if (this.stepData.timeline === 'personal') {
             this.personalPoints.push(pointData);
         } else {
             this.professionalPoints.push(pointData);
@@ -135,38 +325,13 @@ class LifeCurvesModule {
         // Trier les points par date
         this.sortPointsByDate();
 
-        // Réinitialiser le formulaire
-        this.resetForm();
-
-        // Redessiner la timeline
-        this.drawTimeline();
-
         // Mettre à jour l'interface
+        this.switchTimeline(this.stepData.timeline); // Basculer sur la bonne timeline
         this.updateUI();
-
-        // Sauvegarder
         this.saveData();
 
         this.showNotification(`Événement "${pointData.title}" ajouté avec succès !`, 'success');
-        
-        // Fermer la popup après ajout
         this.closePopup();
-    }
-
-    openPopup() {
-        const popupOverlay = document.getElementById('popupOverlay');
-        popupOverlay.classList.add('active');
-        
-        // Focus sur le premier champ
-        setTimeout(() => {
-            const firstInput = document.getElementById('pointDate');
-            if (firstInput) firstInput.focus();
-        }, 100);
-    }
-
-    closePopup() {
-        const popupOverlay = document.getElementById('popupOverlay');
-        popupOverlay.classList.remove('active');
     }
 
     sortPointsByDate() {
