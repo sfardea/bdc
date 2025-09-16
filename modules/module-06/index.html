@@ -1101,41 +1101,41 @@
                 <div class="main-layout" style="flex: 1; overflow: hidden;">
                     <!-- Section timeline -->
                     <div class="timeline-section" style="overflow: hidden; display: flex; flex-direction: column;">
-                        <!-- Introduction -->
+                <!-- Introduction -->
                         <div style="margin-bottom: 2rem; flex-shrink: 0; text-align: left;">
                             <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--gray-900); margin-bottom: 1rem;">
                                 Tracez vos courbes de vie
-                            </h2>
+                    </h2>
                             <p style="color: var(--gray-900); font-size: 1rem; line-height: 1.4; margin: 0 0 0.75rem 0; font-weight: 500;">
-                                Représentez graphiquement les moments marquants de votre parcours personnel et professionnel.
+                        Représentez graphiquement les moments marquants de votre parcours personnel et professionnel. 
                             </p>
                             <p style="color: var(--gray-900); font-size: 1rem; line-height: 1.4; margin: 0 0 1.5rem 0; font-weight: 500;">
-                                Chaque point reflète l'impact émotionnel de ces événements sur une échelle de -5 à +5.
-                            </p>
-                        </div>
-                        
+                        Chaque point reflète l'impact émotionnel de ces événements sur une échelle de -5 à +5.
+                    </p>
+                </div>
+
                         <!-- Bouton d'ajout à droite -->
                         <div style="display: flex; justify-content: flex-end; margin-bottom: 1rem; flex-shrink: 0;">
                             <button id="openPopupBtnSelector" class="add-event-btn-selector">
                                 Ajouter un événement
-                            </button>
-                        </div>
+                    </button>
+                </div>
 
                         <!-- Canvas de la timeline (sans conteneur limitant) -->
                         <div class="timeline-canvas-wrapper" style="flex: 1; overflow: hidden;">
-                            <div class="timeline-canvas" id="timelineCanvas">
-                                <!-- Labels d'impact -->
-                                <div class="timeline-labels">
+                    <div class="timeline-canvas" id="timelineCanvas">
+                        <!-- Labels d'impact -->
+                        <div class="timeline-labels">
                                     <div class="timeline-label positive" style="top: 15px; left: 15px; font-size: 0.8rem;">+5</div>
                                     <div class="timeline-label" style="top: 50%; left: 15px; transform: translateY(-50%); font-size: 0.8rem;">0</div>
                                     <div class="timeline-label negative" style="bottom: 15px; left: 15px; font-size: 0.8rem;">-5</div>
-                                </div>
-                                
-                                    <!-- Axe principal supprimé -->
-                                
-                                <!-- Les points seront ajoutés dynamiquement ici -->
-                            </div>
                         </div>
+                        
+                                    <!-- Axe principal supprimé -->
+                        
+                        <!-- Les points seront ajoutés dynamiquement ici -->
+                    </div>
+                </div>
 
                     </div>
 
@@ -1145,28 +1145,28 @@
                             <div style="width: 100%; display: flex; flex-direction: column; height: 100%;">
                                 <h3 style="font-size: 1rem; font-weight: 700; color: var(--gray-900); margin-bottom: 0.5rem; text-align: center; flex-shrink: 0;">
                                     Vos événements
-                                </h3>
-                                
+                    </h3>
+                    
                                 <div class="events-list" id="allEventsList" style="flex: 1; min-height: 0;">
                                     <!-- Tous les événements seront affichés ici -->
-                                </div>
-                            </div>
+                        </div>
                         </div>
                     </div>
-                </div>
-
+                    </div>
+                    </div>
+                    
                 <!-- Validation -->
                 <div class="validation-section" style="text-align: center; margin: 1rem 0; flex-shrink: 0;">
                     <button id="validateBtn" class="validate-btn" disabled>
                         Valider mes courbes de vie
-                    </button>
+                        </button>
                     <p style="color: var(--gray-500); font-size: 0.85rem; margin-top: 0.5rem;">
                         Ajoutez au moins 3 points sur chaque timeline pour continuer
                     </p>
-                </div>
+                    </div>
             </div>
         </main>
-    </div>
+                </div>
 
     <!-- Popup pour ajout d'événement -->
     <div class="popup-overlay" id="popupOverlay">
@@ -1174,7 +1174,7 @@
             <div class="popup-header">
                 <h3 style="font-size: 1.75rem; font-weight: 800; margin: 0; color: var(--gray-900);">
                     Ajouter des événements marquants
-                </h3>
+                    </h3>
                 <button class="popup-close" id="closePopupBtn">✕</button>
             </div>
             
@@ -1182,14 +1182,14 @@
             <div class="events-form-container" style="max-height: 60vh; overflow-y: auto; padding-right: 0.5rem;">
                 <div id="eventsContainer">
                     <!-- Le premier événement sera généré par JavaScript -->
-                </div>
-                
+                    </div>
+                    
                 <div style="text-align: center; margin: 1.5rem 0;">
                     <button id="addEventFieldBtn" class="step-nav-btn" style="background: var(--secondary); border-color: var(--secondary);">
                         Ajouter un autre événement
                     </button>
+                    </div>
                 </div>
-            </div>
 
             <!-- Navigation -->
             <div class="step-navigation">
@@ -1198,9 +1198,9 @@
                 </div>
                 <button id="submitAllEventsBtn" class="step-nav-btn primary">
                     Ajouter tous les événements
-                </button>
+                    </button>
+                </div>
             </div>
-        </div>
     </div>
 
     <!-- Modal d'accueil -->  

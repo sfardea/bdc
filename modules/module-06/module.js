@@ -203,38 +203,38 @@ class LifeCurvesModule {
             // Validation
             if (!title || !date) {
                 this.showNotification('Veuillez remplir au moins le titre et la date pour tous les événements.', 'error');
-                return;
-            }
-            
-            const pointData = {
+            return;
+        }
+
+        const pointData = {
                 id: Date.now() + Math.random(),
                 date: date,
                 title: title,
                 description: description,
                 impact: impact,
                 timeline: timeline,
-                timestamp: new Date().toISOString()
-            };
+            timestamp: new Date().toISOString()
+        };
 
-            // Ajouter le point à la timeline appropriée
+        // Ajouter le point à la timeline appropriée
             if (timeline === 'personal') {
-                this.personalPoints.push(pointData);
-            } else {
-                this.professionalPoints.push(pointData);
-            }
-            
+            this.personalPoints.push(pointData);
+        } else {
+            this.professionalPoints.push(pointData);
+        }
+
             addedCount++;
         });
         
         if (addedCount > 0) {
-            // Trier les points par date
-            this.sortPointsByDate();
-            
+        // Trier les points par date
+        this.sortPointsByDate();
+
             // Mettre à jour l'interface
-            this.drawTimeline();
-            this.updateUI();
-            this.saveData();
-            
+        this.drawTimeline();
+        this.updateUI();
+        this.saveData();
+
             this.showNotification(`${addedCount} événement${addedCount > 1 ? 's' : ''} ajouté${addedCount > 1 ? 's' : ''} avec succès !`, 'success');
             this.closePopup();
         }
