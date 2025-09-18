@@ -6,7 +6,7 @@
 
 class PhotoLanguageModule {
     constructor() {
-        this.currentStep = 0;
+        this.currentScreen = 0; // 0=intro, 1=grille1, 2=form1, 3=grille2, 4=form2
         this.selectedPhotos = {
             step1: null,
             step2: null
@@ -15,6 +15,7 @@ class PhotoLanguageModule {
             step1: {},
             step2: {}
         };
+        this.visitedScreens = new Set(); // Tracker les écrans visités
         
         // 15 photos variées avec des thèmes universels
         this.photos = [
@@ -55,8 +56,11 @@ class PhotoLanguageModule {
         startBtn.addEventListener('click', () => this.startActivity());
 
         // Boutons de navigation
-        document.getElementById('backBtn1').addEventListener('click', () => this.showPhotosGrid(1));
-        document.getElementById('backBtn2').addEventListener('click', () => this.showPhotosGrid(2));
+        document.getElementById('backBtn1').addEventListener('click', () => this.goBackFromScreen2());
+        document.getElementById('backBtn2').addEventListener('click', () => this.goBackFromScreen4());
+        document.getElementById('backToStep1Btn').addEventListener('click', () => this.goBackToStep1());
+        document.getElementById('nextToForm1Btn').addEventListener('click', () => this.goToScreen2());
+        document.getElementById('nextToForm2Btn').addEventListener('click', () => this.goToScreen4());
         document.getElementById('continueBtn1').addEventListener('click', () => this.continueToStep2());
         document.getElementById('finishBtn').addEventListener('click', () => this.finishActivity());
 
@@ -77,10 +81,46 @@ class PhotoLanguageModule {
 
     startActivity() {
         this.hideIntroModal();
-        this.currentStep = 1;
-        this.showStep(1);
+        this.currentScreen = 1; // Écran 1 : Grille photos étape 1
+        this.showScreen1();
         this.updateProgress();
         document.getElementById('progressContainer').style.display = 'block';
+    }
+
+    showScreen1() {
+        // Écran 1 : Grille de photos étape 1
+        document.querySelectorAll('.step-section').forEach(s => s.classList.remove('active'));
+        document.getElementById('step1').classList.add('active');
+        this.generatePhotosGrid(1);
+        document.getElementById('photosGrid1').style.display = 'grid';
+        document.getElementById('photoView1').classList.remove('active');
+    }
+
+    showScreen2() {
+        // Écran 2 : Formulaire étape 1
+        document.querySelectorAll('.step-section').forEach(s => s.classList.remove('active'));
+        document.getElementById('step1').classList.add('active');
+        document.getElementById('photosGrid1').style.display = 'none';
+        document.getElementById('photoView1').classList.add('active');
+    }
+
+    showScreen3() {
+        // Écran 3 : Grille de photos étape 2
+        document.querySelectorAll('.step-section').forEach(s => s.classList.remove('active'));
+        document.getElementById('step2').classList.add('active');
+        this.generatePhotosGrid(2);
+        document.getElementById('photosGrid2').style.display = 'grid';
+        document.getElementById('photoView2').classList.remove('active');
+        // Afficher le bouton de retour à l'étape 1
+        document.getElementById('gridNavigation2').style.display = 'block';
+    }
+
+    showScreen4() {
+        // Écran 4 : Formulaire étape 2
+        document.getElementById('photosGrid2').style.display = 'none';
+        document.getElementById('photoView2').classList.add('active');
+        // Masquer le bouton de navigation de la grille
+        document.getElementById('gridNavigation2').style.display = 'none';
     }
 
     showStep(stepNumber) {
@@ -118,23 +158,35 @@ class PhotoLanguageModule {
     selectPhoto(stepNumber, photo) {
         this.selectedPhotos[`step${stepNumber}`] = photo;
         
-        // Masquer la grille et afficher la vue photo
-        document.getElementById(`photosGrid${stepNumber}`).style.display = 'none';
-        document.getElementById(`photoView${stepNumber}`).classList.add('active');
+        // Sauvegarde automatique immédiate de la sélection
+        this.saveData();
+        this.showAutoSaveIndicator();
+        
+        // Passer à l'écran formulaire correspondant
+        if (stepNumber === 1) {
+            this.currentScreen = 2; // Écran 2 : Formulaire étape 1
+            this.showScreen2();
+        } else {
+            this.currentScreen = 4; // Écran 4 : Formulaire étape 2
+            this.showScreen4();
+        }
         
         // Afficher la photo sélectionnée
         document.getElementById(`selectedPhoto${stepNumber}`).src = photo.src;
         
-        // Réinitialiser le formulaire
-        this.resetForm(stepNumber);
-        
-        this.saveData();
+        // Ne pas réinitialiser le formulaire - garder les données existantes
+        // this.resetForm(stepNumber); // SUPPRIMÉ pour conserver les données
     }
 
     showPhotosGrid(stepNumber) {
-        // Masquer la vue photo et réafficher la grille
-        document.getElementById(`photoView${stepNumber}`).classList.remove('active');
-        document.getElementById(`photosGrid${stepNumber}`).style.display = 'grid';
+        // Retour à la grille de photos
+        if (stepNumber === 1) {
+            this.currentScreen = 1; // Écran 1 : Grille étape 1
+            this.showScreen1();
+        } else {
+            this.currentScreen = 3; // Écran 3 : Grille étape 2
+            this.showScreen3();
+        }
     }
 
     bindFormValidation(stepNumber) {
@@ -145,13 +197,94 @@ class PhotoLanguageModule {
             document.getElementById('finishBtn');
 
         inputs.forEach(input => {
+            // Sauvegarde automatique à chaque frappe
             input.addEventListener('input', () => {
+                this.autoSaveField(input, stepNumber);
                 this.validateForm(stepNumber);
-                this.saveFormData(stepNumber);
+            });
+            
+            // Sauvegarde aussi au blur (perte de focus)
+            input.addEventListener('blur', () => {
+                this.autoSaveField(input, stepNumber);
             });
         });
 
         this.validateForm(stepNumber);
+    }
+
+    autoSaveField(input, stepNumber) {
+        // Sauvegarder immédiatement le champ modifié
+        if (!this.formData[`step${stepNumber}`]) {
+            this.formData[`step${stepNumber}`] = {};
+        }
+        
+        this.formData[`step${stepNumber}`][input.id] = input.value;
+        
+        // Sauvegarder en localStorage et SCORM immédiatement
+        this.saveData();
+        
+        // Feedback visuel discret
+        this.showAutoSaveIndicator();
+    }
+
+    showAutoSaveIndicator() {
+        // Indicateur discret de sauvegarde automatique
+        let indicator = document.getElementById('autoSaveIndicator');
+        if (!indicator) {
+            indicator = document.createElement('div');
+            indicator.id = 'autoSaveIndicator';
+            indicator.style.cssText = `
+                position: fixed;
+                top: 10px;
+                right: 10px;
+                background: var(--success);
+                color: var(--white);
+                padding: 0.3rem 0.8rem;
+                border-radius: var(--radius);
+                font-size: 0.8rem;
+                z-index: 1000;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            `;
+            indicator.textContent = '💾 Sauvegardé';
+            document.body.appendChild(indicator);
+        }
+        
+        indicator.style.opacity = '1';
+        
+        // Masquer après 1 seconde
+        setTimeout(() => {
+            indicator.style.opacity = '0';
+        }, 1000);
+    }
+
+    updateNavigationButtons() {
+        // Afficher les boutons "Suivant" si les écrans ont été visités
+        
+        // Bouton "Suivant" sur grille étape 1 (si form1 visité)
+        if (this.visitedScreens.has(2) && this.selectedPhotos.step1) {
+            document.getElementById('gridNavigation1').style.display = 'block';
+        } else {
+            document.getElementById('gridNavigation1').style.display = 'none';
+        }
+        
+        // Bouton "Suivant" sur grille étape 2 (si form2 visité)
+        const nextBtn2 = document.getElementById('nextToForm2Btn');
+        if (this.visitedScreens.has(4) && this.selectedPhotos.step2) {
+            nextBtn2.style.display = 'inline-block';
+        } else {
+            nextBtn2.style.display = 'none';
+        }
+    }
+
+    goToScreen2() {
+        // Aller directement au formulaire étape 1
+        this.showScreen2();
+    }
+
+    goToScreen4() {
+        // Aller directement au formulaire étape 2
+        this.showScreen4();
     }
 
     validateForm(stepNumber) {
@@ -197,24 +330,59 @@ class PhotoLanguageModule {
 
     continueToStep2() {
         this.saveFormData(1);
-        this.currentStep = 2;
-        this.showStep(2);
+        this.currentScreen = 3; // Écran 3 : Grille photos étape 2
+        this.showScreen3();
         this.updateProgress();
+        this.saveData();
+    }
+
+    goBackFromScreen2() {
+        // Écran 2 → Écran 1 : Du formulaire étape 1 vers grille étape 1
+        this.currentScreen = 1;
+        this.showScreen1();
+        this.updateProgress();
+        this.saveData();
+    }
+
+    goBackFromScreen4() {
+        // Écran 4 → Écran 3 : Du formulaire étape 2 vers grille étape 2
+        this.currentScreen = 3;
+        this.showScreen3();
+        this.updateProgress();
+        this.saveData();
+    }
+
+    goBackToStep1() {
+        // Navigation depuis l'écran 3 (grille étape 2) vers écran 2 (formulaire étape 1)
+        this.currentScreen = 2; // Écran 2 : Formulaire étape 1
+        this.showScreen2();
+        this.updateProgress();
+        this.saveData();
     }
 
     updateProgress() {
         const progressFill = document.getElementById('progressFill');
         const progressText = document.getElementById('progressText');
         
-        const progress = (this.currentStep / 2) * 100;
+        // Calculer la progression selon l'écran actuel (4 écrans total)
+        const progress = (this.currentScreen / 4) * 100;
         progressFill.style.width = `${progress}%`;
         
-        if (this.currentStep === 1) {
-            progressText.textContent = 'Étape 1 sur 2 - Moi aujourd\'hui';
-        } else if (this.currentStep === 2) {
-            progressText.textContent = 'Étape 2 sur 2 - Ma projection future';
-        } else {
-            progressText.textContent = 'Activité terminée !';
+        switch(this.currentScreen) {
+            case 1:
+                progressText.textContent = 'Étape 1 sur 2 - Sélection photo "Moi aujourd\'hui"';
+                break;
+            case 2:
+                progressText.textContent = 'Étape 1 sur 2 - Analyse "Moi aujourd\'hui"';
+                break;
+            case 3:
+                progressText.textContent = 'Étape 2 sur 2 - Sélection photo "Ma projection future"';
+                break;
+            case 4:
+                progressText.textContent = 'Étape 2 sur 2 - Analyse "Ma projection future"';
+                break;
+            default:
+                progressText.textContent = 'Activité terminée !';
         }
     }
 
@@ -318,9 +486,10 @@ class PhotoLanguageModule {
 
     saveData() {
         const data = {
-            currentStep: this.currentStep,
+            currentScreen: this.currentScreen,
             selectedPhotos: this.selectedPhotos,
             formData: this.formData,
+            visitedScreens: Array.from(this.visitedScreens),
             timestamp: new Date().toISOString()
         };
 
@@ -364,15 +533,48 @@ class PhotoLanguageModule {
         if (savedData) {
             this.selectedPhotos = savedData.selectedPhotos || { step1: null, step2: null };
             this.formData = savedData.formData || { step1: {}, step2: {} };
-            this.currentStep = savedData.currentStep || 0;
+            this.currentScreen = savedData.currentScreen || 0;
+            this.visitedScreens = new Set(savedData.visitedScreens || []);
 
             // Restaurer l'état si l'activité était en cours
-            if (this.currentStep > 0) {
+            if (this.currentScreen > 0) {
                 this.hideIntroModal();
                 document.getElementById('progressContainer').style.display = 'block';
+                
+                // Restaurer l'écran exact où l'utilisateur était
+                switch(this.currentScreen) {
+                    case 1: this.showScreen1(); break;
+                    case 2: this.showScreen2(); break;
+                    case 3: this.showScreen3(); break;
+                    case 4: this.showScreen4(); break;
+                }
+                
+                // Restaurer les données du formulaire
                 this.restoreFormData();
                 this.updateProgress();
             }
+        }
+    }
+
+    showStep(stepNumber) {
+        // Masquer toutes les étapes
+        document.querySelectorAll('.step-section').forEach(section => {
+            section.classList.remove('active');
+        });
+        
+        // Afficher l'étape demandée
+        const stepElement = document.getElementById(`step${stepNumber}`);
+        if (stepElement) {
+            stepElement.classList.add('active');
+        }
+        
+        // Générer la grille de photos pour cette étape
+        this.generatePhotosGrid(stepNumber);
+        
+        // Restaurer la photo sélectionnée si elle existe
+        const selectedPhoto = this.selectedPhotos[`step${stepNumber}`];
+        if (selectedPhoto) {
+            this.selectPhoto(stepNumber, selectedPhoto);
         }
     }
 

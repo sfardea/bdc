@@ -6,17 +6,130 @@
     <title>Module 8 : Les 32 figures du destin</title>
     <link rel="stylesheet" href="/shared/css/modern-theme.css">
     <style>
-        .module-container {
-            max-width: 1000px;
-            margin: 0 auto;
+        /* Styles spécifiques au module */
+        .figures-container {
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+            width: 100%;
         }
-        .main-content {
-            background: var(--white);
-            border-radius: var(--radius-xl);
-            padding: 2rem;
-            margin: 2rem 0;
-            box-shadow: var(--shadow-lg);
+
+        /* Layout principal */
+        .main-layout {
+            display: flex;
+            height: calc(100vh - 280px);
+            width: 100%;
+            max-width: none;
+            overflow: hidden;
         }
+
+        .figures-section {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Grille des figures */
+        .figures-grid {
+            display: grid;
+            grid-template-columns: repeat(11, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 0.15rem;
+            height: 100%;
+            overflow: hidden;
+            padding: 0.3rem;
+        }
+
+        .figure-card {
+            position: relative;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+            z-index: 1;
+            perspective: 1000px;
+        }
+
+        .figure-card:hover {
+            z-index: 100;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .figure-card:hover .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front,
+        .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 1px solid rgba(0,0,0,0.08);
+        }
+
+        .card-front {
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: #f5f5f5;
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0.8rem;
+            box-sizing: border-box;
+        }
+
+        .card-title {
+            color: var(--white);
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+
+        .card-description {
+            color: var(--white);
+            font-size: 0.9rem;
+            line-height: 1.4;
+            text-align: center;
+            overflow-y: auto;
+            max-height: 75%;
+        }
+
+        .figure-card.selected::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(76, 175, 80, 0.3);
+            border-radius: 8px;
+            pointer-events: none;
+            z-index: 2;
+        }
+
         .validate-btn {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: var(--white);
@@ -27,29 +140,88 @@
             cursor: pointer;
             transition: var(--transition);
             box-shadow: var(--shadow-md);
+            margin-top: 1rem;
         }
+
         .validate-btn:hover {
             transform: translateY(-2px);
             box-shadow: var(--shadow-lg);
         }
+
+        .validate-btn:disabled {
+            background: var(--gray-400);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-layout {
+                height: calc(100vh - 250px);
+            }
+            
+            .figures-grid {
+                grid-template-columns: repeat(4, 1fr);
+                grid-template-rows: repeat(8, 1fr);
+                gap: 0.05rem;
+                padding: 0.2rem;
+            }
+        }
+
+        /* Optimisations desktop */
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 95vw !important;
+                padding: 0 2rem;
+            }
+            
+            .main-layout {
+                height: calc(100vh - 320px);
+            }
+        }
+
+        @media (min-width: 1600px) {
+            .figures-grid {
+                grid-template-columns: repeat(11, 1fr);
+                grid-template-rows: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 1599px) and (min-width: 1200px) {
+            .figures-grid {
+                grid-template-columns: repeat(8, 1fr);
+                grid-template-rows: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 1199px) and (min-width: 1024px) {
+            .figures-grid {
+                grid-template-columns: repeat(6, 1fr);
+                grid-template-rows: repeat(6, 1fr);
+            }
+        }
     </style>
 </head>
-<body class="module-scrollable">
-    <div class="container">
-        <header class="card animate-fade-in" style="padding: 0.75rem 1rem; margin-bottom: 0.5rem;">
+<body style="overflow: hidden; height: 100vh; margin: 0; padding: 1rem 0; box-sizing: border-box;">
+    <div class="container" style="max-width: 100%; padding: 0 1rem; height: calc(100vh - 2rem); overflow: hidden; display: flex; flex-direction: column;">
+        <!-- Header du module -->
+        <header class="card animate-fade-in" style="padding: 0.5rem 1rem; margin-bottom: 1rem; width: 100%; box-sizing: border-box; flex-shrink: 0;">
             <div style="text-align: center; position: relative; display: flex; align-items: center; justify-content: space-between; min-height: 60px;">
-                <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent)); border-radius: var(--radius-xl) var(--radius-xl) 0 0; margin: -0.75rem -1rem 0 -1rem;"></div>
+                <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent)); border-radius: var(--radius-xl) var(--radius-xl) 0 0; margin: -0.5rem -1rem 0 -1rem;"></div>
+                
                 <div style="flex: 1; text-align: left;">
                     <span style="display: inline-block; padding: 0.2rem 0.5rem; background: var(--primary-bg); color: var(--primary); border-radius: var(--radius); font-size: 0.75rem; font-weight: 600; margin-bottom: 0.25rem;">Module 8</span>
                     <h1 style="font-size: 1.25rem; font-weight: 700; margin: 0; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
                         Les 32 figures du destin
                     </h1>
                 </div>
+                
                 <div style="flex: 1; text-align: center;">
                     <p style="color: var(--gray-600); font-size: 0.9rem; margin: 0;">
-                        Investigation Personnelle
+                        Découvrez vos archétypes professionnels
                     </p>
                 </div>
+                
                 <div style="flex: 1; text-align: right;">
                     <div class="status-badge status-in-progress">
                         Investigation Personnelle
@@ -58,29 +230,51 @@
             </div>
         </header>
 
-        <main class="card" style="padding: 2rem;">
-            <div class="module-container">
-                <div class="text-center" style="margin-bottom: 2rem;">
-                    <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--gray-900); margin-bottom: 1rem;">
-                        🎭 Les 32 figures du destin
-                    </h2>
-                    <p style="color: var(--gray-600); font-size: 1.1rem; line-height: 1.6; max-width: 800px; margin: 0 auto;">
-                        Atelier créatif - Sélection de 5 figures archétypiques + expression créative
-                    </p>
+        <!-- Contenu principal -->
+        <main class="card" style="padding: 1rem; margin: 0; border-radius: var(--radius-xl); width: 100%; box-sizing: border-box; flex: 1; overflow: hidden; display: flex; flex-direction: column;">
+            <div class="figures-container" style="flex: 1; display: flex; flex-direction: column; overflow: hidden;">
+                <!-- Banner Introduction -->
+                <div style="margin: 0.5rem 0 1rem 0; flex-shrink: 0;">
+                    <div style="
+                        background: #e8f5e9;
+                        border-radius: var(--radius-lg);
+                        padding: 0.8rem 1.5rem;
+                        text-align: center;
+                        position: relative;
+                        overflow: hidden;
+                    ">
+                        <p style="
+                            color: var(--gray-900);
+                            font-size: 0.9rem;
+                            line-height: 1.3;
+                            margin: 0;
+                            font-weight: 500;
+                            position: relative;
+                            z-index: 1;
+                        ">
+                            Découvrez les 32 archétypes professionnels et sélectionnez vos 3 figures préférées par ordre de préférence.
+                        </p>
+                    </div>
                 </div>
 
-                <div class="main-content" id="mainContent">
-                    <div class="figures-grid" id="figuresGrid"></div>
-               <div class="creative-section" style="margin-top: 2rem;">
-                   <h3>Expression créative</h3>
-                   <textarea id="creativeText" placeholder="Exprimez ce que ces figures représentent pour vous..." style="width: 100%; height: 120px; padding: 1rem; border-radius: var(--radius); border: 2px solid var(--gray-200);"></textarea>
-               </div>
+                <!-- Layout principal -->
+                <div class="main-layout" style="flex: 1; overflow: hidden;">
+                    <!-- Section des figures -->
+                    <div class="figures-section" style="width: 100%;">
+                        <div class="figures-grid" id="figuresGrid">
+                            <!-- Les 32 figures seront générées par JavaScript -->
+                        </div>
+                    </div>
                 </div>
 
-                <div style="text-align: center; margin: 2rem 0;">
-                    <button id="validateBtn" class="validate-btn">
-                        Valider le module 8
+                <!-- Validation -->
+                <div class="validation-section" style="text-align: center; margin: 0.5rem 0; flex-shrink: 0;">
+                    <button id="validateBtn" class="validate-btn" disabled style="padding: 0.8rem 1.5rem; font-size: 0.9rem;">
+                        Valider mes figures du destin
                     </button>
+                    <p style="color: var(--gray-500); font-size: 0.8rem; margin-top: 0.3rem;">
+                        Sélectionnez 3 figures pour continuer
+                    </p>
                 </div>
             </div>
         </main>
