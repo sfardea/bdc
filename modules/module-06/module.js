@@ -894,7 +894,28 @@ class LifeCurvesModule {
                         <div style="font-size: 0.9rem; opacity: 0.9;">Impact moyen: ${professionalAvg > 0 ? '+' : ''}${professionalAvg.toFixed(1)}</div>
                     </div>
                 </div>
-                <p style="font-size: 1rem; opacity: 0.9; margin-top: 2rem;">
+                <button class="nav-button" style="
+                    background: var(--white); 
+                    color: var(--success); 
+                    border: none; 
+                    padding: 1rem 2rem; 
+                    border-radius: var(--radius-lg); 
+                    font-weight: 600; 
+                    font-size: 1rem;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    margin-top: 1.5rem;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                " onclick="goToNextModule()" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.2)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                    Continuer vers le module 7
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M7 15L12 10L7 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                
+                <p style="font-size: 0.9rem; opacity: 0.8; margin-top: 1.5rem;">
                     Ces courbes alimenteront votre réflexion sur vos valeurs et aspirations futures.
                 </p>
             </div>
@@ -1043,6 +1064,11 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+// Fonction globale pour le bouton de transition
+function goToNextModule() {
+    window.location.href = '../module-07/index.html';
+}
 
 // Initialiser le module au chargement de la page
 let lifeCurvesModule;
