@@ -23,23 +23,11 @@ class ObjectivesModule {
     }
 
     bindEvents() {
-        // Gestion des cartes objectives
-        const objectiveCards = document.querySelectorAll('.objective-card');
-        objectiveCards.forEach(card => {
-            card.addEventListener('click', (e) => {
-                if (e.target.type !== 'checkbox') {
-                    const checkbox = card.querySelector('.objective-checkbox');
-                    checkbox.checked = !checkbox.checked;
-                    checkbox.dispatchEvent(new Event('change'));
-                }
-            });
-        });
-
-        // Gestion des checkboxes
-        const checkboxes = document.querySelectorAll('.objective-checkbox');
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', (e) => {
-                this.handleObjectiveSelection(e);
+        // Gestion du clic sur les cartes
+        const cards = document.querySelectorAll('.objective-card');
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                this.handleObjectiveSelection(card);
             });
         });
 
@@ -70,24 +58,23 @@ class ObjectivesModule {
         });
     }
 
-    handleObjectiveSelection(event) {
-        const checkbox = event.target;
-        const card = checkbox.closest('.objective-card');
+    handleObjectiveSelection(card) {
         const objectiveType = card.dataset.objective;
-
-        if (checkbox.checked) {
-            // Ajouter l'objectif
-            if (!this.selectedObjectives.includes(objectiveType)) {
-                this.selectedObjectives.push(objectiveType);
-            }
-            card.classList.add('selected');
-        } else {
-            // Retirer l'objectif
+        
+        // Toggle la sélection
+        if (card.classList.contains('selected')) {
+            // Désélectionner
+            card.classList.remove('selected');
             const index = this.selectedObjectives.indexOf(objectiveType);
             if (index > -1) {
                 this.selectedObjectives.splice(index, 1);
             }
-            card.classList.remove('selected');
+        } else {
+            // Sélectionner
+            card.classList.add('selected');
+            if (!this.selectedObjectives.includes(objectiveType)) {
+                this.selectedObjectives.push(objectiveType);
+            }
         }
 
         this.updateSelectedCount();
@@ -96,15 +83,16 @@ class ObjectivesModule {
     }
 
     updateSelectedCount() {
-        const countElement = document.getElementById('selectedCount');
-        const count = this.selectedObjectives.length;
-        
-        if (count > 0) {
-            countElement.style.display = 'inline-block';
-            countElement.textContent = `${count} objectif${count > 1 ? 's' : ''} sélectionné${count > 1 ? 's' : ''}`;
-        } else {
-            countElement.style.display = 'none';
-        }
+        // Barre verte supprimée - plus besoin de mettre à jour le compteur
+        // const countElement = document.getElementById('selectedCount');
+        // const count = this.selectedObjectives.length;
+        // 
+        // if (count > 0) {
+        //     countElement.style.display = 'inline-block';
+        //     countElement.textContent = `${count} objectif${count > 1 ? 's' : ''} sélectionné${count > 1 ? 's' : ''}`;
+        // } else {
+        //     countElement.style.display = 'none';
+        // }
     }
 
     updateSubmitButton() {
@@ -188,10 +176,11 @@ class ObjectivesModule {
     }
 
     showSuccessMessage() {
-        // Masquer toutes les étapes
-        document.querySelectorAll('.step-section').forEach(section => {
-            section.classList.remove('active');
-        });
+        // Masquer le conteneur principal (carte blanche)
+        const mainCard = document.querySelector('main.card');
+        if (mainCard) {
+            mainCard.style.display = 'none';
+        }
         
         // Afficher le message de succès
         document.getElementById('successMessage').style.display = 'block';
@@ -201,33 +190,6 @@ class ObjectivesModule {
         const progressText = document.getElementById('progressText');
         progressBar.style.width = '100%';
         progressText.textContent = 'Terminé !';
-
-        // Redirection après 3 secondes
-        setTimeout(() => {
-            if (typeof parent !== 'undefined' && parent.postMessage) {
-                parent.postMessage({
-                    type: 'module-completed',
-                    module: 'module-04',
-                    data: {
-                        selectedObjectives: this.selectedObjectives,
-                        primaryObjective: this.primaryObjective,
-                        completed: true
-                    }
-                }, '*');
-            }
-        }, 3000);
-    }
-
-    // Fonction globale pour navigation vers module suivant
-    goToNextModule() {
-        if (typeof parent !== 'undefined' && parent.postMessage) {
-            parent.postMessage({
-                type: 'navigate-to-module',
-                module: 'module-05'
-            }, '*');
-        } else {
-            window.location.href = '/module/05';
-        }
     }
 
     showNotification(message, type = 'info') {
@@ -323,9 +285,7 @@ class ObjectivesModule {
             this.selectedObjectives = savedData.selectedObjectives || [];
             this.selectedObjectives.forEach(objectiveType => {
                 const card = document.querySelector(`[data-objective="${objectiveType}"]`);
-                const checkbox = card?.querySelector('.objective-checkbox');
-                if (checkbox) {
-                    checkbox.checked = true;
+                if (card) {
                     card.classList.add('selected');
                 }
             });
@@ -344,16 +304,18 @@ class ObjectivesModule {
     }
 }
 
-// Fonction globale pour navigation (appelée depuis le HTML)
+// Fonctions globales (appelées depuis le HTML)
 function goToNextModule() {
-    if (typeof parent !== 'undefined' && parent.postMessage) {
-        parent.postMessage({
-            type: 'navigate-to-module',
-            module: 'module-05'
-        }, '*');
-    } else {
-        window.location.href = '/module/05';
-    }
+    window.location.href = '/module/05';
+}
+
+function restartModule() {
+    // Effacer les données sauvegardées spécifiques à ce module
+    localStorage.removeItem('module4_data');
+    localStorage.removeItem('module4_completed');
+    
+    // Recharger la page pour recommencer
+    window.location.reload();
 }
 
 // Initialiser le module au chargement de la page

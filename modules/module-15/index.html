@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Module 15 : Mon tableau de priorités professionnelles</title>
     <link rel="stylesheet" href="/shared/css/modern-theme.css">
+    <link rel="stylesheet" href="/shared/css/module-enhancements.css">
     <style>
         .module-container {
             max-width: 1000px;
@@ -85,6 +86,25 @@
             </div>
         </main>
     </div>
+    <!-- Message de succès final -->
+    <div class="success-container" id="successMessage" style="display: none;">
+        <div class="success-icon">
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                <circle cx="32" cy="32" r="32" fill="#10B981" fill-opacity="0.1"/>
+                <path d="M20 32L28 40L44 24" stroke="#10B981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+        <h2>Félicitations !</h2>
+        <p>Vous avez complété avec succès le module 15.</p>
+        <p>Vos priorités professionnelles ont été définies.</p>
+        <button class="btn btn-primary" onclick="goToNextModule()">
+            Continuer vers le module 16
+            <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M7 15L12 10L7 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+    </div>
+
 
     <script src="../../shared/js/scorm-api.js"></script>
     <script src="/modules/module-15/module.js"></script>

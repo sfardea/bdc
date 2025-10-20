@@ -125,3 +125,75 @@ class Module18Class {
 document.addEventListener('DOMContentLoaded', () => {
     new Module18Class();
 });
+
+// Fonction globale pour la navigation vers le module suivant
+function goToNextModule() {
+    window.location.href = '/module/19';
+}
+
+// Fonction pour afficher le message de succès standardisé
+function showSuccessMessage() {
+    // Masquer le contenu principal
+    const mainContent = document.querySelector('.module-container, .slideshow-container, .container, main');
+    if (mainContent) {
+        mainContent.style.display = 'none';
+    }
+    
+    // Afficher le message de succès
+    const successMessage = document.getElementById('successMessage');
+    if (successMessage) {
+        successMessage.style.display = 'block';
+        
+        // Animation de confettis
+        celebrateSuccess();
+    }
+    
+    // Sauvegarder la complétion
+    localStorage.setItem('module18_completed', 'true');
+    
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Animation de confettis standardisée
+function celebrateSuccess() {
+    const colors = ['#6366F1', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6'];
+    
+    for (let i = 0; i < 30; i++) {
+        setTimeout(() => {
+            const confetti = document.createElement('div');
+            confetti.style.cssText = `
+                position: fixed;
+                width: 8px;
+                height: 8px;
+                background: ${colors[Math.floor(Math.random() * colors.length)]};
+                left: ${Math.random() * 100}%;
+                top: -10px;
+                opacity: 1;
+                border-radius: 50%;
+                pointer-events: none;
+                z-index: 9999;
+            `;
+            document.body.appendChild(confetti);
+            
+            let posY = -10;
+            let posX = parseFloat(confetti.style.left);
+            let opacity = 1;
+            
+            const fall = setInterval(() => {
+                posY += 2;
+                posX += Math.sin(posY / 10) * 1;
+                opacity -= 0.01;
+                
+                confetti.style.top = `${posY}px`;
+                confetti.style.left = `${posX}%`;
+                confetti.style.opacity = opacity;
+                
+                if (posY > window.innerHeight || opacity <= 0) {
+                    clearInterval(fall);
+                    confetti.remove();
+                }
+            }, 20);
+        }, i * 50);
+    }
+}

@@ -297,12 +297,6 @@ class Module1 {
                     <span class="summary-label">Expérience</span>
                     <span class="summary-value">${this.getExperienceLabel(this.formData.experience) || ''}</span>
                 </div>
-                ${this.formData.objectifs ? `
-                <div class="summary-item">
-                    <span class="summary-label">Objectifs</span>
-                    <span class="summary-value">${this.formData.objectifs}</span>
-                </div>
-                ` : ''}
             `;
         }
     }
@@ -409,9 +403,18 @@ class Module1 {
     }
 
     showSuccessMessage() {
-        // Masquer le formulaire
+        // Masquer le formulaire et la navigation
         document.getElementById('mainForm').style.display = 'none';
-        document.querySelector('.step-navigation').style.display = 'none';
+        const stepNav = document.querySelector('.step-navigation');
+        if (stepNav) {
+            stepNav.style.display = 'none';
+        }
+        
+        // Masquer aussi le header avec la progression
+        const moduleHeader = document.querySelector('.module-header');
+        if (moduleHeader) {
+            moduleHeader.style.display = 'none';
+        }
         
         // Afficher le message de succès
         const successMessage = document.getElementById('successMessage');
@@ -495,7 +498,16 @@ function previousStep() {
 
 function goToNextModule() {
     // Redirection vers le module 2
-    window.location.href = '../module-02/index.html';
+    window.location.href = '/module/02';
+}
+
+function restartModule() {
+    // Effacer les données sauvegardées
+    localStorage.removeItem('module1_data');
+    localStorage.removeItem('module1_completed');
+    
+    // Recharger la page pour recommencer
+    window.location.reload();
 }
 
 // Initialiser le module au chargement de la page

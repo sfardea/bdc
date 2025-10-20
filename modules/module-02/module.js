@@ -255,8 +255,6 @@ class BlasonQuestionnaire {
             setSCORMComplete();
         }
         
-        alert(`Félicitations ! Vous avez terminé avec ${this.points} points. Votre blason a été sauvegardé.`);
-        
         if (typeof parent !== 'undefined' && parent.postMessage) {
             parent.postMessage({
                 type: 'module-completed',
@@ -265,28 +263,48 @@ class BlasonQuestionnaire {
             }, '*');
         }
         
-        this.celebrateSuccess();
+        // Afficher le message de succès standardisé
+        this.showSuccessMessage();
+    }
+
+    showSuccessMessage() {
+        // Masquer le blason
+        document.getElementById('blason-result').style.display = 'none';
+        
+        // Afficher le message de succès
+        const successMessage = document.getElementById('successMessage');
+        if (successMessage) {
+            successMessage.style.display = 'block';
+            
+            // Animation de confettis
+            this.celebrateSuccess();
+        }
+        
+        // Sauvegarder la complétion
+        localStorage.setItem('module2_completed', 'true');
+        
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     restart() {
-        if (confirm('Êtes-vous sûr de vouloir recommencer ? Toutes vos réponses seront perdues.')) {
-            localStorage.removeItem('blason-questionnaire');
-            localStorage.removeItem('blason-completed');
+        // Pas de popup de confirmation - redémarrage direct
+        localStorage.removeItem('blason-questionnaire');
+        localStorage.removeItem('blason-completed');
+        
+        this.currentStep = 1;
+        this.points = 0;
+        this.answers = {};
+        
+        document.getElementById('questionnaire').style.display = 'block';
+        document.getElementById('blason-result').style.display = 'none';
             
-            this.currentStep = 1;
-            this.points = 0;
-            this.answers = {};
-            
-            document.getElementById('questionnaire').style.display = 'block';
-            document.getElementById('blason-result').style.display = 'none';
-            
-            document.querySelectorAll('textarea, input[type="text"]').forEach(input => {
-                input.value = '';
-            });
-            
-            this.updateUI();
-            this.saveData();
-        }
+        document.querySelectorAll('textarea, input[type="text"]').forEach(input => {
+            input.value = '';
+        });
+        
+        this.updateUI();
+        this.saveData();
     }
 
     showError(message) {
@@ -357,6 +375,16 @@ class BlasonQuestionnaire {
 // Fonction globale pour la navigation
 function goToNextModule() {
     window.location.href = '/module/03';
+}
+
+function restartModule() {
+    // Effacer les données sauvegardées
+    localStorage.removeItem('blason-questionnaire');
+    localStorage.removeItem('blason-completed');
+    localStorage.removeItem('module2_completed');
+    
+    // Recharger la page pour recommencer
+    window.location.reload();
 }
 
 // Initialiser le module au chargement de la page

@@ -308,7 +308,7 @@ class FiguresDestinModule {
 
 // Fonction globale pour le bouton de transition
 function goToNextModule() {
-    window.location.href = '../module-09/index.html';
+    window.location.href = '/module/09';
 }
 
 // Initialiser le module au chargement de la page

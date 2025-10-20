@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Module 2 : Mon Autoportrait</title>
     <link rel="stylesheet" href="/shared/css/modern-theme.css">
+    <link rel="stylesheet" href="/shared/css/module-enhancements.css">
     <style>
         /* Styles spécifiques au module */
         /* Score Badge supprimé */
@@ -67,7 +68,7 @@
 
         .answer-input {
             width: 100%;
-            max-width: 500px;
+            max-width: 800px;
             padding: 1rem 1.5rem;
             border: 2px solid var(--gray-200);
             border-radius: var(--radius-lg);
@@ -88,17 +89,24 @@
         }
 
         .answer-textarea {
-            min-height: 120px;
+            min-height: 600px;
             resize: vertical;
             text-align: left;
+            line-height: 1.6;
+            overflow-y: auto;
+            box-sizing: border-box;
         }
 
         .navigation-buttons {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
             gap: 1rem;
             margin-top: 2rem;
+        }
+        
+        .navigation-buttons .btn-prev:not([disabled]) {
+            margin-right: auto;
         }
 
         .btn-nav {
@@ -157,6 +165,8 @@
             padding: 2rem;
             position: relative;
             box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            box-sizing: border-box;
         }
 
         .blason-banner {
@@ -169,6 +179,9 @@
             font-size: 1.25rem;
             text-transform: uppercase;
             letter-spacing: 1px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
         }
 
         .blason-sections {
@@ -184,6 +197,8 @@
             border-radius: var(--radius);
             padding: 1.5rem;
             min-height: 120px;
+            overflow: hidden;
+            box-sizing: border-box;
         }
 
         .blason-section h4 {
@@ -199,6 +214,10 @@
             color: var(--gray-700);
             font-size: 0.9rem;
             line-height: 1.4;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
+            max-width: 100%;
         }
 
         .blason-foundations {
@@ -261,6 +280,80 @@
         }
 
         .btn-final:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Success message styles */
+        .success-container {
+            background: var(--white);
+            border-radius: var(--radius-2xl);
+            padding: 3rem;
+            margin: 2rem 0;
+            text-align: center;
+            box-shadow: var(--shadow-xl);
+            border: 2px solid var(--success);
+        }
+
+        .success-icon {
+            margin-bottom: 2rem;
+        }
+
+        .success-container h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 1rem;
+        }
+
+        .success-container p {
+            color: var(--gray-600);
+            font-size: 1.125rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 2rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition-fast);
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-icon {
+            width: 20px;
+            height: 20px;
+        }
+        
+        /* Forcer le bouton Recommencer en gris dans le message de succès */
+        #successMessage .btn-restart {
+            background: var(--gray-200) !important;
+            color: var(--gray-700) !important;
+        }
+        
+        #successMessage .btn-restart:hover {
+            background: var(--gray-300) !important;
             transform: translateY(-2px);
             box-shadow: var(--shadow-lg);
         }
@@ -609,38 +702,47 @@
             </div>
 
             <div class="final-actions">
-                <button class="btn-final btn-finish">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                    </svg>
-                    Terminer l'activité
-                </button>
-                
                 <button class="btn-final btn-restart">
                     <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                     </svg>
                     Recommencer
                 </button>
+                
+                <button class="btn-final btn-finish">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    Terminer l'activité
+                </button>
             </div>
         </div>
 
         <!-- Message de succès final -->
-        <div class="card" id="successMessage" style="display: none; text-align: center; background: linear-gradient(135deg, var(--success), var(--secondary-dark)); color: var(--white);">
-            <div style="font-size: 4rem; margin-bottom: 1rem;">🎉</div>
-            <h2 style="color: var(--white); margin-bottom: 1rem;">Félicitations !</h2>
-            <p style="font-size: 1.125rem; margin-bottom: 0.5rem;">
-                Vous avez terminé votre autoportrait avec succès !
-            </p>
-            <p style="opacity: 0.9; margin-bottom: 2rem;">
-                Votre blason personnel reflète qui vous êtes et vos aspirations. Cette introspection vous aidera dans votre parcours professionnel.
-            </p>
-            <button class="btn" style="background: var(--white); color: var(--success);" onclick="goToNextModule()">
-                Continuer vers le module 3
-                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+        <div class="success-container" id="successMessage" style="display: none;">
+            <div class="success-icon">
+                <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                    <circle cx="32" cy="32" r="32" fill="#10B981" fill-opacity="0.1"/>
+                    <path d="M20 32L28 40L44 24" stroke="#10B981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-            </button>
+            </div>
+            <h2>Félicitations !</h2>
+            <p>Vous avez complété avec succès votre autoportrait personnel.</p>
+            <p>Votre blason a été créé et sauvegardé. Vous pouvez maintenant passer au module suivant.</p>
+            <div class="success-actions">
+                <button class="btn btn-restart" onclick="restartModule()">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                    Recommencer l'activité
+                </button>
+                <button class="btn btn-primary" onclick="goToNextModule()">
+                    Continuer vers le module 3
+                    <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M7 15L12 10L7 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
         </div>
     </div>
 

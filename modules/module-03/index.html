@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Module 3 : Le bilan de compétences</title>
     <link rel="stylesheet" href="/shared/css/modern-theme.css">
+    <link rel="stylesheet" href="/shared/css/module-enhancements.css">
     <style>
         /* Container principal du slideshow */
         .slideshow-container {
@@ -110,6 +111,80 @@
             to {
                 opacity: 1;
                 transform: translateX(0);
+            }
+        }
+
+        /* Success message styles */
+        .success-container {
+            background: var(--white);
+            border-radius: var(--radius-2xl);
+            padding: 3rem;
+            margin: 2rem 0;
+            text-align: center;
+            box-shadow: var(--shadow-xl);
+            border: 2px solid var(--success);
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .success-icon {
+            margin-bottom: 2rem;
+        }
+
+        .success-container h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 1rem;
+        }
+
+        .success-container p {
+            color: var(--gray-600);
+            font-size: 1.125rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 2rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition-fast);
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
         
@@ -810,10 +885,30 @@
                 </svg>
             </button>
             
-            <button class="nav-button finish hidden" id="finishBtn" onclick="finishActivity()">
-                Terminer l'activité
+    </div>
+
+    <!-- Message de succès final -->
+    <div class="success-container" id="successMessage" style="display: none;">
+        <div class="success-icon">
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                <circle cx="32" cy="32" r="32" fill="#10B981" fill-opacity="0.1"/>
+                <path d="M20 32L28 40L44 24" stroke="#10B981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+        <h2>Félicitations !</h2>
+        <p>Vous avez complété avec succès la présentation du bilan de compétences.</p>
+        <p>Vous êtes maintenant prêt à entamer votre parcours de découverte professionnelle.</p>
+        <div class="success-actions">
+            <button class="btn btn-restart" onclick="restartModule()">
                 <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                </svg>
+                Recommencer l'activité
+            </button>
+            <button class="btn btn-primary" onclick="goToNextModule()">
+                Continuer vers le module 4
+                <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M7 15L12 10L7 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
             </button>
         </div>

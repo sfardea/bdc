@@ -1067,7 +1067,7 @@ document.head.appendChild(style);
 
 // Fonction globale pour le bouton de transition
 function goToNextModule() {
-    window.location.href = '../module-07/index.html';
+    window.location.href = '/module/07';
 }
 
 // Initialiser le module au chargement de la page

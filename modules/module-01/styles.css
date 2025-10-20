@@ -380,7 +380,11 @@ body::before {
 
 .form-textarea {
     resize: vertical;
-    min-height: 100px;
+    min-height: 600px;
+    max-width: 800px;
+    line-height: 1.6;
+    overflow-y: auto;
+    box-sizing: border-box;
 }
 
 /* Radio cards */

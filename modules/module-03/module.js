@@ -78,6 +78,12 @@ class BilanSlideshow {
     }
 
     changeSlide(direction) {
+        // Si on est sur la slide 6 avec la checkbox confirmée et qu'on clique sur "Terminer"
+        if (this.currentSlide === 6 && direction > 0 && this.checkboxConfirmed) {
+            this.finishActivity();
+            return;
+        }
+        
         const newSlide = this.currentSlide + direction;
         
         if (newSlide < 1 || newSlide > this.totalSlides) {
@@ -154,7 +160,6 @@ class BilanSlideshow {
     updateNavigation() {
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
-        const finishBtn = document.getElementById('finishBtn');
         
         // Bouton Précédent
         if (prevBtn) {
@@ -168,25 +173,36 @@ class BilanSlideshow {
             }
         }
         
-        // Boutons Suivant et Terminer
+        // Bouton Suivant
         if (this.currentSlide === 6) {
-            // Sur la slide 6, masquer Suivant et afficher Terminer
-            if (nextBtn) nextBtn.classList.add('hidden');
-            if (finishBtn) {
-                finishBtn.classList.remove('hidden');
-                finishBtn.disabled = !this.checkboxConfirmed;
+            // Sur la slide 6, le bouton suivant devient "Terminer"
+            if (nextBtn) {
+                nextBtn.innerHTML = `
+                    Terminer la présentation
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                `;
+                nextBtn.disabled = !this.checkboxConfirmed;
+                // Appliquer le style vert pour le bouton Terminer
+                nextBtn.classList.add('finish');
             }
         } else if (this.currentSlide === 7) {
-            // Sur la slide 7, masquer tous les boutons
+            // Sur la slide 7, masquer le bouton suivant
             if (nextBtn) nextBtn.classList.add('hidden');
-            if (finishBtn) finishBtn.classList.add('hidden');
         } else {
-            // Sur les autres slides, afficher Suivant et masquer Terminer
+            // Sur les autres slides, afficher "Suivant"
             if (nextBtn) {
                 nextBtn.classList.remove('hidden');
+                nextBtn.classList.remove('finish'); // Retirer le style vert
                 nextBtn.disabled = false;
+                nextBtn.innerHTML = `
+                    Suivant
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                `;
             }
-            if (finishBtn) finishBtn.classList.add('hidden');
         }
     }
 
@@ -207,9 +223,6 @@ class BilanSlideshow {
             return;
         }
         
-        // Aller à la slide de confirmation
-        this.goToSlide(7);
-        
         // Sauvegarder la complétion
         localStorage.setItem('module3_completed', 'true');
         localStorage.setItem('module3_completion_date', new Date().toISOString());
@@ -221,23 +234,43 @@ class BilanSlideshow {
             setSCORMComplete();
         }
         
-        // Animation de célébration
-        this.celebrateCompletion();
+        // Afficher le message de succès standardisé
+        this.showSuccessMessage();
         
-        // Redirection automatique après 5 secondes
-        setTimeout(() => {
-            if (typeof parent !== 'undefined' && parent.postMessage) {
-                parent.postMessage({
-                    type: 'module-completed',
-                    module: 'module-03',
-                    data: {
-                        completed: true,
-                        checkboxConfirmed: true,
-                        completionDate: new Date().toISOString()
-                    }
-                }, '*');
-            }
-        }, 5000);
+        if (typeof parent !== 'undefined' && parent.postMessage) {
+            parent.postMessage({
+                type: 'module-completed',
+                module: 'module-03',
+                data: {
+                    completed: true,
+                    checkboxConfirmed: true,
+                    completionDate: new Date().toISOString()
+                }
+            }, '*');
+        }
+    }
+
+    showSuccessMessage() {
+        // Masquer le slideshow
+        document.querySelector('.slideshow-container').style.display = 'none';
+        
+        // Masquer la navigation
+        const navContainer = document.querySelector('.navigation-container');
+        if (navContainer) {
+            navContainer.style.display = 'none';
+        }
+        
+        // Afficher le message de succès
+        const successMessage = document.getElementById('successMessage');
+        if (successMessage) {
+            successMessage.style.display = 'block';
+            
+            // Animation de confettis
+            this.celebrateCompletion();
+        }
+        
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     celebrateCompletion() {
@@ -328,6 +361,16 @@ class BilanSlideshow {
 // Fonction globale pour la navigation vers le module suivant
 function goToNextModule() {
     window.location.href = '/module/04';
+}
+
+// Fonction pour recommencer le module
+function restartModule() {
+    // Effacer les données sauvegardées spécifiques à ce module
+    localStorage.removeItem('module3_completed');
+    localStorage.removeItem('slideshow_completed');
+    
+    // Recharger la page pour recommencer
+    window.location.reload();
 }
 
 // Fonctions globales pour la navigation (utilisées par les onclick inline)

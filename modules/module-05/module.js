@@ -618,7 +618,18 @@ class PhotoLanguageModule {
 
 // Fonction globale pour le bouton de transition
 function goToNextModule() {
-    window.location.href = '../module-06/index.html';
+    window.location.href = '/module/06';
+}
+
+// Fonction pour recommencer le module
+function restartModule() {
+    // Effacer les données sauvegardées spécifiques à ce module
+    localStorage.removeItem('module5_data');
+    localStorage.removeItem('module5_completed');
+    localStorage.removeItem('photoLanguageData');
+    
+    // Recharger la page pour recommencer
+    window.location.reload();
 }
 
 // Initialiser le module au chargement de la page

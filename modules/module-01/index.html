@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Module 1 : Faisons Connaissance</title>
+    <link rel="stylesheet" href="/shared/css/module-enhancements.css">
     <link rel="stylesheet" href="/modules/module-01/styles.css">
 </head>
 <body>
@@ -255,18 +256,6 @@
                     <span class="error-message" id="experienceError"></span>
                 </div>
 
-                <div class="form-group">
-                    <label for="objectifs" class="form-label">
-                        Qu'attendez-vous de ce bilan de compétences ?
-                    </label>
-                    <textarea 
-                        id="objectifs" 
-                        name="objectifs" 
-                        class="form-textarea" 
-                        rows="4"
-                        placeholder="Décrivez vos attentes et objectifs..."
-                    ></textarea>
-                </div>
 
                 <div class="form-actions">
                     <button type="button" class="btn btn-secondary" onclick="previousStep()">
@@ -336,12 +325,20 @@
             <h2>Félicitations !</h2>
             <p>Vous avez complété avec succès le premier module de votre bilan de compétences.</p>
             <p>Vos informations ont été enregistrées et nous pouvons maintenant personnaliser votre parcours.</p>
-            <button class="btn btn-primary" onclick="goToNextModule()">
-                Continuer vers le module 2
-                <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path d="M7 15L12 10L7 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </button>
+            <div class="success-actions">
+                <button class="btn btn-restart" onclick="restartModule()">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                    Recommencer l'activité
+                </button>
+                <button class="btn btn-primary" onclick="goToNextModule()">
+                    Continuer vers le module 2
+                    <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M7 15L12 10L7 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
         </div>
     </div>
 

@@ -541,6 +541,281 @@ textarea.error {
     background: #ffebee !important;
 }
 
+/* ============= TEXTAREA IMPROVEMENTS ============= */
+
+/* Amélioration globale des zones de texte */
+textarea {
+    min-height: 600px !important;
+    max-width: 800px !important;
+    width: 100% !important;
+    resize: vertical !important;
+    line-height: 1.6 !important;
+    font-family: inherit !important;
+    padding: 1rem 1.5rem !important;
+    overflow-y: auto !important;
+    box-sizing: border-box !important;
+}
+
+/* Zones de texte dans les modules spécifiques */
+.form-textarea,
+.answer-textarea,
+textarea[placeholder] {
+    min-height: 600px !important;
+    max-width: 800px !important;
+    line-height: 1.6 !important;
+    overflow-y: auto !important;
+    box-sizing: border-box !important;
+}
+
+/* Zones SWOT spéciales - plus compactes mais toujours extensibles */
+.swot-quadrant textarea {
+    min-height: 150px !important;
+    max-width: 100% !important;
+}
+
+/* ============= STANDARDISATION DES BOUTONS DE NAVIGATION ============= */
+
+/* Boutons de navigation standardisés pour tous les modules */
+.btn-nav,
+.nav-button,
+.step-nav-btn,
+button[class*="btn-"],
+.btn {
+    /* Taille et espacement standardisés */
+    padding: 0.75rem 2rem !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    font-family: inherit !important;
+    
+    /* Apparence standardisée */
+    border: none !important;
+    border-radius: var(--radius) !important;
+    cursor: pointer !important;
+    transition: var(--transition-fast) !important;
+    
+    /* Alignement et affichage */
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+    text-decoration: none !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+}
+
+/* Boutons primaires (Suivant, Continuer, etc.) */
+.btn-next,
+.btn-primary,
+.nav-button.next,
+.step-nav-btn.primary,
+button[onclick*="nextStep"],
+button[onclick*="goToNextModule"] {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark)) !important;
+    color: var(--white) !important;
+    box-shadow: var(--shadow-md) !important;
+}
+
+.btn-next:hover,
+.btn-primary:hover,
+.nav-button.next:hover,
+.step-nav-btn.primary:hover,
+button[onclick*="nextStep"]:hover,
+button[onclick*="goToNextModule"]:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: var(--shadow-lg) !important;
+}
+
+/* Boutons secondaires (Précédent, Retour, etc.) */
+.btn-prev,
+.btn-secondary,
+.nav-button.prev,
+.step-nav-btn:not(.primary),
+button[onclick*="previousStep"],
+button[onclick*="prevStep"] {
+    background: var(--gray-200) !important;
+    color: var(--gray-700) !important;
+}
+
+.btn-prev:hover:not(:disabled),
+.btn-secondary:hover,
+.nav-button.prev:hover,
+.step-nav-btn:not(.primary):hover,
+button[onclick*="previousStep"]:hover,
+button[onclick*="prevStep"]:hover {
+    background: var(--gray-300) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* Boutons de succès (Terminer, Valider, etc.) - TOUJOURS VERTS */
+.btn-success,
+.btn-finish,
+.btn-final.btn-finish,
+.nav-button.finish,
+button[onclick*="finish"],
+button[onclick*="finishActivity"],
+button[type="submit"],
+button:contains("Terminer"),
+button:contains("Valider") {
+    background: #10B981 !important;
+    color: var(--white) !important;
+    box-shadow: var(--shadow-md) !important;
+}
+
+.btn-success:hover,
+.btn-finish:hover,
+.btn-final.btn-finish:hover,
+.nav-button.finish:hover,
+button[onclick*="finish"]:hover,
+button[onclick*="finishActivity"]:hover,
+button[type="submit"]:hover,
+button:contains("Terminer"):hover,
+button:contains("Valider"):hover {
+    background: #059669 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: var(--shadow-lg) !important;
+}
+
+/* Boutons "Recommencer l'activité" - TOUJOURS GRIS (même couleur que Retour) */
+.btn-restart,
+.btn-warning,
+.btn-final.btn-restart,
+.nav-button.restart,
+button[onclick*="restart"],
+button[onclick*="recommencer"],
+button:contains("Recommencer") {
+    background: var(--gray-200) !important; /* Même gris que le bouton Retour */
+    color: var(--gray-700) !important;
+    box-shadow: var(--shadow-md) !important;
+}
+
+.btn-restart:hover,
+.btn-warning:hover,
+.btn-final.btn-restart:hover,
+.nav-button.restart:hover,
+button[onclick*="restart"]:hover,
+button[onclick*="recommencer"]:hover,
+button:contains("Recommencer"):hover {
+    background: var(--gray-300) !important; /* Gris plus foncé au survol */
+    transform: translateY(-2px) !important;
+    box-shadow: var(--shadow-lg) !important;
+}
+
+/* Boutons désactivés */
+.btn-nav:disabled,
+.nav-button:disabled,
+.step-nav-btn:disabled,
+button[class*="btn-"]:disabled,
+.btn:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Icônes dans les boutons */
+.btn-icon,
+button svg {
+    width: 20px !important;
+    height: 20px !important;
+    flex-shrink: 0 !important;
+}
+
+/* Conteneurs de navigation standardisés */
+.navigation-buttons,
+.step-navigation,
+.nav-buttons,
+.final-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 1rem !important;
+    margin-top: 2rem !important;
+}
+
+/* Actions finales - Boutons centrés côte à côte */
+.final-actions {
+    justify-content: center !important;
+    gap: 1.5rem !important;
+}
+
+.final-actions .btn-restart,
+.final-actions .btn-final.btn-restart {
+    order: 1 !important;
+    background: var(--gray-200) !important;
+    color: var(--gray-700) !important;
+    box-shadow: var(--shadow-md) !important;
+}
+
+.final-actions .btn-restart:hover,
+.final-actions .btn-final.btn-restart:hover {
+    background: var(--gray-300) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: var(--shadow-lg) !important;
+}
+
+.final-actions .btn-finish,
+.final-actions .btn-final.btn-finish {
+    order: 2 !important;
+    background: #10B981 !important;
+    color: var(--white) !important;
+    box-shadow: var(--shadow-md) !important;
+}
+
+.final-actions .btn-finish:hover,
+.final-actions .btn-final.btn-finish:hover {
+    background: #059669 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: var(--shadow-lg) !important;
+}
+
+/* Navigation avec bouton précédent à gauche et suivant à droite */
+.navigation-buttons {
+    justify-content: flex-end !important;
+}
+
+.navigation-buttons .btn-prev:not([disabled]) {
+    margin-right: auto !important;
+}
+
+/* Actions de succès - Centrer le(s) bouton(s) */
+.success-actions {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 1rem !important;
+    flex-wrap: wrap !important;
+    margin-top: 2rem !important;
+}
+
+.success-actions .btn-restart {
+    order: 1 !important;
+}
+
+.success-actions .btn-primary {
+    order: 2 !important;
+}
+
+/* Règle spécifique pour les boutons "Terminer l'activité" par texte */
+button {
+    /* Vérification du contenu textuel pour forcer le vert */
+}
+
+button:is([class*="finish"], [onclick*="finish"], [onclick*="finishActivity"]),
+button:has-text("Terminer"),
+button:has-text("Valider"),
+.btn-finish,
+.btn-success {
+    background: #10B981 !important;
+    color: white !important;
+}
+
+button:is([class*="finish"], [onclick*="finish"], [onclick*="finishActivity"]):hover,
+button:has-text("Terminer"):hover,
+button:has-text("Valider"):hover,
+.btn-finish:hover,
+.btn-success:hover {
+    background: #059669 !important;
+}
+
 /* ============= RESPONSIVE DESIGN ============= */
 
 @media (max-width: 768px) {
