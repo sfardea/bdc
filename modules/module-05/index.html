@@ -220,10 +220,12 @@
         .selected-photo {
             max-width: 400px;
             width: 100%;
+            height: auto;
             border-radius: var(--radius-xl);
             box-shadow: var(--shadow-xl);
             margin: 0 auto 2rem auto;
-            display: block;
+            display: block !important;
+            visibility: visible !important;
         }
 
         /* Formulaire */
@@ -268,13 +270,89 @@
         .form-textarea {
             min-height: 80px;
         }
+        
+        /* Réduction de la hauteur des textareas pour les formulaires */
+        #step2 .form-textarea,
+        #step4 .form-textarea,
+        #step2 textarea.form-textarea,
+        #step4 textarea.form-textarea,
+        .photo-form .form-textarea,
+        .photo-form textarea {
+            min-height: 100px !important;
+            height: 150px !important;
+            max-height: 200px !important;
+            resize: vertical !important;
+        }
+        
+        /* Override du CSS global pour ce module */
+        .module-scrollable .form-textarea {
+            min-height: 120px !important;
+            height: auto !important;
+        }
+        
+        /* Message de succès standard */
+        .success-container {
+            background: var(--white);
+            border-radius: var(--radius-2xl);
+            padding: 3rem;
+            margin: 1rem auto;
+            text-align: center;
+            box-shadow: var(--shadow-xl);
+            animation: fadeInUp 0.6s ease-out;
+            width: 100%;
+            max-width: 1200px;
+            box-sizing: border-box;
+        }
+
+        .success-icon {
+            margin-bottom: 1.5rem;
+        }
+
+        .success-container h2 {
+            color: var(--gray-900);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .success-container p {
+            color: var(--gray-600);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .success-actions {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
         /* Boutons d'action */
         .actions-container {
             display: flex;
             gap: 1rem;
-            justify-content: center;
+            justify-content: space-between;
+            align-items: center;
             margin-top: 2rem;
+        }
+        
+        /* Alignement standard : Retour à gauche, Action principale à droite */
+        .actions-container {
+            justify-content: space-between;
         }
 
         .btn-primary, .btn-secondary {
@@ -314,6 +392,7 @@
             background: var(--gray-200);
             transform: translateY(-2px);
         }
+        
 
         /* Responsive */
         @media (max-width: 768px) {
@@ -375,7 +454,7 @@
             
             <div class="modal-section">
                 <h3>🎯 Le Principe</h3>
-                <p>Le photo-langage est un outil puissant pour exprimer des idées, des émotions et des ressentis qui sont parfois difficiles à verbaliser. Il utilise des images comme support de réflexion et de discussion. Cette activité vous invite à choisir des photos qui résonnent avec votre parcours, vos aspirations ou vos questionnements actuels.</p>
+                <p>Le photo-langage est un outil puissant pour exprimer des idées, des émotions et des ressentis qui sont parfois difficiles à formuler avec des mots. Il utilise des images comme support de réflexion et de discussion. Cette activité vous invite à choisir des photos qui résonnent avec votre parcours, vos aspirations ou vos questionnements actuels.</p>
             </div>
 
             <div class="modal-section">
@@ -398,36 +477,9 @@
         </div>
     </div>
 
-    <div class="container">
-        <!-- Header du module -->
-        <header class="card animate-fade-in" style="padding: 0.75rem 1rem; margin-bottom: 0.5rem;">
-            <div style="text-align: center; position: relative; display: flex; align-items: center; justify-content: space-between; min-height: 60px;">
-                <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent)); border-radius: var(--radius-xl) var(--radius-xl) 0 0; margin: -0.75rem -1rem 0 -1rem;"></div>
-                
-                <div style="flex: 1; text-align: left;">
-                    <span style="display: inline-block; padding: 0.2rem 0.5rem; background: var(--primary-bg); color: var(--primary); border-radius: var(--radius); font-size: 0.75rem; font-weight: 600; margin-bottom: 0.25rem;">Module 5</span>
-                    <h1 style="font-size: 1.25rem; font-weight: 700; margin: 0; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
-                        Photo langage
-                    </h1>
-                </div>
-                
-                <div style="flex: 1; text-align: center;">
-                    <p style="color: var(--gray-600); font-size: 0.9rem; margin: 0;">
-                        Investigation personnelle par l'image
-                    </p>
-                </div>
-                
-                <div style="flex: 1; text-align: right;">
-                    <div class="status-badge status-in-progress">
-                        Phase d'Investigation
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <!-- Contenu principal -->
-        <main class="card" style="padding: 2rem;">
-            <div class="photolangage-container">
+    <!-- Contenu principal -->
+    <main class="card" style="padding: 2rem;">
+        <div class="photolangage-container">
                 <!-- Barre de progression -->
                 <div class="progress-container" id="progressContainer" style="display: none;">
                     <div class="progress-bar">
@@ -461,27 +513,27 @@
                             
                             <div class="form-group">
                                 <label class="form-label" for="description1">Description *</label>
-                                <textarea id="description1" class="form-textarea" placeholder="Décrivez ce que vous voyez dans cette photo..." required></textarea>
+                                <textarea id="description1" class="form-textarea" placeholder="Décrivez ce que vous voyez dans cette photo..." required style="height: 150px !important; min-height: 100px !important; max-height: 250px !important;"></textarea>
                             </div>
                             
                             <div class="form-group">
                                 <label class="form-label" for="feeling1">Ce que je ressens en regardant cette photo *</label>
-                                <textarea id="feeling1" class="form-textarea" placeholder="Quelles émotions cette photo éveille-t-elle en vous ?" required></textarea>
+                                <textarea id="feeling1" class="form-textarea" placeholder="Quelles émotions cette photo éveille-t-elle en vous ?" required style="height: 150px !important; min-height: 100px !important; max-height: 250px !important;"></textarea>
                             </div>
                             
                             <div class="form-group">
                                 <label class="form-label" for="attracts1">Ce qui m'attire *</label>
-                                <textarea id="attracts1" class="form-textarea" placeholder="Qu'est-ce qui vous attire dans cette photo ?" required></textarea>
+                                <textarea id="attracts1" class="form-textarea" placeholder="Qu'est-ce qui vous attire dans cette photo ?" required style="height: 150px !important; min-height: 100px !important; max-height: 250px !important;"></textarea>
                             </div>
                             
                             <div class="form-group">
                                 <label class="form-label" for="repels1">Ce qui me repousse *</label>
-                                <textarea id="repels1" class="form-textarea" placeholder="Y a-t-il quelque chose qui vous dérange ou vous repousse ?" required></textarea>
+                                <textarea id="repels1" class="form-textarea" placeholder="Y a-t-il quelque chose qui vous dérange ou vous repousse ?" required style="height: 150px !important; min-height: 100px !important; max-height: 250px !important;"></textarea>
                             </div>
                             
                             <div class="form-group">
                                 <label class="form-label" for="connection1">En quoi cette photo évoque la personne que je suis... *</label>
-                                <textarea id="connection1" class="form-textarea" placeholder="Comment cette photo reflète-t-elle votre personnalité actuelle ?" required></textarea>
+                                <textarea id="connection1" class="form-textarea" placeholder="Comment cette photo reflète-t-elle votre personnalité actuelle ?" required style="height: 150px !important; min-height: 100px !important; max-height: 250px !important;"></textarea>
                             </div>
                         </div>
 
@@ -504,7 +556,7 @@
                     <!-- Boutons de navigation pour la grille étape 2 -->
                     <div class="grid-navigation" id="gridNavigation2" style="text-align: center; margin-top: 2rem; display: none;">
                         <button class="btn-secondary" id="backToStep1Btn">← Retour à l'étape 1</button>
-                        <button class="btn-primary" id="nextToForm2Btn" style="margin-left: 1rem; display: none;">Suivant → Formulaire étape 2</button>
+                        <button class="btn-primary" id="nextToForm2Btn" style="margin-left: 1rem; display: none;">Valider et continuer →</button>
                     </div>
 
                     <div class="photo-view" id="photoView2">
@@ -518,43 +570,62 @@
                             
                             <div class="form-group">
                                 <label class="form-label" for="description2">Description *</label>
-                                <textarea id="description2" class="form-textarea" placeholder="Décrivez ce que vous voyez dans cette photo..." required></textarea>
+                                <textarea id="description2" class="form-textarea" placeholder="Décrivez ce que vous voyez dans cette photo..." required style="height: 150px !important; min-height: 100px !important; max-height: 250px !important;"></textarea>
                             </div>
                             
                             <div class="form-group">
                                 <label class="form-label" for="feeling2">Ce que je ressens en regardant cette photo *</label>
-                                <textarea id="feeling2" class="form-textarea" placeholder="Quelles émotions cette photo éveille-t-elle en vous ?" required></textarea>
+                                <textarea id="feeling2" class="form-textarea" placeholder="Quelles émotions cette photo éveille-t-elle en vous ?" required style="height: 150px !important; min-height: 100px !important; max-height: 250px !important;"></textarea>
                             </div>
                             
                             <div class="form-group">
                                 <label class="form-label" for="attracts2">Ce qui m'attire *</label>
-                                <textarea id="attracts2" class="form-textarea" placeholder="Qu'est-ce qui vous attire dans cette photo ?" required></textarea>
+                                <textarea id="attracts2" class="form-textarea" placeholder="Qu'est-ce qui vous attire dans cette photo ?" required style="height: 150px !important; min-height: 100px !important; max-height: 250px !important;"></textarea>
                             </div>
                             
                             <div class="form-group">
                                 <label class="form-label" for="projection2">En quoi cette photo évoque la personne que je serai à la fin du bilan ? *</label>
-                                <textarea id="projection2" class="form-textarea" placeholder="Comment cette photo reflète-t-elle la personne que vous aspirez à devenir ?" required></textarea>
+                                <textarea id="projection2" class="form-textarea" placeholder="Comment cette photo reflète-t-elle la personne que vous aspirez à devenir ?" required style="height: 150px !important; min-height: 100px !important; max-height: 250px !important;"></textarea>
                             </div>
                         </div>
 
                         <div class="actions-container">
                             <button class="btn-secondary" id="backBtn2">← Retour</button>
-                            <div class="final-actions" style="flex: 1;">
-                                <button class="btn-restart" onclick="restartModule()">
-                                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                                    </svg>
-                                    Recommencer l'activité
-                                </button>
-                                <button class="btn-primary btn-finish" id="finishBtn">Terminer l'activité ✓</button>
-                            </div>
+                            <button class="btn-primary" id="finishBtn">Terminer l'activité →</button>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
-    </div>
-    <!-- Message de succès final -->
+    <!-- Conteneur pour le message de succès avec marges -->
+    <div class="container" id="successContainer" style="display: none;">
+        <!-- Barre du haut commune -->
+        <header class="card animate-fade-in" id="successHeader" style="padding: 0.75rem 1rem; margin-bottom: 0.5rem;">
+        <div style="text-align: center; position: relative; display: flex; align-items: center; justify-content: space-between; min-height: 60px;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent)); border-radius: var(--radius-xl) var(--radius-xl) 0 0; margin: -0.75rem -1rem 0 -1rem;"></div>
+            
+            <div style="flex: 1; text-align: left;">
+                <span style="display: inline-block; padding: 0.2rem 0.5rem; background: var(--primary-bg); color: var(--primary); border-radius: var(--radius); font-size: 0.75rem; font-weight: 600; margin-bottom: 0.25rem;">Module 5</span>
+                <h1 style="font-size: 1.25rem; font-weight: 700; margin: 0; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                    Photo langage
+                </h1>
+            </div>
+            
+            <div style="flex: 1; text-align: center;">
+                <p style="color: var(--gray-600); font-size: 0.9rem; margin: 0;">
+                    Investigation personnelle par l'image
+                </p>
+            </div>
+            
+            <div style="flex: 1; text-align: right;">
+                <div class="status-badge status-in-progress">
+                    Phase d'Investigation
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Message de succès standard -->
     <div class="success-container" id="successMessage" style="display: none;">
         <div class="success-icon">
             <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
@@ -563,16 +634,24 @@
             </svg>
         </div>
         <h2>Félicitations !</h2>
-        <p>Vous avez complété avec succès le module 5.</p>
-        <p>Vous avez exploré vos préférences visuelles et vos associations personnelles.</p>
-        <button class="btn btn-primary" onclick="goToNextModule()">
-            Continuer vers le module 6
-            <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M7 15L12 10L7 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-        </button>
+        <p>Vous avez terminé avec succès l'activité de photo-langage.</p>
+        <p>Vos choix d'images et vos réflexions ont été sauvegardés et alimenteront votre parcours de découverte professionnelle.</p>
+        <div class="success-actions">
+            <button class="btn btn-restart" onclick="restartModule()">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                </svg>
+                Recommencer l'activité
+            </button>
+            <button class="btn btn-primary" onclick="goToNextModule()">
+                Continuer vers le module 6
+                <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M7 15L12 10L7 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
     </div>
-
+    </div>
 
     <script src="../../shared/js/scorm-api.js"></script>
     <script src="/modules/module-05/module.js"></script>

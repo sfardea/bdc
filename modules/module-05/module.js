@@ -71,7 +71,9 @@ class PhotoLanguageModule {
 
     showIntroModal() {
         const modal = document.getElementById('introModal');
-        modal.style.display = 'flex';
+        if (modal) {
+            modal.style.display = 'flex';
+        }
     }
 
     hideIntroModal() {
@@ -102,6 +104,24 @@ class PhotoLanguageModule {
         document.getElementById('step1').classList.add('active');
         document.getElementById('photosGrid1').style.display = 'none';
         document.getElementById('photoView1').classList.add('active');
+        
+        // S'assurer que la photo sélectionnée est affichée
+        if (this.selectedPhotos.step1) {
+            const photo = this.photos.find(p => p.id === this.selectedPhotos.step1);
+            if (photo) {
+                const imgElement = document.getElementById('selectedPhoto1');
+                if (imgElement) {
+                    imgElement.src = photo.src;
+                    imgElement.style.display = 'block';
+                    imgElement.style.visibility = 'visible';
+                    console.log('Photo 1 affichée:', photo.src);
+                }
+            } else {
+                console.log('Photo 1 non trouvée pour ID:', this.selectedPhotos.step1);
+            }
+        } else {
+            console.log('Aucune photo sélectionnée pour step1');
+        }
     }
 
     showScreen3() {
@@ -121,6 +141,24 @@ class PhotoLanguageModule {
         document.getElementById('photoView2').classList.add('active');
         // Masquer le bouton de navigation de la grille
         document.getElementById('gridNavigation2').style.display = 'none';
+        
+        // S'assurer que la photo sélectionnée est affichée
+        if (this.selectedPhotos.step2) {
+            const photo = this.photos.find(p => p.id === this.selectedPhotos.step2);
+            if (photo) {
+                const imgElement = document.getElementById('selectedPhoto2');
+                if (imgElement) {
+                    imgElement.src = photo.src;
+                    imgElement.style.display = 'block';
+                    imgElement.style.visibility = 'visible';
+                    console.log('Photo 2 affichée:', photo.src);
+                }
+            } else {
+                console.log('Photo 2 non trouvée pour ID:', this.selectedPhotos.step2);
+            }
+        } else {
+            console.log('Aucune photo sélectionnée pour step2');
+        }
     }
 
     showStep(stepNumber) {
@@ -401,16 +439,37 @@ class PhotoLanguageModule {
     }
 
     showSuccessMessage() {
+        // Masquer le conteneur principal
         const container = document.querySelector('.photolangage-container');
+        if (container) {
+            container.style.display = 'none';
+        }
         
-        // Masquer tous les steps
-        document.querySelectorAll('.step-section').forEach(section => {
-            section.style.display = 'none';
-        });
-
-        // Mettre à jour la progression à 100%
-        document.getElementById('progressFill').style.width = '100%';
-        document.getElementById('progressText').textContent = 'Activité terminée !';
+        // Masquer la barre de progression
+        const progressContainer = document.getElementById('progressContainer');
+        if (progressContainer) {
+            progressContainer.style.display = 'none';
+        }
+        
+        // Afficher le conteneur de succès (barre du haut + message)
+        const successContainer = document.getElementById('successContainer');
+        if (successContainer) {
+            successContainer.style.display = 'block';
+        }
+        
+        // Afficher le message de succès standard
+        const successMessage = document.getElementById('successMessage');
+        if (successMessage) {
+            successMessage.style.display = 'block';
+            
+            // Animation de confettis
+            this.celebrateCompletion();
+        }
+        
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        return; // Ne pas exécuter l'ancien code
         
         const successHtml = `
             <div class="success-message" style="
@@ -526,6 +585,9 @@ class PhotoLanguageModule {
     }
 
     loadSavedData() {
+        // Vérifier si le module est marqué comme complété
+        const isCompleted = localStorage.getItem('module5_completed');
+        
         // Essayer de charger depuis SCORM d'abord
         let savedData = null;
         
@@ -557,23 +619,27 @@ class PhotoLanguageModule {
             this.currentScreen = savedData.currentScreen || 0;
             this.visitedScreens = new Set(savedData.visitedScreens || []);
 
-            // Restaurer l'état si l'activité était en cours
-            if (this.currentScreen > 0) {
-                this.hideIntroModal();
-                document.getElementById('progressContainer').style.display = 'block';
-                
-                // Restaurer l'écran exact où l'utilisateur était
-                switch(this.currentScreen) {
-                    case 1: this.showScreen1(); break;
-                    case 2: this.showScreen2(); break;
-                    case 3: this.showScreen3(); break;
-                    case 4: this.showScreen4(); break;
-                }
-                
-                // Restaurer les données du formulaire
-                this.restoreFormData();
-                this.updateProgress();
+            // Toujours commencer par le premier écran pour permettre la navigation
+            this.hideIntroModal();
+            document.getElementById('progressContainer').style.display = 'block';
+            
+            // Commencer par l'écran 1 (première grille de photos)
+            this.currentScreen = 1;
+            this.showScreen1();
+            
+            // Restaurer les données du formulaire
+            this.restoreFormData();
+            this.updateProgress();
+            
+            // Si le module est complété, mettre les champs en lecture seule
+            if (isCompleted === 'true') {
+                this.setReadOnlyMode(true);
             }
+        }
+        // Si le module est complété mais pas de données (cas rare), montrer le succès
+        else if (isCompleted === 'true') {
+            this.hideIntroModal();
+            this.showSuccessMessage();
         }
     }
 
@@ -614,6 +680,47 @@ class PhotoLanguageModule {
             }
         });
     }
+
+    setReadOnlyMode(isReadOnly) {
+        // Mettre tous les champs de formulaire en lecture seule
+        const inputs = document.querySelectorAll('input, textarea, select');
+        inputs.forEach(input => {
+            input.readOnly = isReadOnly;
+            input.disabled = isReadOnly;
+            
+            if (isReadOnly) {
+                input.style.backgroundColor = '#f9fafb';
+                input.style.cursor = 'not-allowed';
+            } else {
+                input.style.backgroundColor = '';
+                input.style.cursor = '';
+            }
+        });
+        
+        // Désactiver les boutons de sélection de photos
+        const photoCards = document.querySelectorAll('.photo-card');
+        photoCards.forEach(card => {
+            if (isReadOnly) {
+                card.style.pointerEvents = 'none';
+                card.style.opacity = '0.7';
+            } else {
+                card.style.pointerEvents = '';
+                card.style.opacity = '';
+            }
+        });
+        
+        // Désactiver les boutons d'action (sauf navigation)
+        const actionButtons = document.querySelectorAll('#continueBtn1, #finishBtn, #nextToForm1Btn, #nextToForm2Btn');
+        actionButtons.forEach(button => {
+            if (isReadOnly) {
+                button.disabled = true;
+                button.style.opacity = '0.5';
+            } else {
+                button.disabled = false;
+                button.style.opacity = '';
+            }
+        });
+    }
 }
 
 // Fonction globale pour le bouton de transition
@@ -632,7 +739,26 @@ function restartModule() {
     window.location.reload();
 }
 
+// Fonctions globales (appelées depuis le HTML)
+function goToNextModule() {
+    window.location.href = '/module/06';
+}
+
+
+function restartModule() {
+    // Effacer les données sauvegardées spécifiques à ce module
+    localStorage.removeItem('module5_data');
+    localStorage.removeItem('module5_completed');
+    localStorage.removeItem('photoLanguageData');
+    localStorage.removeItem('module5_selected_photos');
+    localStorage.removeItem('module5_form_data');
+    localStorage.removeItem('module5_current_step');
+    
+    // Recharger la page pour recommencer
+    window.location.reload();
+}
+
 // Initialiser le module au chargement de la page
 document.addEventListener('DOMContentLoaded', () => {
-    new PhotoLanguageModule();
+    window.photoLanguageModule = new PhotoLanguageModule();
 });
