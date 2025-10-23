@@ -1,0 +1,28 @@
+# Redirections pour le routage sur Netlify
+# Redirige toutes les routes /module/* vers les vrais fichiers HTML
+
+/module/01    /modules/module-01/index.html    200
+/module/02    /modules/module-02/index.html    200
+/module/03    /modules/module-03/index.html    200
+/module/04    /modules/module-04/index.html    200
+/module/05    /modules/module-05/index.html    200
+/module/06    /modules/module-06/index.html    200
+/module/07    /modules/module-07/index.html    200
+/module/08    /modules/module-08/index.html    200
+/module/09    /modules/module-09/index.html    200
+/module/10    /modules/module-10/index.html    200
+/module/11    /modules/module-11/index.html    200
+/module/12    /modules/module-12/index.html    200
+/module/13    /modules/module-13/index.html    200
+/module/14    /modules/module-14/index.html    200
+/module/15    /modules/module-15/index.html    200
+/module/16    /modules/module-16/index.html    200
+/module/17    /modules/module-17/index.html    200
+/module/18    /modules/module-18/index.html    200
+/module/19    /modules/module-19/index.html    200
+/module/20    /modules/module-20/index.html    200
+/module/21    /modules/module-21/index.html    200
+/module/22    /modules/module-22/index.html    200
+/module/23    /modules/module-23/index.html    200
+/module/24    /modules/module-24/index.html    200
+/module/25    /modules/module-25/index.html    200

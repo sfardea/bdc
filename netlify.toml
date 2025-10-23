@@ -1,0 +1,131 @@
+# Configuration Netlify pour le Bilan de Compétences Digitalisé
+
+[build]
+  # Dossier de publication (où se trouvent les fichiers statiques)
+  publish = "."
+
+# Redirections pour les routes des modules
+[[redirects]]
+  from = "/module/01"
+  to = "/modules/module-01/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/module/02"
+  to = "/modules/module-02/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/module/03"
+  to = "/modules/module-03/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/module/04"
+  to = "/modules/module-04/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/module/05"
+  to = "/modules/module-05/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/module/06"
+  to = "/modules/module-06/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/module/07"
+  to = "/modules/module-07/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/module/08"
+  to = "/modules/module-08/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/module/09"
+  to = "/modules/module-09/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/module/10"
+  to = "/modules/module-10/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/module/11"
+  to = "/modules/module-11/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/module/12"
+  to = "/modules/module-12/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/module/13"
+  to = "/modules/module-13/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/module/14"
+  to = "/modules/module-14/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/module/15"
+  to = "/modules/module-15/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/module/16"
+  to = "/modules/module-16/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/module/17"
+  to = "/modules/module-17/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/module/18"
+  to = "/modules/module-18/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/module/19"
+  to = "/modules/module-19/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/module/20"
+  to = "/modules/module-20/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/module/21"
+  to = "/modules/module-21/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/module/22"
+  to = "/modules/module-22/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/module/23"
+  to = "/modules/module-23/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/module/24"
+  to = "/modules/module-24/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/module/25"
+  to = "/modules/module-25/index.html"
+  status = 200
