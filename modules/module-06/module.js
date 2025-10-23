@@ -129,12 +129,12 @@ class LifeCurvesModule {
                     
                     <div class="form-group">
                         <label class="form-label">Date</label>
-                        <input type="date" class="form-input event-date" required>
+                        <input type="date" class="form-input event-date" required min="1900-01-01" max="${this.maxDate.toISOString().split('T')[0]}">
                     </div>
                     
                     <div class="form-group event-field-full">
                         <label class="form-label">Description (optionnel)</label>
-                        <textarea class="form-textarea event-description" rows="2" placeholder="Décrivez brièvement cet événement..."></textarea>
+                        <textarea class="form-textarea event-description" rows="3" placeholder="Décrivez brièvement cet événement..." style="height: 65px !important; min-height: 65px !important;"></textarea>
                     </div>
                     
                     <div class="form-group event-field-full">
@@ -150,6 +150,7 @@ class LifeCurvesModule {
             </div>
         `;
         
+        // Ajouter le nouvel événement EN BAS de la liste
         container.insertAdjacentHTML('beforeend', eventHtml);
         
         // Ajouter les écouteurs pour le nouvel événement
@@ -157,12 +158,38 @@ class LifeCurvesModule {
         
         // Mettre à jour le compteur
         this.updateEventsCount();
+        
+        // Faire défiler pour que le DÉBUT du nouvel événement soit visible en haut
+        if (this.eventCounter > 1) {
+            const formContainer = document.querySelector('.events-form-container');
+            const newEvent = document.querySelector(`[data-event-id="${this.eventCounter}"]`);
+            
+            if (formContainer && newEvent) {
+                // Petit délai pour s'assurer que le DOM est mis à jour
+                setTimeout(() => {
+                    // Calculer la position pour que le nouvel événement soit parfaitement aligné en haut
+                    // Prendre en compte la position relative dans le conteneur
+                    const containerRect = formContainer.getBoundingClientRect();
+                    const eventRect = newEvent.getBoundingClientRect();
+                    const currentScroll = formContainer.scrollTop;
+                    
+                    // Position exacte pour aligner le haut de l'événement avec le haut du conteneur
+                    const scrollPosition = currentScroll + (eventRect.top - containerRect.top);
+                    
+                    formContainer.scrollTo({
+                        top: scrollPosition,
+                        behavior: 'smooth'
+                    });
+                }, 100);
+            }
+        }
     }
 
     bindEventFieldListeners(eventId) {
         const eventItem = document.querySelector(`[data-event-id="${eventId}"]`);
         const impactRange = eventItem.querySelector('.event-impact');
         const impactValue = eventItem.querySelector('.impact-value');
+        const descriptionTextarea = eventItem.querySelector('.event-description');
         
         // Slider d'impact
         impactRange.addEventListener('input', (e) => {
@@ -173,6 +200,31 @@ class LifeCurvesModule {
             if (value > 0) impactValue.classList.add('positive');
             if (value < 0) impactValue.classList.add('negative');
         });
+        
+        // Auto-expansion du textarea
+        if (descriptionTextarea) {
+            // Fonction pour ajuster la hauteur
+            const adjustHeight = () => {
+                // Reset la hauteur pour obtenir la vraie scrollHeight
+                descriptionTextarea.style.height = '65px';
+                
+                // Calculer la nouvelle hauteur basée sur le contenu
+                const scrollHeight = descriptionTextarea.scrollHeight;
+                const newHeight = Math.max(65, Math.min(scrollHeight, 150)); // Min 65px (3 lignes), Max 150px
+                
+                descriptionTextarea.style.height = newHeight + 'px';
+            };
+            
+            // Écouter les événements de saisie
+            descriptionTextarea.addEventListener('input', adjustHeight);
+            descriptionTextarea.addEventListener('keydown', adjustHeight);
+            descriptionTextarea.addEventListener('paste', () => {
+                setTimeout(adjustHeight, 0); // Délai pour que le contenu soit collé
+            });
+            
+            // Ajustement initial si du contenu existe déjà
+            adjustHeight();
+        }
     }
 
     removeEventField(eventId) {
@@ -894,26 +946,47 @@ class LifeCurvesModule {
                         <div style="font-size: 0.9rem; opacity: 0.9;">Impact moyen: ${professionalAvg > 0 ? '+' : ''}${professionalAvg.toFixed(1)}</div>
                     </div>
                 </div>
-                <button class="nav-button" style="
-                    background: var(--white); 
-                    color: var(--success); 
-                    border: none; 
-                    padding: 1rem 2rem; 
-                    border-radius: var(--radius-lg); 
-                    font-weight: 600; 
-                    font-size: 1rem;
-                    cursor: pointer;
-                    transition: all 0.3s ease;
-                    margin-top: 1.5rem;
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                " onclick="goToNextModule()" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.2)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-                    Continuer vers le module 7
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <path d="M7 15L12 10L7 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
+                <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem;">
+                    <button class="nav-button" style="
+                        background: #E5E7EB; 
+                        color: #374151; 
+                        border: none; 
+                        padding: 1rem 2rem; 
+                        border-radius: var(--radius-lg); 
+                        font-weight: 600; 
+                        font-size: 1rem;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                    " onclick="restartModule()" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.2)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M4 10C4 13.3137 6.68629 16 10 16C13.3137 16 16 13.3137 16 10C16 6.68629 13.3137 4 10 4C7.79086 4 5.88656 5.33649 5 7.25" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M5 3V7H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Recommencer l'activité
+                    </button>
+                    <button class="nav-button" style="
+                        background: var(--white); 
+                        color: var(--success); 
+                        border: none; 
+                        padding: 1rem 2rem; 
+                        border-radius: var(--radius-lg); 
+                        font-weight: 600; 
+                        font-size: 1rem;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                    " onclick="goToNextModule()" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.2)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                        Continuer vers le module 7
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M7 15L12 10L7 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
                 
                 <p style="font-size: 0.9rem; opacity: 0.8; margin-top: 1.5rem;">
                     Ces courbes alimenteront votre réflexion sur vos valeurs et aspirations futures.
@@ -1068,6 +1141,21 @@ document.head.appendChild(style);
 // Fonction globale pour le bouton de transition
 function goToNextModule() {
     window.location.href = '/module/07';
+}
+
+// Fonction globale pour revenir à l'édition des courbes
+function restartModule() {
+    // Ne PAS effacer les données, juste le statut de complétion
+    // pour permettre de modifier les courbes existantes
+    localStorage.removeItem('module6_completed');  // Effacer seulement le statut de complétion
+    
+    // Mettre à jour le statut SCORM si nécessaire
+    if (typeof setSCORMData !== 'undefined') {
+        setSCORMData('module6_completed', 'false');
+    }
+    
+    // Recharger la page pour revenir au tableau avec les points existants
+    window.location.reload();
 }
 
 // Initialiser le module au chargement de la page
