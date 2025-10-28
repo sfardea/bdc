@@ -281,7 +281,15 @@ class DevServer {
         }
 
         .btn-test.placeholder {
-            background: linear-gradient(135deg, var(--accent), #D97706);
+            background: #9CA3AF;
+            cursor: not-allowed !important;
+            opacity: 0.6 !important;
+            pointer-events: none;
+        }
+        
+        .btn-test.placeholder:hover {
+            transform: none !important;
+            background: #9CA3AF !important;
         }
 
         @media (max-width: 768px) {
@@ -308,12 +316,12 @@ class DevServer {
             <p class="hero-subtitle">
                 Découvrez et développez vos compétences professionnelles à travers un parcours personnalisé et interactif
             </p>
-            <div class="dev-badge">
+            <!-- <div class="dev-badge">
                 🚀 Environnement de développement - Port ${this.port}
-            </div>
+            </div> -->
         </header>
         
-        <section class="stats-section">
+        <!-- <section class="stats-section">
             <h2>📊 État du Projet</h2>
             <div class="stats-grid">
                 <div class="stat-card">
@@ -333,7 +341,7 @@ class DevServer {
                     <div class="stat-label">Progression</div>
                 </div>
             </div>
-        </section>
+        </section> -->
 
         <main class="modules-grid">
             ${this.generateModuleCards()}
@@ -377,30 +385,30 @@ class DevServer {
             
             // PHASE INVESTIGATION PERSONNELLE (7 modules)
             { id: '05', implemented: true },   // Photo langage
-            { id: '06', implemented: true },   // Mes courbes de vie
-            { id: '07', implemented: true },   // MBTI
-            { id: '08', implemented: true },  // 32 figures du destin
-            { id: '09', implemented: true },  // Ailes du Désir
-            { id: '10', implemented: true },  // Cocktail de la réussite
-            { id: '11', implemented: true },  // Portrait chinois
+            { id: '06', implemented: false },   // Mes courbes de vie
+            { id: '07', implemented: false },   // MBTI
+            { id: '08', implemented: false },  // 32 figures du destin
+            { id: '09', implemented: false },  // Ailes du Désir
+            { id: '10', implemented: false },  // Cocktail de la réussite
+            { id: '11', implemented: false },  // Portrait chinois
             
             // PHASE INVESTIGATION PROFESSIONNELLE (11 modules)  
-            { id: '12', implemented: true },  // Mes Réalisations
-            { id: '13', implemented: true },  // Motivations au travail
-            { id: '14', implemented: true },  // Portefeuille de compétences
-            { id: '15', implemented: true },  // Priorités professionnelles
-            { id: '16', implemented: true },  // Profil RIASEC
-            { id: '17', implemented: true },  // 6 questions
-            { id: '18', implemented: true },  // Classification motivations
-            { id: '19', implemented: true },  // J'investigue les pistes
-            { id: '20', implemented: true },  // Déporientation
-            { id: '21', implemented: true },  // Enquêtes métiers
-            { id: '22', implemented: true },  // Questionnaire 360
+            { id: '12', implemented: false },  // Mes Réalisations
+            { id: '13', implemented: false },  // Motivations au travail
+            { id: '14', implemented: false },  // Portefeuille de compétences
+            { id: '15', implemented: false },  // Priorités professionnelles
+            { id: '16', implemented: false },  // Profil RIASEC
+            { id: '17', implemented: false },  // 6 questions
+            { id: '18', implemented: false },  // Classification motivations
+            { id: '19', implemented: false },  // J'investigue les pistes
+            { id: '20', implemented: false },  // Déporientation
+            { id: '21', implemented: false },  // Enquêtes métiers
+            { id: '22', implemented: false },  // Questionnaire 360
             
             // PHASE CONCLUSION (3 modules)
-            { id: '23', implemented: true },  // Viabilisation projet
-            { id: '24', implemented: true },  // Plan d'action
-            { id: '25', implemented: true }   // Synthèse
+            { id: '23', implemented: false },  // Viabilisation projet
+            { id: '24', implemented: false },  // Plan d'action
+            { id: '25', implemented: false }   // Synthèse
         ];
         
         const implemented = modules.filter(m => m.implemented).length;
@@ -420,30 +428,30 @@ class DevServer {
             
             // PHASE INVESTIGATION PERSONNELLE (Modules 5-11)
             { id: '05', title: 'Photo langage', description: 'Sélection de 3 images parmi 20 + explications', implemented: true, phase: 'Phase d\'Investigation' },
-            { id: '06', title: 'Mes courbes de vie', description: 'Outil graphique interactif - lignes de temps personnelle/professionnelle', implemented: true, phase: 'Phase d\'Investigation' },
-            { id: '07', title: 'Les 16 grands types de personnalité (MBTI®)', description: 'Questionnaire + profil MBTI® + métiers associés', implemented: true, phase: 'Phase d\'Investigation' },
-            { id: '08', title: 'Les 32 figures du destin', description: 'Atelier créatif avec introduction et interaction', implemented: true, phase: 'Phase d\'Investigation' },
-            { id: '09', title: 'Les Ailes du Désir', description: 'Atelier créatif similaire aux figures du destin', implemented: true, phase: 'Phase d\'Investigation' },
-            { id: '10', title: 'Le cocktail de la réussite', description: 'Listing ingédients + description du cocktail final', implemented: true, phase: 'Phase d\'Investigation' },
-            { id: '11', title: 'Le portrait chinois', description: 'Questions "Si j\'\u00e9tais un(e)..." + justifications', implemented: true, phase: 'Phase d\'Investigation' },
+            { id: '06', title: 'Mes courbes de vie', description: 'Outil graphique interactif - lignes de temps personnelle/professionnelle', implemented: false, phase: 'Phase d\'Investigation' },
+            { id: '07', title: 'Les 16 grands types de personnalité (MBTI®)', description: 'Questionnaire + profil MBTI® + métiers associés', implemented: false, phase: 'Phase d\'Investigation' },
+            { id: '08', title: 'Les 32 figures du destin', description: 'Atelier créatif avec introduction et interaction', implemented: false, phase: 'Phase d\'Investigation' },
+            { id: '09', title: 'Les Ailes du Désir', description: 'Atelier créatif similaire aux figures du destin', implemented: false, phase: 'Phase d\'Investigation' },
+            { id: '10', title: 'Le cocktail de la réussite', description: 'Listing ingédients + description du cocktail final', implemented: false, phase: 'Phase d\'Investigation' },
+            { id: '11', title: 'Le portrait chinois', description: 'Questions "Si j\'\u00e9tais un(e)..." + justifications', implemented: false, phase: 'Phase d\'Investigation' },
             
             // PHASE INVESTIGATION PROFESSIONNELLE (Modules 12-22)
-            { id: '12', title: 'Mes Réalisations (Revue CV Détaillé)', description: 'Formulaire dynamique expériences/formations avec missions et compétences', implemented: true, phase: 'Phase d\'Investigation' },
-            { id: '13', title: 'Mes motivations au travail', description: 'Drag-and-drop de 20 facteurs en 3 colonnes de priorité', implemented: true, phase: 'Phase d\'Investigation' },
-            { id: '14', title: 'Mon portefeuille de compétences', description: 'Auto-évaluation Savoirs/Savoir-faire/Savoir-être + lien expériences', implemented: true, phase: 'Phase d\'Investigation' },
-            { id: '15', title: 'Mon tableau de priorités professionnelles', description: 'Allocation de 100 points entre critères + hiérarchisation', implemented: true, phase: 'Phase d\'Investigation' },
-            { id: '16', title: 'Profil RIASEC', description: 'Test de Holland + code RIASEC + domaines professionnels', implemented: true, phase: 'Phase d\'Investigation' },
-            { id: '17', title: 'Réponses en champ libre 6 questions', description: '6 questions précises sur journée idéale, problèmes à résoudre...', implemented: true, phase: 'Phase d\'Investigation' },
-            { id: '18', title: 'Classification sources de motivation', description: 'Sélection 5 plus importants du module 13 + justifications', implemented: true, phase: 'Phase d\'Investigation' },
-            { id: '19', title: 'J\'investigue les pistes', description: 'Brainstorming + création cartes de piste avec notes', implemented: true, phase: 'Phase d\'Investigation' },
-            { id: '20', title: 'http://deporientation.free.fr/', description: 'Lien externe + champ notes intégré pour recherches', implemented: true, phase: 'Phase d\'Investigation' },
-            { id: '21', title: 'Enquêtes métiers et marché du travail', description: 'Guide PDF + formulaire structuré par enquête menée', implemented: true, phase: 'Phase d\'Investigation' },
-            { id: '22', title: 'Questionnaire 360', description: 'Envoi e-mails questionnaire anonyme + rapport synthèse automatique', implemented: true, phase: 'Phase d\'Investigation' },
+            { id: '12', title: 'Mes Réalisations (Revue CV Détaillé)', description: 'Formulaire dynamique expériences/formations avec missions et compétences', implemented: false, phase: 'Phase d\'Investigation' },
+            { id: '13', title: 'Mes motivations au travail', description: 'Drag-and-drop de 20 facteurs en 3 colonnes de priorité', implemented: false, phase: 'Phase d\'Investigation' },
+            { id: '14', title: 'Mon portefeuille de compétences', description: 'Auto-évaluation Savoirs/Savoir-faire/Savoir-être + lien expériences', implemented: false, phase: 'Phase d\'Investigation' },
+            { id: '15', title: 'Mon tableau de priorités professionnelles', description: 'Allocation de 100 points entre critères + hiérarchisation', implemented: false, phase: 'Phase d\'Investigation' },
+            { id: '16', title: 'Profil RIASEC', description: 'Test de Holland + code RIASEC + domaines professionnels', implemented: false, phase: 'Phase d\'Investigation' },
+            { id: '17', title: 'Réponses en champ libre 6 questions', description: '6 questions précises sur journée idéale, problèmes à résoudre...', implemented: false, phase: 'Phase d\'Investigation' },
+            { id: '18', title: 'Classification sources de motivation', description: 'Sélection 5 plus importants du module 13 + justifications', implemented: false, phase: 'Phase d\'Investigation' },
+            { id: '19', title: 'J\'investigue les pistes', description: 'Brainstorming + création cartes de piste avec notes', implemented: false, phase: 'Phase d\'Investigation' },
+            { id: '20', title: 'http://deporientation.free.fr/', description: 'Lien externe + champ notes intégré pour recherches', implemented: false, phase: 'Phase d\'Investigation' },
+            { id: '21', title: 'Enquêtes métiers et marché du travail', description: 'Guide PDF + formulaire structuré par enquête menée', implemented: false, phase: 'Phase d\'Investigation' },
+            { id: '22', title: 'Questionnaire 360', description: 'Envoi e-mails questionnaire anonyme + rapport synthèse automatique', implemented: false, phase: 'Phase d\'Investigation' },
             
             // PHASE CONCLUSION (Modules 23-25)
-            { id: '23', title: 'Viabilisation projet professionnel', description: 'Sélection piste principale + SWOT avec pré-remplissage intelligent', implemented: true, phase: 'Phase de Conclusion' },
-            { id: '24', title: 'Plan d\'action', description: 'Créateur plan d\'action avec étapes, indicateurs, dates, ressources', implemented: true, phase: 'Phase de Conclusion' },
-            { id: '25', title: 'Synthèse', description: 'Génération PDF automatique + compilation données parcours', implemented: true, phase: 'Phase de Conclusion' }
+            { id: '23', title: 'Viabilisation projet professionnel', description: 'Sélection piste principale + SWOT avec pré-remplissage intelligent', implemented: false, phase: 'Phase de Conclusion' },
+            { id: '24', title: 'Plan d\'action', description: 'Créateur plan d\'action avec étapes, indicateurs, dates, ressources', implemented: false, phase: 'Phase de Conclusion' },
+            { id: '25', title: 'Synthèse', description: 'Génération PDF automatique + compilation données parcours', implemented: false, phase: 'Phase de Conclusion' }
         ];
 
         return modules.map(module => `
@@ -460,12 +468,20 @@ class DevServer {
                         ${module.phase}
                     </div>
                     <div class="module-actions">
-                        <a href="/module/${module.id}" class="btn-test ${module.implemented ? '' : 'placeholder'}" target="_blank">
-                            ${module.implemented ? '🚀 Tester le module' : '👀 Voir l\'aperçu'}
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </a>
+                        ${module.implemented 
+                            ? `<a href="/module/${module.id}" class="btn-test" target="_blank">
+                                🚀 Tester le module
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                    <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </a>`
+                            : `<span class="btn-test placeholder disabled" style="cursor: not-allowed; opacity: 0.5;">
+                                👀 Voir l'aperçu
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                    <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>`
+                        }
                     </div>
                 </div>
             </div>

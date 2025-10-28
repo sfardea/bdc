@@ -250,3 +250,25 @@ window.addEventListener('beforeunload', function() {
         window.bilanSCORM.terminate();
     }
 });
+
+// Fonctions globales pour compatibilité avec les modules
+function initSCORM() {
+    return BilanSCORM.getInstance();
+}
+
+function setSCORMData(key, value) {
+    return BilanSCORM.setValue(key, value);
+}
+
+function getSCORMData(key) {
+    return BilanSCORM.getValue(key);
+}
+
+function setSCORMComplete() {
+    return BilanSCORM.setStatus('completed');
+}
+
+// Export pour utilisation dans les modules
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { BilanSCORM, initSCORM, setSCORMData, getSCORMData, setSCORMComplete };
+}

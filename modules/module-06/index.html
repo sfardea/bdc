@@ -66,11 +66,7 @@
         }
 
         .timeline-canvas-wrapper {
-            background: var(--white);
-            border-radius: var(--radius-2xl);
-            padding: 2rem;
-            box-shadow: var(--shadow-lg);
-            border: 2px solid var(--gray-100);
+            padding: 1rem;
             flex: 1;
             position: relative;
             display: flex;
@@ -87,10 +83,11 @@
             height: 100%;
             position: relative;
             background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-            border-radius: var(--radius);
+            border-radius: var(--radius-lg);
             border: 1px solid var(--gray-200);
             overflow: visible;
             flex: 1;
+            box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
         }
 
         .timeline-axis {
@@ -671,18 +668,43 @@
             font-size: 0.95rem;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             transition: var(--transition);
+            background: var(--white);
+            color: var(--gray-900);
         }
         
-        /* Textarea optimisé pour le module 6 - 3 lignes */
-        .form-textarea {
-            min-height: 65px !important;  /* Hauteur pour 3 lignes */
-            height: 65px !important;  /* Hauteur fixe au départ */
+        .form-select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B7280' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            padding-right: 2.5rem;
+            cursor: pointer;
+            min-height: 42px;
+        }
+        
+        .form-input {
+            min-height: 42px;
+        }
+        
+        /* Textarea optimisé pour le module 6 - 4 lignes max */
+        .form-textarea,
+        textarea.form-textarea,
+        .popup-content .form-textarea,
+        .event-item .form-textarea {
+            min-height: 85px !important;  /* Hauteur pour 4 lignes */
+            height: 85px !important;  /* Hauteur fixe */
+            max-height: 85px !important;  /* Limiter la hauteur maximale */
             resize: none !important;  /* Désactiver le resize manuel */
-            line-height: 1.3 !important;
-            padding: 0.4rem 0.5rem !important;  /* Padding équilibré */
-            overflow: hidden !important;  /* Cacher la scrollbar */
-            transition: height 0.1s ease-out !important;  /* Animation douce */
-            font-size: 0.9rem !important;  /* Police lisible */
+            line-height: 1.4 !important;  /* Interligne ajusté pour 4 lignes */
+            padding: 0.6rem 0.75rem !important;  /* Padding identique aux autres champs */
+            overflow-y: auto !important;  /* Scrollbar si nécessaire */
+            overflow-x: hidden !important;  /* Pas de scroll horizontal */
+            font-size: 0.95rem !important;  /* Même taille que les autres champs */
+            width: 100% !important;  /* Toute la largeur */
+            box-sizing: border-box !important;
+            display: block !important;
         }
 
         .form-input::placeholder, .form-textarea::placeholder {
@@ -691,10 +713,20 @@
             font-weight: 400;
         }
 
+        .form-input:hover, .form-select:hover {
+            border-color: var(--gray-300);
+        }
+        
         .form-input:focus, .form-select:focus, .form-textarea:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px var(--primary-bg);
+        }
+        
+        .form-select option {
+            padding: 0.5rem;
+            background: var(--white);
+            color: var(--gray-900);
         }
 
         .impact-slider {
@@ -750,16 +782,17 @@
         /* Styles supprimés - utilisation des classes standards btn */
 
         .points-summary {
-            background: var(--white);
-            border-radius: var(--radius-xl);
+            background: linear-gradient(135deg, #fafbfc 0%, var(--white) 100%);
+            border-radius: var(--radius-lg);
             padding: 1.5rem;
             margin: 0;
-            border: 2px solid var(--gray-200);
+            border: 1px solid var(--gray-200);
             height: 100%;
             overflow: hidden;
             width: 100%;
             display: flex;
             flex-direction: column;
+            box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, 0.05);
         }
 
         /* Scrollbar personnalisée pour l'intérieur des cards */
@@ -785,7 +818,7 @@
         @media (min-width: 1024px) {
             .points-summary {
                 padding: 1.5rem;
-                border-width: 2px;
+                border-width: 1px;
             }
         }
 
@@ -915,7 +948,7 @@
             }
             
             .timeline-canvas-wrapper {
-                padding: 2rem;
+                padding: 1rem;
             }
         }
 
@@ -1009,6 +1042,247 @@
         .timeline-line.new line {
             animation: lineAppear 1s ease-out;
         }
+
+        /* Styles pour les nouvelles étapes */
+        .step-content {
+            display: none;
+            width: 100%;
+            height: 100%;
+        }
+
+        .step-content.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Split screen pour l'analyse */
+        .split-container {
+            display: flex;
+            flex: 1;
+            gap: 2rem;
+            overflow: hidden;
+        }
+
+        .split-left, .split-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .split-left {
+            max-width: 50%;
+        }
+
+        .canvas-preview-wrapper {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--gray-200);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .canvas-preview-wrapper canvas {
+            flex: 1;
+            width: 100%;
+            border-radius: var(--radius);
+        }
+
+        .questions-container {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--gray-200);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .question-progress {
+            margin-bottom: 2rem;
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: var(--gray-600);
+            font-weight: 500;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--gray-200);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.3s ease;
+        }
+
+        .question-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .question-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gray-900);
+            line-height: 1.4;
+        }
+
+        .question-subtitle {
+            font-size: 0.9rem;
+            color: var(--gray-600);
+            font-style: italic;
+        }
+
+        .question-textarea {
+            flex: 1;
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            line-height: 1.6;
+            resize: vertical;
+            min-height: 150px;
+            transition: border-color 0.2s;
+        }
+
+        .question-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-bg);
+        }
+
+        .question-navigation {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .step-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        /* Styles pour le récapitulatif */
+        .summary-section {
+            display: none;
+        }
+
+        .summary-section.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .summary-container {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .summary-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .summary-header h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-canvas-wrapper {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--gray-200);
+            margin-bottom: 2rem;
+            height: 300px;
+        }
+
+        .summary-content {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--gray-200);
+        }
+
+        .answer-section {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .answer-section:last-child {
+            border-bottom: none;
+        }
+
+        .answer-section h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 1rem;
+        }
+
+        .answer-section h4 {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .answer-text {
+            color: var(--gray-700);
+            line-height: 1.6;
+            white-space: pre-wrap;
+            background: var(--gray-50);
+            padding: 1rem;
+            border-radius: var(--radius);
+            border-left: 3px solid var(--primary);
+        }
+
+        .summary-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        /* Animation de transition entre questions */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .question-content.animate {
+            animation: fadeInUp 0.3s ease;
+        }
     </style>
 </head>
 <body style="overflow: hidden; height: 100vh; margin: 0; padding: 1rem 0; box-sizing: border-box;">
@@ -1041,6 +1315,8 @@
 
         <!-- Contenu principal -->
         <main class="card" style="padding: 1rem; margin: 0; border-radius: var(--radius-xl); width: 100%; box-sizing: border-box; flex: 1; overflow: hidden; display: flex; flex-direction: column;">
+            <!-- Étape 1: Courbes de vie -->
+            <div id="step1" class="step-content active" style="flex: 1; display: flex; flex-direction: column;">
                 <div class="life-curves-container" style="flex: 1; display: flex; flex-direction: column; overflow: hidden;">
                 <!-- Layout principal compact -->
                 <div class="main-layout" style="flex: 1; overflow: hidden;">
@@ -1102,13 +1378,81 @@
                     
                 <!-- Validation -->
                 <div class="validation-section" style="text-align: center; margin: 1rem 0; flex-shrink: 0;">
-                    <button id="validateBtn" class="btn btn-primary" disabled>
-                        Valider mes courbes de vie
+                    <button id="continueToAnalysisBtn" class="btn btn-primary" disabled>
+                        Continuer vers l'analyse →
                         </button>
                     <p style="color: var(--gray-500); font-size: 0.85rem; margin-top: 0.5rem;">
                         Ajoutez au moins 3 points sur chaque timeline pour continuer
                     </p>
                     </div>
+            </div>
+
+            <!-- Étape 2: Analyse avec questions -->
+            <div id="step2" class="step-content" style="display: none;">
+                <div class="split-container">
+                    <div class="split-left">
+                        <div class="canvas-preview-wrapper">
+                            <h3 style="font-size: 1rem; font-weight: 600; color: var(--gray-900); margin-bottom: 1rem; text-align: center;">Vos courbes de vie</h3>
+                            <canvas id="previewCanvas"></canvas>
+                        </div>
+                    </div>
+                    <div class="split-right">
+                        <div class="questions-container">
+                            <div class="question-progress">
+                                <span class="progress-text">Question <span id="currentQuestionNum">1</span> sur 12</span>
+                                <div class="progress-bar">
+                                    <div id="progressFill" class="progress-fill" style="width: 8.33%;"></div>
+                                </div>
+                            </div>
+                            <div id="questionContent" class="question-content">
+                                <!-- Questions dynamiques ici -->
+                            </div>
+                            <div class="question-navigation">
+                                <button id="prevQuestionBtn" class="btn btn-secondary" style="display: none;">
+                                    ← Retour
+                                </button>
+                                <button id="nextQuestionBtn" class="btn btn-primary">
+                                    Suivant →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step-navigation">
+                    <button id="backToCanvasBtn" class="btn btn-secondary">
+                        ← Retour aux courbes
+                    </button>
+                    <button id="finishAnalysisBtn" class="btn btn-primary" style="display: none;">
+                        Voir le récapitulatif →
+                    </button>
+                </div>
+            </div>
+
+            <!-- Étape 3: Récapitulatif -->
+            <div id="step3" class="step-content" style="display: none;">
+                <div class="summary-container">
+                    <div class="summary-header">
+                        <h2>Récapitulatif de votre analyse</h2>
+                        <p style="color: var(--gray-600);">Voici vos courbes de vie et vos réflexions</p>
+                    </div>
+                    <div class="summary-canvas-wrapper">
+                        <canvas id="summaryCanvas"></canvas>
+                    </div>
+                    <div id="summaryContent" class="summary-content">
+                        <!-- Contenu du récapitulatif généré dynamiquement -->
+                    </div>
+                    <div class="summary-navigation">
+                        <button id="backToAnalysisBtn" class="btn btn-secondary">
+                            ← Retour à l'analyse
+                        </button>
+                        <button id="validateBtn" class="btn btn-primary">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 6L9 17L4 12"></path>
+                            </svg>
+                            Valider et terminer l'activité
+                        </button>
+                    </div>
+                </div>
             </div>
         </main>
                 </div>
@@ -1171,8 +1515,25 @@
             </div>
             <h2 class="welcome-title">Tracez vos courbes de vie</h2>
             <div class="welcome-description">
-                <p style="margin-bottom: 1rem;">Représentez graphiquement les moments marquants de votre parcours personnel et professionnel.</p>
-                <p style="margin-bottom: 0;">Chaque point reflète l'impact émotionnel de ces événements sur une échelle de -5 à +5.</p>
+                <p style="margin-bottom: 1rem;">Visualisez votre parcours en traçant les moments marquants de votre vie.</p>
+                
+                <p style="margin-bottom: 1.5rem; font-weight: 600; color: var(--primary);">Comment ça marche ?</p>
+                
+                <p style="margin-bottom: 0.75rem;">
+                    <strong>1. Ajoutez vos événements</strong> pour placer des points sur vos lignes de vie
+                </p>
+                
+                <p style="margin-bottom: 0.75rem;">
+                    <strong>2. Évaluez l'impact</strong> de -5 (négatif) à +5 (positif)
+                </p>
+                
+                <p style="margin-bottom: 1.5rem;">
+                    <strong>3. Visualisez votre parcours</strong> avec vos courbes automatiques
+                </p>
+                
+                <p style="margin-bottom: 0; padding: 0.75rem; background: rgba(245, 158, 11, 0.1); border-radius: var(--radius); color: var(--gray-700);">
+                    💡 Ajoutez au moins 3 événements sur chaque timeline pour continuer
+                </p>
             </div>
             <button class="btn btn-primary" id="startActivityBtn" style="padding: 0.75rem 2rem; font-size: 1rem;">
                 Commencer l'activité
@@ -1208,7 +1569,7 @@
     </div>
 
 
-    <script src="../../shared/js/scorm-api.js"></script>
+    <script src="/shared/js/scorm-api.js"></script>
     <script src="/modules/module-06/module.js"></script>
 </body>
 </html>
