@@ -583,6 +583,263 @@
 
 ---
 
+## Illustration du Blason - Code HTML/CSS
+
+### Structure HTML du Blason
+
+```html
+<div class="blason-container">
+    <h2>🏆 Votre Blason Personnel</h2>
+    
+    <div class="blason-shield">
+        <!-- Bannière supérieure : Aspirations -->
+        <div class="blason-banner" id="blason-aspirations">
+            Mon objectif principal
+        </div>
+        
+        <!-- Grille des 4 sections principales -->
+        <div class="blason-sections">
+            <!-- Quadrant supérieur gauche -->
+            <div class="blason-section">
+                <h4>Valeurs</h4>
+                <p id="blason-valeurs">Authenticité, Courage, Persévérance</p>
+            </div>
+            
+            <!-- Quadrant supérieur droit -->
+            <div class="blason-section">
+                <h4>Talents</h4>
+                <p id="blason-talents">Leadership, Créativité</p>
+            </div>
+            
+            <!-- Quadrant inférieur gauche -->
+            <div class="blason-section">
+                <h4>Enjeux</h4>
+                <p id="blason-enjeux">Innovation et transformation</p>
+            </div>
+            
+            <!-- Quadrant inférieur droit -->
+            <div class="blason-section">
+                <h4>Limites</h4>
+                <p id="blason-limites">Perfectionnisme</p>
+            </div>
+            
+            <!-- Section base : Fondations (toute la largeur) -->
+            <div class="blason-section blason-foundations">
+                <h4>Fondations</h4>
+                <p id="blason-fondations">Ma devise personnelle</p>
+            </div>
+        </div>
+        
+        <!-- Éléments décoratifs latéraux -->
+        <div class="blason-supports">
+            <div class="support-left"></div>
+            <div class="support-right"></div>
+        </div>
+    </div>
+</div>
+```
+
+### Code CSS du Blason
+
+```css
+/* Container principal */
+.blason-container {
+    background: white;
+    border-radius: 24px;
+    padding: 3rem;
+    margin: 2rem 0;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Forme du bouclier */
+.blason-shield {
+    max-width: 600px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border: 3px solid #6366f1; /* primary color */
+    /* Forme caractéristique du blason : rectangle avec pointe en bas */
+    border-radius: 20px 20px 80px 80px;
+    padding: 2rem;
+    position: relative;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+/* Bannière supérieure (Aspirations) */
+.blason-banner {
+    background: #6366f1; /* primary color */
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    font-weight: 700;
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+/* Grille des sections */
+.blason-sections {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+/* Style des sections individuelles */
+.blason-section {
+    background: white;
+    border: 2px solid #e5e7eb; /* gray-200 */
+    border-radius: 8px;
+    padding: 1.5rem;
+    min-height: 120px;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+/* Titres des sections */
+.blason-section h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #6366f1; /* primary */
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Contenu des sections */
+.blason-section p {
+    color: #374151; /* gray-700 */
+    font-size: 0.9rem;
+    line-height: 1.4;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    max-width: 100%;
+}
+
+/* Section Fondations (base du blason) */
+.blason-foundations {
+    grid-column: 1 / -1; /* Prend toute la largeur */
+    background: linear-gradient(
+        135deg, 
+        rgba(99, 102, 241, 0.05), /* primary-bg */
+        rgba(16, 185, 129, 0.05)  /* success-bg */
+    );
+    border-color: #6366f1; /* primary */
+}
+
+/* Supports décoratifs latéraux */
+.blason-supports {
+    position: absolute;
+    left: -20px;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+}
+
+.support-left, 
+.support-right {
+    width: 40px;
+    height: 120px;
+    background: #6366f1; /* primary */
+    border-radius: 20px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .blason-shield {
+        padding: 1.5rem;
+    }
+    
+    .blason-sections {
+        grid-template-columns: 1fr; /* Une seule colonne sur mobile */
+    }
+    
+    .blason-banner {
+        font-size: 1rem;
+        padding: 0.75rem 1.5rem;
+    }
+    
+    .blason-section {
+        padding: 1rem;
+        min-height: 100px;
+    }
+    
+    /* Masquer les supports latéraux sur mobile */
+    .blason-supports {
+        display: none;
+    }
+}
+```
+
+### Représentation Visuelle ASCII
+
+```
+     ╔═══════════════════════════════╗
+     ║      ASPIRATIONS              ║  ← Bannière (Objectif principal)
+     ╠═══════════════════════════════╣
+     ║                               ║
+     ║  ┌─────────┐   ┌─────────┐   ║
+     ║  │ VALEURS │   │ TALENTS │   ║  ← Quadrants supérieurs
+     ║  └─────────┘   └─────────┘   ║
+     ║                               ║
+     ║  ┌─────────┐   ┌─────────┐   ║
+     ║  │ ENJEUX  │   │ LIMITES │   ║  ← Quadrants inférieurs
+     ║  └─────────┘   └─────────┘   ║
+     ║                               ║
+     ║  ┌───────────────────────┐   ║
+     ║  │     FONDATIONS        │   ║  ← Base (Devise)
+     ║  └───────────────────────┘   ║
+     ║                               ║
+     ╚═══════╗         ╔═══════════╝
+             ╚═══════╝              ← Pointe caractéristique du blason
+```
+
+### Exemple de Rendu avec Données Réelles
+
+```html
+<div class="blason-shield">
+    <div class="blason-banner">Devenir consultant indépendant</div>
+    
+    <div class="blason-sections">
+        <div class="blason-section">
+            <h4>Valeurs</h4>
+            <p>Liberté, Excellence, Partage</p>
+        </div>
+        
+        <div class="blason-section">
+            <h4>Talents</h4>
+            <p>Communication, Analyse stratégique</p>
+        </div>
+        
+        <div class="blason-section">
+            <h4>Enjeux</h4>
+            <p>Créer ma propre entreprise de conseil</p>
+        </div>
+        
+        <div class="blason-section">
+            <h4>Limites</h4>
+            <p>Peur de l'instabilité financière</p>
+        </div>
+        
+        <div class="blason-section blason-foundations">
+            <h4>Fondations</h4>
+            <p>"Le succès c'est tomber sept fois, se relever huit"</p>
+        </div>
+    </div>
+</div>
+```
+
 ## Notes pour l'Intégration Base de Données
 
 1. **Stockage des réponses** : Créer une table pour stocker toutes les réponses textuelles
