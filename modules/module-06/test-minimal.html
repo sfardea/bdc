@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Minimal Module 6</title>
+</head>
+<body>
+    <h1>Test Minimal Module 6</h1>
+    <p>Ouvrez la console (F12) pour voir les logs</p>
+    
+    <!-- Éléments minimaux requis par le module -->
+    <button id="openPopupBtnSelector">Ouvrir Popup</button>
+    <div id="closePopupBtn"></div>
+    <div id="popupOverlay"></div>
+    <div id="eventsContainer"></div>
+    <div id="timelineCanvas"></div>
+    <div id="welcomeModal" style="display: none;"></div>
+    <div id="addEventFieldBtn"></div>
+    <div id="submitAllEventsBtn"></div>
+    <div id="startActivityBtn"></div>
+    <div id="continueToAnalysisBtn"></div>
+    <div id="backToCanvasBtn"></div>
+    <div id="finishAnalysisBtn"></div>
+    <div id="backToAnalysisBtn"></div>
+    <div id="validateBtn"></div>
+    <div id="prevQuestionBtn"></div>
+    <div id="nextQuestionBtn"></div>
+    <div id="allEventsList"></div>
+    <div id="pointsSummary"></div>
+    <div id="step1" class="step-content active"></div>
+    <div id="step2" class="step-content"></div>
+    <div id="step3" class="step-content"></div>
+    <div id="questionContent"></div>
+    <div id="currentQuestionNum"></div>
+    <div id="progressFill"></div>
+    <div id="previewCanvas"></div>
+    <div id="summaryCanvas"></div>
+    <div id="summaryContent"></div>
+    
+    <script>
+        console.log('=== TEST MINIMAL MODULE 6 ===');
+        
+        // Simuler les fonctions SCORM
+        window.initSCORM = function() { 
+            console.log('TEST: initSCORM appelé'); 
+            return true; 
+        };
+        window.setSCORMData = function(key, value) { 
+            console.log('TEST: setSCORMData', key, value); 
+            return true; 
+        };
+        window.getSCORMData = function(key) { 
+            console.log('TEST: getSCORMData', key); 
+            return null; 
+        };
+        window.setSCORMComplete = function() { 
+            console.log('TEST: setSCORMComplete appelé'); 
+            return true; 
+        };
+        
+        console.log('TEST: Fonctions SCORM simulées');
+    </script>
+    
+    <script src="module.js"></script>
+    
+    <script>
+        window.addEventListener('load', function() {
+            console.log('TEST: Page complètement chargée');
+            console.log('TEST: LifeCurvesModule disponible?', typeof LifeCurvesModule !== 'undefined');
+            console.log('TEST: lifeCurvesModule instance?', typeof lifeCurvesModule !== 'undefined');
+            
+            if (typeof lifeCurvesModule !== 'undefined') {
+                console.log('TEST: Module initialisé avec succès!');
+                document.body.style.backgroundColor = '#e0ffe0';
+            } else {
+                console.log('TEST: Module NON initialisé');
+                document.body.style.backgroundColor = '#ffe0e0';
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+

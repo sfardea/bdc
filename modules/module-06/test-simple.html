@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Simple Module 6</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        .test-box { border: 2px solid green; padding: 20px; margin: 20px 0; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <h1>Test Simple du Module 6</h1>
+    
+    <div class="test-box">
+        <h2>1. Test de chargement de base</h2>
+        <p>Cette page devrait s'afficher correctement.</p>
+        <p id="test1" class="success">✅ HTML chargé</p>
+    </div>
+    
+    <div class="test-box">
+        <h2>2. Test JavaScript de base</h2>
+        <p id="test2"></p>
+    </div>
+    
+    <div class="test-box">
+        <h2>3. Test du module</h2>
+        <p id="test3"></p>
+        <button onclick="testModule()">Tester le module</button>
+    </div>
+    
+    <div class="test-box">
+        <h2>4. Console Log</h2>
+        <pre id="console-log" style="background: #f0f0f0; padding: 10px; max-height: 200px; overflow-y: auto;"></pre>
+    </div>
+    
+    <script>
+        // Capture console logs
+        const logDiv = document.getElementById('console-log');
+        const originalLog = console.log;
+        const originalError = console.error;
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            logDiv.innerHTML += '📝 ' + args.join(' ') + '\n';
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            logDiv.innerHTML += '❌ ' + args.join(' ') + '\n';
+        };
+        
+        // Test 2: JavaScript de base
+        document.getElementById('test2').innerHTML = '<span class="success">✅ JavaScript fonctionne</span>';
+        console.log('JavaScript de base fonctionne');
+        
+        // Test du module
+        function testModule() {
+            console.log('Test du module...');
+            const result = document.getElementById('test3');
+            
+            try {
+                // Vérifier si la classe existe
+                if (typeof LifeCurvesModule === 'undefined') {
+                    throw new Error('Classe LifeCurvesModule non trouvée');
+                }
+                
+                // Essayer de créer une instance
+                const module = new LifeCurvesModule();
+                result.innerHTML = '<span class="success">✅ Module créé avec succès!</span>';
+                console.log('Module créé avec succès');
+                
+            } catch (error) {
+                result.innerHTML = '<span class="error">❌ Erreur: ' + error.message + '</span>';
+                console.error('Erreur:', error);
+            }
+        }
+        
+        // Simuler les fonctions SCORM pour éviter les erreurs
+        window.initSCORM = () => { console.log('initSCORM simulé'); };
+        window.setSCORMData = (k, v) => { console.log('setSCORMData simulé:', k, v); };
+        window.setSCORMComplete = () => { console.log('setSCORMComplete simulé'); };
+    </script>
+    
+    <!-- Charger le module -->
+    <script src="module.js"></script>
+    
+    <script>
+        // Test après chargement
+        window.addEventListener('load', function() {
+            console.log('Page complètement chargée');
+            console.log('LifeCurvesModule disponible?', typeof LifeCurvesModule !== 'undefined');
+        });
+    </script>
+</body>
+</html>
+
