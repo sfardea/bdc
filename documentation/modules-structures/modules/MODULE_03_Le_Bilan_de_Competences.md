@@ -1,3 +1,4 @@
+
 # Structure Détaillée - Module 3 : Le Bilan de Compétences
 
 ## Informations Générales du Module
@@ -274,7 +275,7 @@
 - **Changement visuel** : Container rouge temporaire
 
 ### Sauvegarde des Données
-- **LocalStorage** :
+- **Database** :
   - Clé : `module3_state` (état actuel)
   - Clé : `module3_completed` (statut de complétion)
   - Clé : `module3_completion_date` (date de fin)
@@ -282,7 +283,6 @@
   - currentSlide : numéro de slide actuelle
   - checkboxConfirmed : état de la checkbox
   - lastVisited : timestamp
-- **SCORM** : Si disponible, envoi des données
 
 ### Animations
 - **Changement de slide** : slideIn (0.6s ease-out)
@@ -499,7 +499,6 @@
 }
 ```
 
----
 
 ## Notes pour l'Intégration Base de Données
 
@@ -507,8 +506,4 @@
 2. **Navigation conditionnelle** : Implémenter la logique de blocage sur validation
 3. **Tracking de progression** : Enregistrer quelle slide a été vue
 4. **Validation checkbox** : Stocker l'acceptation des conditions
-5. **Analytics** : Temps passé par slide, taux de complétion
-6. **Responsive** : Adapter le contenu pour mobile (slides plus courtes)
-7. **Accessibilité** : Navigation clavier, lecteurs d'écran
-8. **Export** : Possibilité de télécharger la présentation en PDF
 
