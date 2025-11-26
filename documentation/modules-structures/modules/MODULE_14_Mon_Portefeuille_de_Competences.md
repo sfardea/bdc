@@ -13,7 +13,6 @@
 
 #### En-tête
 - **Titre Principal** : "Mon portefeuille de compétences"
-- **Sous-titre** : [Nom de l'utilisateur] (ex: "Ilana AZERRAD")
 
 #### Barre de Navigation
 - **Bouton Gauche** : "Retour aux instructions"
