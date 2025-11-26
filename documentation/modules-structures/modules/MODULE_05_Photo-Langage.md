@@ -8,6 +8,10 @@
 - **Type** : Activité interactive de sélection et analyse d'images
 - **Nombre d'étapes** : 4 écrans (2 sélections de photos + 2 formulaires d'analyse)
 
+## 🔗 Visualiser Preview
+
+[Lien 1](https://g.co/gemini/share/efa3fda17158)
+
 ## Structure de Navigation
 
 ### Modal d'Introduction

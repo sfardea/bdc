@@ -8,6 +8,10 @@
 - **Type** : Questionnaire interactif avec génération de blason
 - **Nombre d'étapes** : 10 questions + page de résultat (blason) + page de succès
 
+## 🔗 Visualiser Preview
+
+[Lien 1](https://g.co/gemini/share/8472cb3d1aba)
+
 ## Structure de Navigation
 
 ### Barre de Progression

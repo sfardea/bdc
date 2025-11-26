@@ -8,6 +8,10 @@
 - **Type** : Sélection multi-choix + rédaction en 2 étapes
 - **Nombre d'étapes** : 2 étapes + page de succès
 
+## 🔗 Visualiser Preview
+
+[Lien 1](https://gemini.google.com/app/eacbffb2d20e19641) | [Lien 2](https://g.co/gemini/share/366db0bf9084)
+
 ## Structure de Navigation
 
 ### En-tête du Module

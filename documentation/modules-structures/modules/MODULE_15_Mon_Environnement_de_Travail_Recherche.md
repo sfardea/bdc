@@ -9,6 +9,10 @@
 - **Phase** : Investigation - Axe Professionnel I
 - **Public cible** : Personnes en définition de projet professionnel
 
+## 🔗 Visualiser Preview
+
+[Lien 1](https://g.co/gemini/share/67a853bae137)
+
 ## PAGE DE PRÉSENTATION
 
 ### Éléments Visuels

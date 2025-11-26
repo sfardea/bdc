@@ -10,6 +10,10 @@
 - **Site externe** : https://www.16personalities.com/fr/test-de-personnalite
 - **Public cible** : Tout public en recherche de connaissance de soi
 
+## 🔗 Visualiser Preview
+
+[Lien 1](https://www.16personalities.com/fr/types-de-personnalite)
+
 ## PAGE DE PRÉSENTATION
 
 ### Éléments Visuels

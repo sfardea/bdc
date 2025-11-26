@@ -9,6 +9,10 @@
 - **Format** : Métaphore visuelle du cocktail
 - **Public cible** : Professionnels en réflexion sur leur équilibre travail et missions
 
+## 🔗 Visualiser Preview
+
+[Lien 1](https://drive.google.com/file/d/1kNk4tJ1BkFrMmBIgOW4jvAES_wbuL91G/view) | [Lien 2](https://g.co/gemini/share/0aac7da4689b)
+
 ## Concept de l'Exercice
 
 ### Principe

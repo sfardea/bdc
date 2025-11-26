@@ -7,6 +7,10 @@
 - **Durée estimée** : 30-45 minutes
 - **Type** : Analyse et synthèse de compétences
 
+## 🔗 Visualiser Preview
+
+[Lien 1](https://activites.portail-ressources.fr/bilan/mes-competences/emVycmFkaWxhbmE%3D)
+
 ## Structure du Module
 
 ### Page 1 : Tableau de Bord des Compétences

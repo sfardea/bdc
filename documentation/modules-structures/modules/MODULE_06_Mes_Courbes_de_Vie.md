@@ -8,6 +8,10 @@
 - **Type** : Outil interactif de création de timeline avec analyse
 - **Nombre d'étapes** : 3 (Modal intro + Création des courbes + Analyse)
 
+## 🔗 Visualiser Preview
+
+[Lien 1](https://azerradilana.atlassian.net/browse/BC-4)
+
 ## Structure de Navigation
 
 ### Modal de Bienvenue (Première Visite)

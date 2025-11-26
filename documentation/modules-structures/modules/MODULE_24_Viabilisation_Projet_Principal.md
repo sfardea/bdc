@@ -10,6 +10,10 @@
 - **Public cible** : Personnes ayant défini un projet professionnel à concrétiser
 - **Format** : Analyse structurée en 5 dimensions
 
+## 🔗 Visualiser Preview
+
+[Lien 1](https://g.co/gemini/share/4717ef42a40d)
+
 ## PAGE DE PRÉSENTATION
 
 ### Éléments Visuels

@@ -10,6 +10,10 @@
 - **Public cible** : Personnes souhaitant confronter leur autoportrait à la perception des autres
 - **Participants** : Collègues, amis, managers, famille (3-5 personnes recommandées)
 
+## 🔗 Visualiser Preview
+
+[Lien 1](https://g.co/gemini/share/acba5ea392cb)
+
 ## PAGE DE PRÉSENTATION
 
 ### Éléments Visuels

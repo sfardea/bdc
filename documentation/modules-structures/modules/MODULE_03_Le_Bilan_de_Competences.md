@@ -9,6 +9,10 @@
 - **Nombre de slides** : 7 slides
 - **Navigation** : Linéaire avec validation requise
 
+## 🔗 Visualiser Preview
+
+[Lien 1](https://g.co/gemini/share/93038235ef24)
+
 ## Structure de Navigation
 
 ### En-tête du Module

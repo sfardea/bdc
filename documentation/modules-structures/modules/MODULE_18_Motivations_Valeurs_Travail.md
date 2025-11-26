@@ -10,6 +10,10 @@
 - **Public cible** : Personnes en réflexion sur leurs valeurs professionnelles
 - **Nombre de motivations** : 15 motivations à classer
 
+## 🔗 Visualiser Preview
+
+[Lien 1](https://g.co/gemini/share/356d71d4289d)
+
 ## PAGE DE PRÉSENTATION
 
 ### Éléments Visuels

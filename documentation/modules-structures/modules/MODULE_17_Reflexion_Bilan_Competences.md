@@ -10,6 +10,10 @@
 - **Public cible** : Personnes en bilan de compétences approfondi
 - **Nombre de questions** : 6 questions ouvertes
 
+## 🔗 Visualiser Preview
+
+[Lien 1](https://g.co/gemini/share/7231c9ecf652)
+
 ## PAGE DE PRÉSENTATION
 
 ### Éléments Visuels

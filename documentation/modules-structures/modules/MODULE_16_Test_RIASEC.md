@@ -10,6 +10,10 @@
 - **Site externe** : https://riasec.virginiebouvarel.fr/
 - **Public cible** : Personnes en orientation ou reconversion professionnelle
 
+## 🔗 Visualiser Preview
+
+[Lien 1](https://riasec.virginiebouvarel.fr/results.php)
+
 ## PAGE DE PRÉSENTATION
 
 ### Éléments Visuels

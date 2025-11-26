@@ -11,6 +11,10 @@
 - **Source** : France Travail (anciennement Pôle Emploi)
 - **Public cible** : Personnes en recherche d'orientation ou reconversion professionnelle
 
+## 🔗 Visualiser Preview
+
+[Lien 1](https://candidat.francetravail.fr/metierscope)
+
 ## PAGE DE PRÉSENTATION
 
 ### Éléments Visuels

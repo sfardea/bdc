@@ -10,6 +10,10 @@
 - **Phase** : Investigation - Axe Professionnel
 - **Public cible** : Professionnels en reconversion ou évolution de carrière
 
+## 🔗 Visualiser Preview
+
+[Lien 1](https://g.co/gemini/share/7b330a4b69af)
+
 ## Concept de l'Exercice
 
 ### Objectif principal

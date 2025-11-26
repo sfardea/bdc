@@ -10,6 +10,10 @@
 - **Public cible** : Personnes en phase de validation de projet professionnel
 - **Format** : Document de soutien pour entretiens professionnels
 
+## 🔗 Visualiser Preview
+
+[Lien 1](https://g.co/gemini/share/7c0c72399336)
+
 ## PAGE DE PRÉSENTATION
 
 ### Éléments Visuels

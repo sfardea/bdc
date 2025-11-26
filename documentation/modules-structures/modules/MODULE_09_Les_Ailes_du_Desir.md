@@ -10,6 +10,10 @@
 - **Domaines** : Professionnel et personnel
 - **Public cible** : Personnes en questionnement sur leur orientation professionnelle
 
+## 🔗 Visualiser Preview
+
+[Lien 1](https://www.marija.fr/wp-content/uploads/2023/01/Exercice-Les-Ailes-du-D)
+
 ## Concept de l'Exercice
 
 ### Résumé

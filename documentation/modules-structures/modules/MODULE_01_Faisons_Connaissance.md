@@ -8,6 +8,10 @@
 - **Type** : Formulaire multi-étapes
 - **Nombre d'étapes** : 3
 
+## 🔗 Visualiser Preview
+
+[Lien 1](https://g.co/gemini/share/c9998a8da80c)
+
 ## Structure de Navigation
 
 ### Barre de Progression

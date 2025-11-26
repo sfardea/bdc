@@ -10,6 +10,10 @@
 - **Phase** : Investigation - Axe Professionnel
 - **Public cible** : Personnes en réflexion sur leur orientation ou reconversion professionnelle
 
+## 🔗 Visualiser Preview
+
+[Lien 1](https://g.co/gemini/share/fd7b5df1e86b)
+
 ## Concept de l'Exercice
 
 ### Principe

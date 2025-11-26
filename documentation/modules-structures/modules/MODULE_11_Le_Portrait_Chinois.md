@@ -10,6 +10,10 @@
 - **Public cible** : Tout public - excellent brise-glace et exercice de personnalité
 - **Niveau** : Adaptable selon les objectifs pédagogiques
 
+## 🔗 Visualiser Preview
+
+[Lien 1](https://drive.google.com/file/d/19-LmdLYkrg1bKCSKo5_8oE3I3CPZykug/view) | [Lien 2](https://images.app.goo.gl/XgpMcnCZUyNXUqgD6) | [Lien 3](https://images.app.goo.gl/kXXN7Hg71uYf5QbF8)
+
 ## Concept de l'Exercice
 
 ### Principe

@@ -10,6 +10,10 @@
 - **Navigation** : Sélection intuitive avec validation finale
 - **Objectif** : Favoriser l'accès à l'intuition et comprendre les motivations profondes
 
+## 🔗 Visualiser Preview
+
+[Lien 1](https://g.co/gemini/share/5407ec2363431) | [Lien 2](https://docs.google.com/document/d/1HkbM0ogq7pLXm7MF5C)
+
 ## Structure de la Page
 
 ### 1. Header du Module
