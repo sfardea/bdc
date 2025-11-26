@@ -1,3 +1,4 @@
+
 # Module 8 : Les 32 figures du destin
 
 ## Informations Générales
@@ -12,7 +13,7 @@
 
 ## 🔗 Visualiser Preview
 
-[Lien 1](https://g.co/gemini/share/5407ec2363431) | [Lien 2](https://docs.google.com/document/d/1HkbM0ogq7pLXm7MF5C)
+[Lien 1](https://docs.google.com/document/d/1HkbM0ogq7pLXm7MF5CXnj1PlRJc7FzfQ/edit?usp=sharing&ouid=110305711301471291202&rtpof=true&sd=true) | [Lien 2](https://gemini.google.com/share/5407ec236343)
 
 ## Structure de la Page
 
@@ -471,6 +472,3 @@ Dans l'interface, les figures sont représentées par des cartes visuelles. Voic
 - L'effet 3D nécessite le support de `transform-style: preserve-3d`
 - Le layout est optimisé pour éviter le scroll (full viewport)
 - La sélection conserve l'ordre pour l'analyse ultérieure
-- Les archétypes sont basés sur des modèles psychologiques professionnels
-- Chaque figure représente un ensemble de rôles et motivations
-- L'interface privilégie l'exploration visuelle et ludique
