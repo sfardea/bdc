@@ -249,7 +249,7 @@
 }
 ```
 
-### LocalStorage
+### Database
 - **Clé principale** : `module5_data`
 - **Clés secondaires** :
   - `module5_selected_photos`
@@ -263,62 +263,6 @@
   - Réponses complètes
   - Statut de complétion
   - Timestamp
-
----
-
-## Structure HTML Principale
-
-```html
-<!-- Modal d'introduction -->
-<div class="intro-modal" id="introModal">
-  <div class="modal-content">
-    <h2>📸 Activité : Photo-Langage</h2>
-    <!-- Contenu explicatif -->
-    <button id="startActivityBtn">Commencer l'activité</button>
-  </div>
-</div>
-
-<!-- Contenu principal -->
-<main class="card">
-  <div class="photolangage-container">
-    <!-- Barre de progression -->
-    <div class="progress-container">
-      <div class="progress-bar">
-        <div class="progress-fill" id="progressFill"></div>
-      </div>
-      <div class="progress-text" id="progressText"></div>
-    </div>
-
-    <!-- Étape 1: Grille + Formulaire -->
-    <div class="step-section" id="step1">
-      <h2>🌟 Moi aujourd'hui</h2>
-      
-      <div class="photos-grid" id="photosGrid1">
-        <!-- Photos générées dynamiquement -->
-      </div>
-      
-      <div class="photo-view" id="photoView1">
-        <img class="selected-photo" id="selectedPhoto1">
-        <div class="photo-form">
-          <!-- Champs du formulaire -->
-        </div>
-      </div>
-    </div>
-
-    <!-- Étape 2: Grille + Formulaire -->
-    <div class="step-section" id="step2">
-      <!-- Structure similaire -->
-    </div>
-  </div>
-</main>
-
-<!-- Message de succès -->
-<div class="success-container" id="successMessage">
-  <!-- Contenu de succès -->
-</div>
-```
-
----
 
 ## Structure JSON pour Base de Données
 
@@ -384,7 +328,7 @@
 }
 ```
 
----
+
 
 ## Notes pour l'Intégration
 
@@ -392,6 +336,4 @@
 2. **Accessibilité** : Alt texts descriptifs pour toutes les photos
 3. **Responsive** : Grille adaptative selon la taille d'écran
 4. **Performance** : Préchargement des images suivantes
-5. **Analytics** : Tracking des photos les plus sélectionnées
-6. **Export** : Possibilité de générer un PDF avec photos et analyses
-7. **Psychologie** : Analyse possible des patterns de sélection
+
