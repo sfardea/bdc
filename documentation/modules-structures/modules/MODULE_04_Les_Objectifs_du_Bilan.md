@@ -1,3 +1,4 @@
+
 # Structure Détaillée - Module 4 : Les Objectifs du Bilan
 
 ## Informations Générales du Module
@@ -6,7 +7,7 @@
 - **Titre du module** : Les objectifs du bilan
 - **Description** : Définissez vos objectifs pour ce bilan de compétences et précisez votre objectif principal
 - **Type** : Sélection multi-choix + rédaction en 2 étapes
-- **Nombre d'étapes** : 2 étapes + page de succès
+- **Nombre d'étapes** : 2 étapes (ou 3 si la seconde prend trop de place) + page de succès
 
 ## 🔗 Visualiser Preview
 
@@ -251,7 +252,7 @@
 - **Messages d'erreur** : Notifications temporaires (4 secondes)
 
 ### Sauvegarde des Données
-- **LocalStorage** :
+- **Database** :
   - Clé : `module4_data`
   - Structure : 
     ```json
@@ -261,10 +262,6 @@
       "timestamp": "2024-01-15T10:30:00Z"
     }
     ```
-- **SCORM** : 
-  - `module4_objectives` : Array des objectifs
-  - `module4_primary_objective` : Texte principal
-  - `module4_completed` : true
 
 ### Navigation entre Étapes
 - **Animation** : Slide horizontal entre les étapes
@@ -499,13 +496,3 @@
 }
 ```
 
----
-
-## Notes pour l'Intégration Base de Données
-
-1. **Stockage des objectifs** : Table many-to-many entre users et objectives
-2. **Objectif principal** : Champ text avec validation de longueur
-3. **Tracking** : Enregistrer le timestamp de chaque sélection
-4. **Analytics** : Statistiques sur les objectifs les plus sélectionnés
-5. **Personnalisation** : Adapter les modules suivants selon les objectifs choisis
-6. **Export** : Inclure les objectifs dans le rapport final du bilan
