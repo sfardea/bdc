@@ -1,387 +1,567 @@
-# Module 9 : Les Ailes du Désir
+# Structure Détaillée - Module 9 : Les Ailes du Désir
 
-## Informations Générales
+## Informations Générales du Module
 
-- **Titre** : Les Ailes du Désir
+- **Numéro du module** : Module 9
+- **Titre du module** : Les Ailes du Désir
 - **Sous-titre** : Prenez conscience de vos envies et de vos motivations
-- **Type** : Exercice d'orientation professionnelle - Collection "Chemin Faisant"
-- **Durée estimée** : 15-20 minutes dans l'interface + temps de réflexion
-- **Objectif** : Identifier et hiérarchiser les expériences de vie souhaitées
-- **Domaines** : Professionnel et personnel
-- **Public cible** : Personnes en questionnement sur leur orientation professionnelle
+- **Description** : Exercice d'orientation professionnelle de la collection "Chemin Faisant" pour explorer vos envies profondes
+- **Type** : Exercice d'analyse et de planification
+- **Durée estimée** : 30-40 minutes
+- **Nombre d'étapes** : 4 étapes principales
 
 ## 🔗 Visualiser Preview
 
 [Lien 1](https://www.marija.fr/wp-content/uploads/2023/01/Exercice-Les-Ailes-du-D)
 
-## Concept de l'Exercice
+## Structure de Navigation
 
-### Résumé
-> "Les Ailes du Désir" est un exercice de la collection "Chemin Faisant" imaginé pour les besoins d'orientation professionnelle. Il s'agit d'un outil de la méthode d'orientation ADVP qui rend le bénéficiaire responsable de ses choix professionnels, tout en restant attentif ou attentive aux opportunités. Cet exercice concerne le domaine professionnel et le domaine personnel, ce qui permet d'ouvrir la réflexion sur ses envies et ses motivations. C'est est particulièrement appréciable chez les personnes qui se sentent bloquées dans leur situation professionnelle et qui ne sont pas sûres dans quelle direction elles souhaiteraient avancer.
+### Barre de Progression
+- **Type** : Barre de progression horizontale avec étapes
+- **Texte** : "Étape [X] sur 4"
+- **Calcul** : (étape actuelle / 4) * 100
+- **Indicateurs** : Points numérotés pour chaque étape
 
-### Utilisation de l'exercice
-> Pour l'efficacité optimale de cet exercice prévoyez 15 à 20 minutes dans un endroit calme et sans distractions, où vous pouvez vous concentrer. Imprimez l'exercice et préparez votre stylo. Vous allez pleinement en bénéficier si vous prenez le temps de réfléchir aux questions ci-dessous et de formuler vos réponses par écrit. Ne vous limitez pas uniquement aux idées que vous trouvez réalisables et notez tout ce qui vous vient à l'esprit, peu importe le degré d'utopie.
+### Indicateurs d'Étapes
+1. **Étape 1** : Listing des expériences
+2. **Étape 2** : Évaluation et notation
+3. **Étape 3** : Regroupement thématique
+4. **Étape 4** : Planification d'action
 
-### Pour aller plus loin
-> Cet exercice peut également être restitué au début d'un accompagnement professionnel. Si les questions de cet exercice vous ont inspiré et vous souhaitez vous engager dans la démarche d'un accompagnement pour structurer votre réflexion et aller plus loin dans la réalisation de vos objectifs professionnels, je vous invite à prendre un rendez-vous préalable avec moi via le formulaire de contact sur mon site www.marja.fr.
+---
 
-## Structure de la Page
+## PAGE D'INTRODUCTION
 
-### 1. Header du Module
-
-#### Éléments :
-- **Badge Module** : "Module 9"
+### En-tête de la Page
+- **Badge Module** : "Module 9" (fond primary-bg, texte primary)
 - **Titre Principal** : "Les Ailes du Désir"
-- **Sous-titre** : "Prenez conscience de vos envies et de vos motivations"
-- **Badge de Statut** : "Investigation Personnelle"
-- **Image d'en-tête** : Cygne aux ailes déployées (symbolique de liberté et d'envol)
+- **Sous-titre** : "Exercice d'orientation professionnelle"
+- **Badge Collection** : "Collection Chemin Faisant" (badge secondaire)
+- **Icône/Emoji** : 🦢 (cygne symbolisant la liberté et l'envol)
 
-### 2. Section Introduction
+### Section Présentation
 
-#### Contenu :
-```html
-<div class="intro-section">
-  <h2>🦢 Les Ailes du Désir - Exercice d'orientation</h2>
-  <p class="collection-badge">Collection "Chemin Faisant"</p>
-  <p>Cet exercice vous permet d'explorer vos envies profondes et vos motivations, 
-     tant professionnelles que personnelles, pour mieux orienter votre évolution.</p>
-</div>
-```
+#### Bloc Concept
+- **Titre** : "Concept de l'exercice"
+- **Contenu** : Texte explicatif sur la méthode ADVP
+- **Mise en forme** : Paragraphe avec fond légèrement coloré
+- **Points clés** :
+  - Exploration des envies profondes
+  - Domaines professionnel et personnel
+  - Acceptation de l'utopie
+  - Orientation vers l'action
 
-### 3. Instructions de l'Exercice
+#### Bloc Instructions Générales
+- **Titre** : "Comment procéder"
+- **Format** : Liste numérotée de 10 instructions
+- **Contenu** :
+  1. Listez 10 expériences souhaitées
+  2. Expliquez vos motivations
+  3. Notez la désirabilité (1-10)
+  4. Notez la faisabilité (1-10)
+  5. Calculez la somme
+  6. Regroupez par thèmes
+  7. Choisissez une priorité
+  8. Estimez le temps nécessaire
+  9. Définissez les étapes
+  10. Identifiez la première action
 
-#### Tableau Principal : Les 10 Expériences
+### Boutons d'Action
+- **Bouton Principal** : "Commencer l'exercice"
+  - Style : btn-primary btn-lg
+  - Icône : →
+  - Action : Navigation vers Étape 1
 
-```html
-<div class="exercise-instructions">
-  <h3>Instructions et tableau</h3>
-  <ol>
-    <li>Listez 10 expériences personnelles ou professionnelles que vous aimeriez vivre 
-        <strong>quelque soit leur degré d'utopie</strong></li>
-    <li>Expliquez en colonne P pourquoi vous souhaitez vivre chaque expérience retenue</li>
-    <li>Dans la colonne D hiérarchisez-les en fonction de leur <strong>Désirabilité</strong>, 
-        en les notant de 1 à 10 (La note 10 correspond au désir le plus fort)</li>
-    <li>Dans la colonne F hiérarchisez-les en fonction de leur <strong>Faisabilité</strong>, 
-        en les notant de 1 à 10 (La note 10 correspond à la plus grande faisabilité)</li>
-    <li>Faites la somme des notes en colonne S (Somme) pour obtenir un classement</li>
-    <li>Regroupez-les par thèmes (au moins 3 thèmes)</li>
-    <li>Choisissez une expérience parmi celles retenues</li>
-    <li>Évaluez le temps nécessaire à sa réalisation</li>
-    <li>Listez les étapes nécessaires à la réalisation</li>
-    <li>Par quoi je commence ?</li>
-  </ol>
-</div>
-```
+---
 
-### 4. Tableau Interactif
+## ÉTAPE 1 : LISTING DES EXPÉRIENCES
 
-#### Structure du tableau :
-```html
-<table class="experiences-table">
-  <thead>
-    <tr>
-      <th>10 Expériences par ordre d'arrivée</th>
-      <th>D<br/>(Désirabilité)</th>
-      <th>F<br/>(Faisabilité)</th>
-      <th>S<br/>(Somme)</th>
-      <th>Pourquoi</th>
-    </tr>
-  </thead>
-  <tbody>
-    <!-- 10 lignes pour les expériences -->
-    <tr v-for="i in 10">
-      <td><textarea placeholder="Expérience {{i}}..."></textarea></td>
-      <td><input type="number" min="1" max="10" /></td>
-      <td><input type="number" min="1" max="10" /></td>
-      <td><span class="auto-sum">{{sum}}</span></td>
-      <td><textarea placeholder="Pourquoi cette expérience..."></textarea></td>
-    </tr>
-  </tbody>
-</table>
-```
+### En-tête de l'Étape
+- **Titre** : "Vos 10 expériences souhaitées"
+- **Sous-titre** : "Listez librement, sans censure, tout ce que vous aimeriez vivre"
+- **Conseil** : "N'hésitez pas à inclure des rêves utopiques !"
 
-### 5. Section Analyse et Regroupement
+### Tableau Principal
 
-#### A. Regroupement par thèmes
-```html
-<div class="themes-section">
-  <h3>Regroupement par thèmes</h3>
-  <div class="themes-grid">
-    <div class="theme-card">
-      <input type="text" placeholder="Thème 1" />
-      <div class="experiences-list">
-        <!-- Liste des expériences associées -->
-      </div>
-    </div>
-    <div class="theme-card">
-      <input type="text" placeholder="Thème 2" />
-      <div class="experiences-list">
-        <!-- Liste des expériences associées -->
-      </div>
-    </div>
-    <div class="theme-card">
-      <input type="text" placeholder="Thème 3" />
-      <div class="experiences-list">
-        <!-- Liste des expériences associées -->
-      </div>
-    </div>
-  </div>
-</div>
-```
+#### Structure du Tableau
+- **Nombre de lignes** : 10 (numérotées de 1 à 10)
+- **Colonnes** : 5 colonnes
+- **En-têtes** :
+  - N° (largeur : 50px)
+  - Expérience (largeur : 40%)
+  - D - Désirabilité (largeur : 100px)
+  - F - Faisabilité (largeur : 100px)
+  - S - Somme (largeur : 80px)
+  - Pourquoi (largeur : restante)
 
-#### B. Sélection et planification
-```html
-<div class="planning-section">
-  <h3>Mon expérience prioritaire</h3>
-  
-  <div class="selected-experience">
-    <label>Expérience choisie :</label>
-    <select>
-      <!-- Options dynamiques basées sur le tableau -->
-    </select>
-  </div>
-  
-  <div class="time-estimation">
-    <label>Temps nécessaire estimé :</label>
-    <input type="text" placeholder="Ex: 6 mois, 1 an..." />
-  </div>
-  
-  <div class="steps-planning">
-    <h4>Étapes de réalisation</h4>
-    <ol class="steps-list">
-      <li><input type="text" placeholder="Étape 1..." /></li>
-      <li><input type="text" placeholder="Étape 2..." /></li>
-      <li><input type="text" placeholder="Étape 3..." /></li>
-      <!-- Bouton pour ajouter plus d'étapes -->
-    </ol>
-    <button class="add-step">+ Ajouter une étape</button>
-  </div>
-  
-  <div class="first-action">
-    <h4>Par quoi je commence ?</h4>
-    <textarea placeholder="Ma première action concrète sera..."></textarea>
-  </div>
-</div>
-```
+#### Ligne Type (répétée 10 fois)
 
-### 6. Section Conseil
+##### Colonne 1 : Numéro
+- **Type** : Affichage statique
+- **Contenu** : Numéro de ligne (1 à 10)
+- **Style** : Centré, fond gris clair
 
-#### Mon conseil :
-```html
-<div class="advice-section">
-  <h3>💡 Mon conseil</h3>
-  <blockquote>
-    "Les Ailes du Désir" est l'exercice auquel je retourne tous les 6 mois. 
-    Cela me permet de suivre l'évolution de mes envies, car je veux être sûre 
-    que les actions que je mets en place correspondent aux choses qui me motivent 
-    et me font vibrer. En faisant cela je peux mieux orienter mon évolution 
-    professionnelle et personnelle et mieux me préparer pour ce que je rêve de réaliser!
-  </blockquote>
-</div>
-```
+##### Colonne 2 : Expérience
+- **Type** : Zone de texte (textarea)
+- **ID** : experience_[n]
+- **Placeholder** : "Décrivez l'expérience n°[n]..."
+- **Hauteur** : 3 lignes minimum, extensible
+- **Validation** : Requis pour au moins 5 expériences
+- **Caractères max** : 500
 
-### 7. Boutons d'Action
+##### Colonne 3 : Désirabilité (D)
+- **Type** : Champ numérique (input number)
+- **ID** : desirability_[n]
+- **Min** : 1
+- **Max** : 10
+- **Placeholder** : "-"
+- **Info-bulle** : "10 = désir le plus fort"
+- **Style** : Centré, largeur fixe
 
-- **Sauvegarder le travail** : Enregistre les données en local
-- **Exporter en PDF** : Génère un PDF de l'exercice complété
-- **Valider et continuer** : Passe au module suivant
+##### Colonne 4 : Faisabilité (F)
+- **Type** : Champ numérique (input number)
+- **ID** : feasibility_[n]
+- **Min** : 1
+- **Max** : 10
+- **Placeholder** : "-"
+- **Info-bulle** : "10 = très facile à réaliser"
+- **Style** : Centré, largeur fixe
 
-## Caractéristiques Techniques
+##### Colonne 5 : Somme (S)
+- **Type** : Affichage calculé automatique
+- **ID** : sum_[n]
+- **Calcul** : D + F
+- **Affichage** : Badge avec couleur selon score
+  - 2-7 : Badge rouge
+  - 8-14 : Badge orange
+  - 15-20 : Badge vert
+- **Animation** : Mise à jour en temps réel
 
-### Interactions
-- **Auto-calcul** : La colonne S calcule automatiquement D + F
-- **Tri dynamique** : Possibilité de trier par score total
-- **Drag & Drop** : Pour associer les expériences aux thèmes
-- **Validation progressive** : Débloque les sections suivantes
-- **Sauvegarde automatique** : Toutes les 30 secondes
+##### Colonne 6 : Pourquoi
+- **Type** : Zone de texte (textarea)
+- **ID** : reason_[n]
+- **Placeholder** : "Pourquoi cette expérience est importante pour vous..."
+- **Hauteur** : 2 lignes minimum, extensible
+- **Caractères max** : 300
 
-### Animations
-- **Fade-in progressif** : Pour chaque section
-- **Highlight au focus** : Sur les champs actifs
-- **Animation de tri** : Lors du classement automatique
-- **Indicateur de progression** : Barre de complétion
+### Fonctionnalités du Tableau
+
+#### Calculs Automatiques
+- Somme D + F calculée en temps réel
+- Mise à jour visuelle immédiate
+- Indication du score total global
+
+#### Tri et Classement
+- **Bouton** : "Trier par score"
+  - Action : Réorganise les lignes par score décroissant
+  - Animation : Transition fluide
+- **Indicateur** : Top 3 mis en évidence
+
+#### Validation Progressive
+- Minimum 5 expériences remplies pour continuer
+- Indicateur visuel du nombre d'expériences complétées
+- Message d'encouragement dynamique
+
+### Zone de Légende
+- **Titre** : "Aide à la notation"
+- **Contenu** :
+  - Désirabilité : 1 (peu désiré) → 10 (fortement désiré)
+  - Faisabilité : 1 (très difficile) → 10 (très facile)
+  - Somme : Score total pour priorisation
+
+### Boutons de Navigation
+- **Bouton Secondaire** : "Sauvegarder"
+  - Style : btn-outline-primary
+  - Action : Sauvegarde locale
+- **Bouton Principal** : "Continuer"
+  - Style : btn-primary
+  - État : Désactivé jusqu'à validation
+  - Action : Navigation vers Étape 2
+
+---
+
+## ÉTAPE 2 : REGROUPEMENT THÉMATIQUE
+
+### En-tête de l'Étape
+- **Titre** : "Regroupez vos expériences par thèmes"
+- **Sous-titre** : "Identifiez les grands domaines qui vous attirent"
+- **Instructions** : "Créez au minimum 3 thèmes et associez-y vos expériences"
+
+### Section Thèmes
+
+#### Grille de Thèmes
+- **Layout** : Grille responsive 3 colonnes (mobile : 1 colonne)
+- **Nombre minimum** : 3 cartes
+- **Nombre maximum** : 6 cartes
+
+#### Carte Thème Type
+
+##### En-tête de Carte
+- **Champ Titre** :
+  - Type : Input text
+  - ID : theme_title_[n]
+  - Placeholder : "Nom du thème [n]"
+  - Validation : Requis
+  - Caractères max : 50
+- **Couleur** : Sélecteur de couleur (6 options prédéfinies)
+- **Icône** : Sélection d'icône (optionnel)
+
+##### Zone de Contenu
+- **Type** : Zone de drop pour drag & drop
+- **État vide** : "Glissez des expériences ici"
+- **Capacité** : Illimitée
+- **Affichage** : Liste des expériences associées
+
+##### Liste des Expériences Associées
+- **Format** : Pills/badges
+- **Contenu** : Titre court de l'expérience + score
+- **Action** : Click pour retirer du thème
+- **Animation** : Fade in/out
+
+#### Zone Source des Expériences
+- **Titre** : "Vos expériences à classer"
+- **Format** : Liste de cartes draggables
+- **Contenu par carte** :
+  - Numéro
+  - Titre de l'expérience (tronqué si trop long)
+  - Score (badge coloré)
+- **État** : Grisé si déjà associé à un thème
+
+### Fonctionnalités Drag & Drop
+- **Drag** : Depuis la zone source
+- **Drop** : Dans les cartes thèmes
+- **Feedback visuel** : Zone de drop en surbrillance
+- **Animation** : Smooth transition
+- **Multi-assignation** : Une expérience peut être dans plusieurs thèmes
+
+### Bouton Ajouter un Thème
+- **Texte** : "+ Ajouter un thème"
+- **Style** : btn-outline-secondary
+- **Position** : Après la dernière carte
+- **Action** : Ajoute une nouvelle carte thème
+- **Limite** : Maximum 6 thèmes
 
 ### Validation
-- Minimum 5 expériences pour continuer
-- Au moins 3 thèmes identifiés
-- Une expérience sélectionnée
-- Au moins 3 étapes planifiées
-- Première action définie
+- Au moins 3 thèmes créés et nommés
+- Chaque thème contient au moins 1 expérience
+- Message d'erreur si conditions non remplies
 
-### Sauvegarde des Données
+### Boutons de Navigation
+- **Bouton Retour** : "← Précédent"
+- **Bouton Principal** : "Continuer"
+  - État : Désactivé jusqu'à validation
+  - Action : Navigation vers Étape 3
+
+---
+
+## ÉTAPE 3 : SÉLECTION ET PLANIFICATION
+
+### En-tête de l'Étape
+- **Titre** : "Choisissez votre expérience prioritaire"
+- **Sous-titre** : "Sélectionnez l'expérience que vous souhaitez réaliser en premier"
+
+### Section Sélection
+
+#### Champ de Sélection Principal
+- **Label** : "Mon expérience prioritaire"
+- **Type** : Select/Dropdown
+- **ID** : selected_experience
+- **Options** : Liste des expériences avec leurs scores
+- **Format option** : "[Score] - Titre de l'expérience"
+- **Tri** : Par score décroissant
+- **Validation** : Requis
+
+#### Affichage de l'Expérience Sélectionnée
+- **Card de Résumé** :
+  - Titre de l'expérience
+  - Score total
+  - Raison (pourquoi)
+  - Thème(s) associé(s)
+- **Style** : Mise en évidence avec bordure colorée
+
+### Section Planification Temporelle
+
+#### Estimation de Durée
+- **Label** : "Temps nécessaire estimé pour réaliser cette expérience"
+- **Type** : Input text avec suggestions
+- **ID** : time_estimation
+- **Placeholder** : "Ex: 6 mois, 1 an, 2 ans..."
+- **Suggestions dropdown** :
+  - 3 mois
+  - 6 mois
+  - 1 an
+  - 2 ans
+  - 5 ans
+  - Plus de 5 ans
+- **Validation** : Requis
+
+### Section Étapes de Réalisation
+
+#### Titre Section
+- **Texte** : "Décomposez votre projet en étapes"
+- **Sous-titre** : "Listez les principales étapes nécessaires"
+
+#### Liste d'Étapes
+- **Type** : Liste ordonnée dynamique
+- **Minimum** : 3 étapes
+- **Maximum** : 10 étapes
+- **Étapes initiales** : 3 champs pré-affichés
+
+#### Champ Étape Type
+- **Type** : Input text
+- **ID** : step_[n]
+- **Placeholder** : "Étape [n] : Décrivez l'action..."
+- **Validation** : Requis pour les 3 premières
+- **Caractères max** : 200
+- **Numérotation** : Automatique
+
+#### Bouton Ajouter
+- **Texte** : "+ Ajouter une étape"
+- **Style** : btn-outline-secondary btn-sm
+- **Position** : Après la dernière étape
+- **Action** : Ajoute un nouveau champ étape
+
+### Boutons de Navigation
+- **Bouton Retour** : "← Précédent"
+- **Bouton Principal** : "Continuer"
+  - État : Désactivé jusqu'à validation
+  - Action : Navigation vers Étape 4
+
+---
+
+## ÉTAPE 4 : PREMIÈRE ACTION CONCRÈTE
+
+### En-tête de l'Étape
+- **Titre** : "Passez à l'action !"
+- **Sous-titre** : "Définissez votre toute première action concrète"
+
+### Section Récapitulatif
+
+#### Card de Synthèse
+- **Titre** : "Votre projet"
+- **Contenu structuré** :
+  - Expérience choisie (titre complet)
+  - Score de priorité
+  - Durée estimée
+  - Nombre d'étapes planifiées
+  - Thème(s) associé(s)
+- **Style** : Card avec fond gradient léger
+
+### Section Première Action
+
+#### Champ Principal
+- **Label** : "Par quoi je commence concrètement ?"
+- **Type** : Textarea
+- **ID** : first_action
+- **Placeholder** : "Décrivez précisément votre première action. Ex: 'Demain, je prends RDV avec...', 'Cette semaine, je recherche...'"
+- **Lignes** : 4 minimum
+- **Validation** : Requis, minimum 20 caractères
+- **Conseil** : "Soyez le plus spécifique possible : quoi, quand, comment"
+
+#### Champs Complémentaires
+
+##### Date de Début
+- **Label** : "Quand allez-vous faire cette première action ?"
+- **Type** : Date picker
+- **ID** : action_date
+- **Min** : Date du jour
+- **Max** : Date du jour + 30 jours
+- **Validation** : Requis
+
+##### Engagement Personnel
+- **Label** : "Mon engagement"
+- **Type** : Checkbox avec texte
+- **Texte** : "Je m'engage à réaliser cette première action à la date indiquée"
+- **ID** : commitment_checkbox
+- **Validation** : Doit être coché pour valider
+
+### Section Conseil Final
+
+#### Bloc Citation
+- **Titre** : "💡 Conseil de l'exercice"
+- **Contenu** : Citation inspirante sur l'importance de refaire l'exercice régulièrement
+- **Style** : Blockquote avec icône
+- **Texte** : "Cet exercice gagne à être refait tous les 6 mois pour suivre l'évolution de vos envies et ajuster votre trajectoire."
+
+### Boutons de Navigation
+- **Bouton Retour** : "← Précédent"
+- **Bouton Secondaire** : "Sauvegarder le travail"
+  - Style : btn-outline-success
+  - Action : Sauvegarde locale + notification
+- **Bouton Principal** : "Valider et terminer"
+  - Style : btn-success btn-lg
+  - Action : Validation finale et navigation vers page de succès
+
+---
+
+## PAGE DE SUCCÈS
+
+### En-tête
+- **Animation** : Confettis ou étoiles animées
+- **Icône** : ✅ ou 🎉 (grande taille, animée)
+- **Titre** : "Félicitations !"
+- **Sous-titre** : "Vous avez complété l'exercice Les Ailes du Désir"
+
+### Résumé des Résultats
+
+#### Card Principale
+- **Titre** : "Votre plan d'action"
+- **Contenu** :
+  - Expérience prioritaire choisie
+  - Première action définie
+  - Date d'engagement
+  - Nombre total d'expériences identifiées
+  - Nombre de thèmes créés
+
+### Options d'Export
+
+#### Boutons d'Action
+- **Télécharger PDF** :
+  - Texte : "📄 Télécharger mon exercice complet"
+  - Style : btn-primary
+  - Action : Génère et télécharge un PDF
+  
+- **Envoyer par Email** :
+  - Texte : "✉️ M'envoyer une copie"
+  - Style : btn-outline-primary
+  - Action : Modal pour saisir email
+
+- **Partager avec le Coach** :
+  - Texte : "👤 Partager avec mon conseiller"
+  - Style : btn-outline-info
+  - Action : Envoi au coach si connecté
+
+### Message de Clôture
+- **Texte** : Message encourageant sur les prochaines étapes
+- **Rappel** : Importance de passer à l'action
+- **Suggestion** : Programmer un rappel dans 6 mois
+
+### Navigation Finale
+- **Bouton Secondaire** : "Refaire l'exercice"
+  - Action : Retour au début avec données vierges
+- **Bouton Principal** : "Continuer vers le module suivant"
+  - Action : Navigation vers Module 10
+
+---
+
+## Interactions et Comportements
+
+### Sauvegarde Automatique
+- **Fréquence** : Toutes les 30 secondes
+- **Déclencheur** : À chaque modification de champ
+- **Stockage** : LocalStorage
+- **Indicateur** : "Sauvegardé" avec timestamp
+
+### Validation Progressive
+- Chaque étape valide ses prérequis
+- Bouton "Continuer" activé dynamiquement
+- Messages d'aide contextuels
+- Indication visuelle des champs requis
+
+### Animations
+- **Transitions entre étapes** : Slide horizontal
+- **Focus sur champs** : Highlight avec bordure colorée
+- **Drag & Drop** : Ghost element + zone de drop illuminée
+- **Calculs** : Animation de compteur pour les sommes
+- **Validation** : Shake sur erreur, check sur succès
+
+### Responsive Design
+- **Desktop** : Tableau complet, 3 colonnes pour thèmes
+- **Tablette** : Tableau scrollable, 2 colonnes pour thèmes
+- **Mobile** : Tableau en cards, 1 colonne pour thèmes
+
+---
+
+## Styles et Design
+
+### Palette de Couleurs
+- **Primaire** : Bleu ciel (#3B82F6)
+- **Secondaire** : Violet doux (#8B5CF6)
+- **Succès** : Vert (#10B981)
+- **Warning** : Orange (#F59E0B)
+- **Danger** : Rouge (#EF4444)
+- **Neutre** : Gris (#6B7280)
+
+### Typographie
+- **Titres** : Font-weight 700, tailles progressives
+- **Labels** : Font-weight 600, uppercase pour certains
+- **Corps** : Font-weight 400, line-height 1.6
+- **Placeholders** : Italique, couleur gris clair
+
+### Espacements
+- **Padding sections** : 2rem
+- **Margin entre sections** : 3rem
+- **Padding champs** : 0.75rem
+- **Gap grilles** : 1.5rem
+
+### Composants Visuels
+- **Cards** : Border-radius 12px, shadow-sm
+- **Boutons** : Border-radius 8px, transitions hover
+- **Inputs** : Border 1px, focus ring
+- **Tableaux** : Alternance de couleurs de lignes
+
+---
+
+## Données Sauvegardées
+
+### Structure JSON
 ```javascript
 {
-  experiences: [
-    {
-      id: 1,
-      description: "Voyager en Asie pendant 3 mois",
-      desirability: 9,
-      feasibility: 6,
-      sum: 15,
-      reason: "Découvrir de nouvelles cultures et me ressourcer"
-    }
-  ],
-  themes: [
-    {
-      name: "Voyages et découvertes",
-      experienceIds: [1, 3, 7]
-    }
-  ],
-  selectedExperience: 1,
-  timeEstimation: "1 an de préparation",
-  steps: [
-    "Économiser 5000€",
-    "Planifier l'itinéraire",
-    "Obtenir les visas"
-  ],
-  firstAction: "Ouvrir un compte épargne dédié"
-}
-```
-
-## Structure CSS Suggérée
-
-```css
-/* Tableau des expériences */
-.experiences-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  background: var(--white);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-}
-
-.experiences-table th {
-  background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
-  padding: 1rem;
-  font-weight: 600;
-  color: var(--primary);
-  text-align: center;
-}
-
-.experiences-table td {
-  padding: 0.75rem;
-  border-bottom: 1px solid var(--gray-100);
-}
-
-.experiences-table textarea {
-  width: 100%;
-  min-height: 60px;
-  resize: vertical;
-  border: 1px solid var(--gray-200);
-  border-radius: var(--radius);
-  padding: 0.5rem;
-}
-
-.experiences-table input[type="number"] {
-  width: 60px;
-  text-align: center;
-  padding: 0.5rem;
-  border: 1px solid var(--gray-200);
-  border-radius: var(--radius);
-}
-
-.auto-sum {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  background: var(--success-bg);
-  color: var(--success);
-  border-radius: var(--radius);
-  font-weight: 600;
-}
-
-/* Cartes de thèmes */
-.themes-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  margin: 2rem 0;
-}
-
-.theme-card {
-  background: var(--white);
-  border: 2px dashed var(--gray-300);
-  border-radius: var(--radius-lg);
-  padding: 1.5rem;
-  min-height: 200px;
-  transition: all 0.3s ease;
-}
-
-.theme-card.has-items {
-  border-style: solid;
-  border-color: var(--primary);
-  background: var(--primary-bg);
-}
-
-/* Section planification */
-.planning-section {
-  background: linear-gradient(135deg, #fef3c7, #fde68a);
-  border-radius: var(--radius-xl);
-  padding: 2rem;
-  margin: 2rem 0;
-}
-
-.steps-list input {
-  width: 100%;
-  padding: 0.75rem;
-  margin: 0.5rem 0;
-  border: 1px solid var(--gray-200);
-  border-radius: var(--radius);
-  background: var(--white);
-}
-```
-
-## Structure JSON Proposée
-
-```json
-{
-  "module": {
-    "id": "module-09",
-    "title": "Les Ailes du Désir",
-    "subtitle": "Prenez conscience de vos envies et de vos motivations",
-    "type": "exercice-orientation",
-    "collection": "Chemin Faisant",
-    "method": "ADVP",
-    "phase": "investigation-personnelle",
-    "duration": "15-20 minutes",
-    "domains": ["professionnel", "personnel"],
-    "sections": {
-      "experiences": {
-        "required": 5,
-        "maximum": 10,
-        "fields": ["description", "desirability", "feasibility", "reason"]
-      },
-      "themes": {
-        "minimum": 3,
-        "allow_custom": true
-      },
-      "planning": {
-        "steps_minimum": 3,
-        "time_estimation": true,
-        "first_action": true
+  "module_9_data": {
+    "experiences": [
+      {
+        "id": 1,
+        "description": "string",
+        "desirability": "number (1-10)",
+        "feasibility": "number (1-10)",
+        "sum": "number (2-20)",
+        "reason": "string"
       }
+    ],
+    "themes": [
+      {
+        "id": 1,
+        "name": "string",
+        "color": "string (hex)",
+        "experienceIds": [1, 3, 5]
+      }
+    ],
+    "planning": {
+      "selectedExperienceId": "number",
+      "timeEstimation": "string",
+      "steps": ["string"],
+      "firstAction": "string",
+      "actionDate": "date",
+      "commitment": "boolean"
     },
-    "features": {
-      "auto_calculation": true,
-      "sorting": true,
-      "drag_drop": true,
-      "pdf_export": true,
-      "auto_save": true
-    },
-    "validation": {
-      "progressive": true,
-      "required_sections": ["experiences", "themes", "planning"]
+    "metadata": {
+      "startedAt": "timestamp",
+      "completedAt": "timestamp",
+      "lastSavedAt": "timestamp",
+      "completionPercentage": "number"
     }
   }
 }
 ```
 
-## Notes d'Intégration
+## Intégration SCORM
 
-- L'exercice est issu de la méthode ADVP (Activation du Développement Vocationnel et Personnel)
-- Particulièrement utile pour les personnes en reconversion ou questionnement professionnel
-- L'image du cygne symbolise la liberté et l'envol vers de nouvelles perspectives
-- Recommandé de refaire l'exercice tous les 6 mois pour suivre l'évolution
-- Ne pas se limiter aux idées "réalisables" - l'utopie est encouragée
-- L'exercice combine réflexion personnelle et planification concrète
-- Peut servir de base pour un accompagnement professionnel approfondi
+### Tracking
+- **Début module** : cmi.interactions.n.id = "module_9_start"
+- **Fin module** : cmi.interactions.n.result = "completed"
+- **Score** : Basé sur le taux de complétion
+- **Durée** : cmi.total_time enregistré
+
+### Données Persistantes
+- Sauvegarde dans cmi.suspend_data
+- Restauration à la reprise
+- Export possible vers LMS
+
+## Notes d'Implémentation
+
+1. **Méthode ADVP** : Respecter les principes de la méthode d'orientation
+2. **Accessibilité** : ARIA labels sur tous les champs interactifs
+3. **Performance** : Lazy loading pour les animations
+4. **Sécurité** : Validation côté client et serveur
+5. **Analytics** : Tracking des interactions principales
+6. **Support** : Aide contextuelle disponible à chaque étape
