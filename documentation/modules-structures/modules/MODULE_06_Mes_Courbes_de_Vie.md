@@ -1,3 +1,4 @@
+
 # Structure Détaillée - Module 6 : Mes Courbes de Vie
 
 ## Informations Générales du Module
@@ -8,9 +9,11 @@
 - **Type** : Outil interactif de création de timeline avec analyse
 - **Nombre d'étapes** : 3 (Modal intro + Création des courbes + Analyse)
 
-## 🔗 Visualiser Preview
+## 🔗 Visualiser Preview HTML (de la courbe)
 
-[Lien 1](https://azerradilana.atlassian.net/browse/BC-4)
+```html
+<!DOCTYPE  html> <html  lang="fr"> <head> <meta  charset="UTF-8"> <meta  name="viewport"  content="width=device-width, initial-scale=1.0"> <title>Graphique de lignes interconnectées</title> <style> body  { margin:  0; padding:  20px; font-family: Arial, sans-serif; background:  linear-gradient(to bottom,  #2c3e50,  #34495e); display: flex; justify-content: center; align-items: center; min-height:  100vh; } .chart-container  { background:  white; padding:  40px; border-radius:  10px; box-shadow:  0  4px  20px  rgba(0,0,0,0.3); width:  95%; max-width:  1400px; } svg  { width:  100%; height: auto; } .grid-line  { stroke:  #ddd; stroke-width:  1; } .axis-line  { stroke:  #333; stroke-width:  2; } .line-teal  { fill: none; stroke:  #2fa19f; stroke-width:  3; } .line-orange  { fill: none; stroke:  #f39c12; stroke-width:  3; } .point-teal  { fill:  #2fa19f; } .point-orange  { fill:  #f39c12; } .label  { font-size:  14px; font-weight: bold; fill:  #333; } .axis-label  { font-size:  16px; fill:  #666; } </style> </head> <body> <div  class="chart-container"> <svg  viewBox="0 0 1400 700"  xmlns="http://www.w3.org/2000/svg"> <!-- Grille --> <line  x1="80"  y1="550"  x2="1350"  y2="550"  class="grid-line"/> <line  x1="80"  y1="450"  x2="1350"  y2="450"  class="grid-line"/> <line  x1="80"  y1="350"  x2="1350"  y2="350"  class="grid-line"/> <line  x1="80"  y1="250"  x2="1350"  y2="250"  class="grid-line"/> <line  x1="80"  y1="150"  x2="1350"  y2="150"  class="grid-line"/> <line  x1="80"  y1="50"  x2="1350"  y2="50"  class="grid-line"/> <!-- Axes --> <line  x1="80"  y1="50"  x2="80"  y2="650"  class="axis-line"/> <line  x1="80"  y1="350"  x2="1350"  y2="350"  class="axis-line"/> <!-- Labels Y --> <text  x="50"  y="55"  class="axis-label">10</text> <text  x="50"  y="155"  class="axis-label">5</text> <text  x="50"  y="355"  class="axis-label">0</text> <text  x="40"  y="555"  class="axis-label">-5</text> <text  x="30"  y="655"  class="axis-label">-10</text> <!-- Ligne Teal --> <path  d="M 100,50 L 150,50 L 220,50 L 290,120 L 350,220 L 450,380 L 570,180 L 650,350 L 850,50 L 950,50 L 1050,50 L 1150,50 L 1250,80 L 1320,80"  class="line-teal"/> <!-- Ligne Orange --> <path  d="M 290,50 L 350,50 L 420,100 L 480,180 L 550,280 L 630,50 L 720,50 L 800,100 L 870,80 L 950,120 L 1020,100 L 1090,100 L 1160,150 L 1220,250 L 1320,120"  class="line-orange"/> <!-- Points et labels - Ligne Teal --> <circle  cx="100"  cy="50"  r="6"  class="point-teal"/> <circle  cx="150"  cy="50"  r="6"  class="point-teal"/> <text  x="110"  y="90"  class="label">Bac</text> <circle  cx="220"  cy="50"  r="6"  class="point-teal"/> <text  x="190"  y="90"  class="label">Diplome</text> <circle  cx="290"  cy="120"  r="6"  class="point-teal"/> <text  x="250"  y="180"  class="label">CDI Audio</text> <circle  cx="350"  cy="220"  r="6"  class="point-teal"/> <text  x="300"  y="280"  class="label">Mendy's Deli</text> <circle  cx="450"  cy="380"  r="6"  class="point-teal"/> <text  x="420"  y="420"  class="label">CDI Audika</text> <circle  cx="570"  cy="180"  r="6"  class="point-teal"/> <text  x="540"  y="220"  class="label">CDI OC</text> <circle  cx="650"  cy="350"  r="6"  class="point-teal"/> <circle  cx="850"  cy="50"  r="6"  class="point-teal"/> <text  x="820"  y="90"  class="label">Twingo</text> <circle  cx="1150"  cy="50"  r="6"  class="point-teal"/> <text  x="1120"  y="90"  class="label">KBLAB</text> <circle  cx="1250"  cy="80"  r="6"  class="point-teal"/> <text  x="1220"  y="120"  class="label">OrCam</text> <!-- Points et labels - Ligne Orange --> <circle  cx="290"  cy="50"  r="6"  class="point-orange"/> <circle  cx="350"  cy="50"  r="6"  class="point-orange"/> <text  x="350"  y="40"  class="label">Audio</text> <circle  cx="420"  cy="100"  r="6"  class="point-orange"/> <text  x="380"  y="140"  class="label">nonva</text> <circle  cx="630"  cy="50"  r="6"  class="point-orange"/> <text  x="600"  y="90"  class="label">Australie</text> <circle  cx="1220"  cy="250"  r="6"  class="point-orange"/> <text  x="1050"  y="240"  class="label">Covid - Ella/Lorem</text> <circle  cx="1320"  cy="120"  r="6"  class="point-orange"/> <text  x="1320"  y="110"  class="label">Balink</text> </svg> </div> </body> </html>
+```
 
 ## Structure de Navigation
 
@@ -100,6 +103,9 @@ Pour chaque événement :
    - Default : 0
    - Affichage : Valeur numérique à côté
 
+5. **Description courte**
+   - Type : Text input
+ 
 #### Actions de la Popup
 - **Ajouter un autre événement** : Bouton pour ajouter un nouveau formulaire
 - **Valider tous les événements** : Soumettre et placer sur le canvas
@@ -134,7 +140,6 @@ Pour chaque événement :
 ### Actions Disponibles
 - **Modifier un point** : Double-clic pour éditer
 - **Supprimer un point** : Clic droit → menu contextuel
-- **Déplacer un point** : Drag and drop (optionnel)
 
 ### Bouton de Transition
 - **Texte** : "Continuer vers l'analyse"
@@ -250,94 +255,22 @@ Série de questions ouvertes présentées séquentiellement :
 ```
 
 ### Rendu du Canvas
-- **Technologie** : HTML5 Canvas ou SVG
+- **Technologie** : HTML5 Canvas ou SVG (ou D3js ?)
 - **Responsive** : Adaptation à la taille d'écran
 - **Zoom** : Possibilité de zoomer sur une période
-- **Export** : Canvas vers image PNG/JPG
 
 ### Calcul des Courbes
 - **Algorithme** : Interpolation cubic spline
 - **Lissage** : Courbes de Bézier entre points
 - **Animation** : Dessin progressif des courbes
 
-### LocalStorage
+### Database
 - **Clés** :
   - `module6_personal_points`
   - `module6_professional_points`
   - `module6_analysis`
   - `module6_visited`
   - `module6_completed`
-
-### Interactions
-- **Drag & Drop** : Pour repositionner les points
-- **Double-clic** : Pour éditer un point
-- **Clic droit** : Menu contextuel
-- **Hover** : Affichage tooltip
-- **Pinch to zoom** : Sur mobile
-
----
-
-## Structure HTML Principale
-
-```html
-<!-- Modal de bienvenue -->
-<div class="welcome-modal" id="welcomeModal">
-  <div class="modal-content">
-    <h2>Bienvenue dans l'activité Mes Courbes de Vie</h2>
-    <button id="startActivityBtn">Commencer l'activité</button>
-  </div>
-</div>
-
-<!-- Contenu principal -->
-<main class="card">
-  <div class="life-curves-container">
-    <!-- Étape 1: Création -->
-    <div class="step-section" id="creationStep">
-      <!-- Sélecteur de timeline -->
-      <div class="timeline-selector">
-        <button class="timeline-btn active" data-timeline="personal">Personnel</button>
-        <button class="timeline-btn" data-timeline="professional">Professionnel</button>
-      </div>
-      
-      <!-- Canvas -->
-      <div class="timeline-canvas-wrapper">
-        <div class="timeline-canvas" id="timelineCanvas">
-          <div class="timeline-axis"></div>
-          <div class="timeline-labels">
-            <span class="timeline-label positive">+5</span>
-            <span class="timeline-label neutral">0</span>
-            <span class="timeline-label negative">-5</span>
-          </div>
-          <!-- Points ajoutés dynamiquement -->
-        </div>
-      </div>
-      
-      <button class="btn-primary" id="openPopupBtn">
-        Ajouter des événements
-      </button>
-    </div>
-    
-    <!-- Étape 2: Analyse -->
-    <div class="step-section" id="analysisStep">
-      <!-- Questions d'analyse -->
-    </div>
-  </div>
-</main>
-
-<!-- Popup d'ajout d'événements -->
-<div class="popup-overlay" id="popupOverlay">
-  <div class="popup-content">
-    <h3>Ajouter des événements</h3>
-    <div id="eventsContainer">
-      <!-- Formulaires d'événements -->
-    </div>
-    <button id="addEventFieldBtn">+ Ajouter un événement</button>
-    <button id="submitAllEventsBtn">Valider tous les événements</button>
-  </div>
-</div>
-```
-
----
 
 ## Structure JSON pour Base de Données
 
@@ -405,15 +338,8 @@ Série de questions ouvertes présentées séquentiellement :
 }
 ```
 
----
 
 ## Notes pour l'Intégration
 
-1. **Performance** : Utiliser requestAnimationFrame pour animations fluides
-2. **Accessibilité** : Alternative textuelle pour les courbes
-3. **Mobile** : Interface tactile adaptée (pinch, swipe)
-4. **Export** : Génération PDF avec graphiques haute résolution
-5. **Analytics** : Analyse des patterns communs entre utilisateurs
-6. **Psychologie** : Corrélations possibles entre événements
-7. **Backup** : Sauvegarde régulière pour éviter perte de données
-8. **Collaboration** : Possibilité future de partage avec consultant
+**Backup** : Sauvegarde régulière pour éviter perte de données
+
