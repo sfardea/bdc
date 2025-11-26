@@ -237,10 +237,9 @@
 - **Style d'erreur** : Bordure rouge + message en rouge
 
 ### Sauvegarde des Données
-- **LocalStorage** : 
+- **Database** : 
   - Clé : `module1_data` (données du formulaire)
   - Clé : `module1_completed` (statut de complétion)
-- **SCORM** : Si disponible, envoi des données à la plateforme LMS
 
 ### Navigation
 - **Navigation par étapes** : Clic sur les indicateurs (si validation OK)
