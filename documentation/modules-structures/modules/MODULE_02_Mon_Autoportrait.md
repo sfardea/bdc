@@ -350,11 +350,6 @@
 
 ## Fonctionnalités Techniques
 
-### Système de Points
-- **Points par question** : +10 points par question répondue
-- **Bonus final** : +50 points à la génération du blason
-- **Total possible** : 150 points
-- **Note** : Les points sont suivis en interne mais non affichés dans l'interface
 
 ### Validation
 - **Questions 1-5** : Zone de texte non vide
@@ -364,17 +359,11 @@
 - **Message d'erreur** : "Veuillez compléter cette étape avant de continuer."
 
 ### Sauvegarde des Données
-- **LocalStorage** :
+- **Database** :
   - Clé : `blason-questionnaire` (progression et réponses)
   - Clé : `blason-completed` (données finales)
   - Clé : `module2_completed` (statut de complétion)
-- **Structure sauvegardée** :
-  - currentStep : numéro de l'étape actuelle
-  - points : nombre de points accumulés
-  - answers : objet avec toutes les réponses
-- **SCORM** : Si disponible, envoi des données à la plateforme LMS
 
-### Navigation
 - **Navigation par boutons** : Précédent/Suivant
 - **Validation avant progression** : Vérification du contenu
 - **Retour arrière** : Toujours possible
@@ -844,11 +833,3 @@
 </div>
 ```
 
-## Notes pour l'Intégration Base de Données
-
-1. **Stockage des réponses** : Créer une table pour stocker toutes les réponses textuelles
-2. **Génération du blason** : Prévoir un système de mapping entre les questions et les sections du blason
-3. **Système de points** : Table séparée pour le suivi de la gamification (même si non affiché)
-4. **Export du blason** : Prévoir une fonctionnalité d'export en image ou PDF
-5. **Analyse des réponses** : Possibilité d'analyse sémantique pour extraire automatiquement les valeurs
-6. **Historique** : Conserver l'historique des différentes versions du blason créées par l'utilisateur
