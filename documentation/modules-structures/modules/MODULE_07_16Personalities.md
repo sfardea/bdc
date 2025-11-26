@@ -1,3 +1,4 @@
+
 # Module 7 : Les 16 Types de Personnalité (16Personalities)
 
 ## Informations Générales
@@ -14,7 +15,7 @@
 
 [Lien 1](https://www.16personalities.com/fr/types-de-personnalite)
 
-## PAGE DE PRÉSENTATION
+## PAGE DE PRÉSENTATION (à combiner avec la page classique de bienvenue 0 - TEMPLATE_PRESENTATION)
 
 ### Éléments Visuels
 - **Badge du module** : "Module 7"
@@ -330,38 +331,6 @@ const personalityData = {
 };
 ```
 
-## Responsive Design
-
-### Mobile (< 768px)
-- Groupes de personnalités en accordéon
-- Select adapté pour mobile
-- Boutons empilés
-
-### Tablette (768px - 1024px)
-- Grille 2×2 pour les groupes
-- Layout optimal
-
-### Desktop (> 1024px)
-- Grille 4×1 ou 2×2 pour les groupes
-- Tous les éléments visibles
-
-## Accessibilité
-
-- **Labels ARIA** : Sur tous les champs
-- **Navigation clavier** : Tab order logique
-- **Annonces** : "Lien externe" annoncé
-- **Contraste** : Respect WCAG AA
-
-## Intégration SCORM
-
-```javascript
-// Sauvegarde du résultat
-SCORM.SetValue('cmi.interactions.n.id', 'module7_16personalities');
-SCORM.SetValue('cmi.interactions.n.type', 'choice');
-SCORM.SetValue('cmi.interactions.n.student_response', personalityType);
-SCORM.SetValue('cmi.completion_status', 'completed');
-SCORM.Commit();
-```
 
 ## Structure JSON Proposée
 
@@ -419,11 +388,3 @@ SCORM.Commit();
   ]
 }
 ```
-
-## Notes d'Implémentation
-
-1. **Sécurité** : Avertir l'utilisateur qu'il va sur un site externe
-2. **Persistance** : Sauvegarder l'état si l'utilisateur quitte et revient
-3. **Validation** : Vérifier que le type sélectionné est valide
-4. **Aide** : Fournir des descriptions pour chaque type
-5. **Fallback** : Permettre la saisie manuelle si le site externe est inaccessible
